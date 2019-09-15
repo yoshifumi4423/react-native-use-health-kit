@@ -7406,6 +7406,29 @@
 			};
 			name = Debug;
 		};
+		3F3974810710A683EADD83A9BB5F8774 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B0A36675798DA85F757628827B93036C /* react-native-use-health-kit.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/react-native-use-health-kit/react-native-use-health-kit-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = react_native_use_health_kit;
+				PRODUCT_NAME = "react-native-use-health-kit";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 		417DA268A7CCF0076DDFB3BD63E8F359 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4B8028EEF25AA3CC25358B523E3AA81A /* Pods-exampleTests.release.xcconfig */;
@@ -7513,6 +7536,30 @@
 				PRIVATE_HEADERS_FOLDER_PATH = "";
 				PRODUCT_MODULE_NAME = jsi;
 				PRODUCT_NAME = "React-jsi";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		5BA97B90355296A57933593CE09A0C78 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B0A36675798DA85F757628827B93036C /* react-native-use-health-kit.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/react-native-use-health-kit/react-native-use-health-kit-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = react_native_use_health_kit;
+				PRODUCT_NAME = "react-native-use-health-kit";
 				PUBLIC_HEADERS_FOLDER_PATH = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -8064,29 +8111,6 @@
 			};
 			name = Debug;
 		};
-		963639333E32BC9AEB87C9AC71EB0907 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = B0A36675798DA85F757628827B93036C /* react-native-use-health-kit.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/react-native-use-health-kit/react-native-use-health-kit-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = react_native_use_health_kit;
-				PRODUCT_NAME = "react-native-use-health-kit";
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
 		9B689E02BFF484A715B85036893CB118 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8BD4BD967A53B58725101B913BF74DBD /* React-RCTVibration.xcconfig */;
@@ -8436,30 +8460,6 @@
 			};
 			name = Release;
 		};
-		FA41221CBC458848C4392D64CA43CA20 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = B0A36675798DA85F757628827B93036C /* react-native-use-health-kit.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/react-native-use-health-kit/react-native-use-health-kit-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = react_native_use_health_kit;
-				PRODUCT_NAME = "react-native-use-health-kit";
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 		FD3B23428361FF8577804777F5726CB0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B0E2FD8BD9E86D884A6F908A11360E27 /* glog.xcconfig */;
@@ -8517,8 +8517,8 @@
 		2D1F4153A50F49E80A4CF8A41D5FB148 /* Build configuration list for PBXNativeTarget "react-native-use-health-kit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				963639333E32BC9AEB87C9AC71EB0907 /* Debug */,
-				FA41221CBC458848C4392D64CA43CA20 /* Release */,
+				3F3974810710A683EADD83A9BB5F8774 /* Debug */,
+				5BA97B90355296A57933593CE09A0C78 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
