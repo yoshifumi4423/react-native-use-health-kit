@@ -5,13 +5,11 @@
   "scripts": {
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint .",
-    "postinstall": "node ../scripts/examples_postinstall.js"
+    "lint": "eslint ."
   },
   "dependencies": {
     "react": "16.8.6",
-    "react-native": "0.60.5",
-    "react-native-use-health-kit": "file:../"
+    "react-native": "0.60.5"
   },
   "devDependencies": {
     "@babel/core": "^7.6.0",
