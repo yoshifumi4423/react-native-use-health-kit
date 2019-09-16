@@ -10,7 +10,7 @@
 
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
-import UseHealthKit from 'react-native-use-health-kit';
+// import UseHealthKit from 'react-native-use-health-kit';
 
 export default class App extends Component<{}> {
   render() {
@@ -19,7 +19,7 @@ export default class App extends Component<{}> {
         <Text style={styles.welcome}>☆UseHealthKit example☆</Text>
         <Text style={styles.instructions}>STATUS: loaded</Text>
         <Text style={styles.welcome}>☆☆☆</Text>
-        <UseHealthKit />
+        {/* <UseHealthKit /> */}
       </View>
     );
   }
