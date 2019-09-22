@@ -1,19 +1,7 @@
-#import "UseHealthKit.h"
+#import <Foundation/Foundation.h>
+#import "React/RCTBridgeModule.h"
 
-@implementation UseHealthKit
-
-RCT_EXPORT_MODULE()
-
-- (UIView *)view
-{
-    // TODO: Implement some actually useful functionality
-    UILabel * label = [[UILabel alloc] init];
-    [label setTextColor:[UIColor redColor]];
-    [label setText: @"*****"];
-    [label sizeToFit];
-    UIView * wrapper = [[UIView alloc] init];
-    [wrapper addSubview:label];
-    return wrapper;
-}
-
+@interface RCT_EXTERN_MODULE(UseHealthKit, NSObject)
+RCT_EXTERN_METHOD(increment: (NSInteger)origin withCallback:(RCTResponseSenderBlock)callback)
+RCT_EXTERN_METHOD(decrement: (NSInteger)origin withResolve:(RCTPromiseResolveBlock)resolve withReject:(RCTPromiseRejectBlock)reject)
 @end
