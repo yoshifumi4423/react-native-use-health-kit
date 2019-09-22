@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.license      = "MIT"
   # s.license    = { :type => "MIT", :file => "FILE_LICENSE" }
   s.authors      = { "Yoshifumi Kanno" => "ykpublicjp@gmail.com" }
-  s.platforms    = { :ios => "9.0", :tvos => "10.0" }
+  s.platforms    = { :ios => "9.0" }
   s.source       = { :git => "https://github.com/yoshifumi4423/react-native-use-health-kit.git", :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,swift}"
