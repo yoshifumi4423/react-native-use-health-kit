@@ -20,6 +20,8 @@
 		B82390B4FA769349B08CC282 /* libPods-example-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E0E01BE7794A98107B0C739E /* libPods-example-tvOSTests.a */; };
 		D549B9D09774F0BEED10CED0 /* libPods-example-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE9FCFF0450A85B45BA54702 /* libPods-example-tvOS.a */; };
 		E9A1B2AEDBB62A47724EB51F /* libPods-example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3448672EE0196BB8AD40DF9E /* libPods-example.a */; };
+		FE35A4E5232FB98300A23AAB /* UseHealthKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE35A4E4232FB98300A23AAB /* UseHealthKit.swift */; };
+		FE35A4EA232FBE1B00A23AAB /* UseHealthKit.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35A4E9232FBE1B00A23AAB /* UseHealthKit.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +69,10 @@
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		EE4DE966F02DE11302328C23 /* Pods-example-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-example-tvOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-example-tvOSTests/Pods-example-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		EE9FCFF0450A85B45BA54702 /* libPods-example-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-example-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE35A4E4232FB98300A23AAB /* UseHealthKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UseHealthKit.swift; sourceTree = "<group>"; };
+		FE35A4E7232FB9EF00A23AAB /* example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "example-Bridging-Header.h"; sourceTree = "<group>"; };
+		FE35A4E9232FBE1B00A23AAB /* UseHealthKit.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UseHealthKit.m; sourceTree = "<group>"; };
+		FE35A4EC2330FF2900A23AAB /* example.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = example.entitlements; path = example/example.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +131,7 @@
 		13B07FAE1A68108700A75B9A /* example */ = {
 			isa = PBXGroup;
 			children = (
+				FE35A4EC2330FF2900A23AAB /* example.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -132,6 +139,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				FE35A4EB232FBE4200A23AAB /* UseHealthKit */,
 			);
 			name = example;
 			sourceTree = "<group>";
@@ -195,6 +203,16 @@
 				040AEA0D7C95E7CE561B74E2 /* Pods-exampleTests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		FE35A4EB232FBE4200A23AAB /* UseHealthKit */ = {
+			isa = PBXGroup;
+			children = (
+				FE35A4E7232FB9EF00A23AAB /* example-Bridging-Header.h */,
+				FE35A4E4232FB98300A23AAB /* UseHealthKit.swift */,
+				FE35A4E9232FBE1B00A23AAB /* UseHealthKit.m */,
+			);
+			name = UseHealthKit;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -293,6 +311,11 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						LastSwiftMigration = 1030;
+						SystemCapabilities = {
+							com.apple.HealthKit = {
+								enabled = 0;
+							};
+						};
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -531,6 +554,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE35A4EA232FBE1B00A23AAB /* UseHealthKit.m in Sources */,
+				FE35A4E5232FB98300A23AAB /* UseHealthKit.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
@@ -585,6 +610,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0F4D1B798631A2422420CBCD /* Pods-exampleTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -608,6 +634,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 040AEA0D7C95E7CE561B74E2 /* Pods-exampleTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = exampleTests/Info.plist;
@@ -632,6 +659,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -655,6 +683,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
