@@ -20,6 +20,8 @@
 		B82390B4FA769349B08CC282 /* libPods-example-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E0E01BE7794A98107B0C739E /* libPods-example-tvOSTests.a */; };
 		D549B9D09774F0BEED10CED0 /* libPods-example-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE9FCFF0450A85B45BA54702 /* libPods-example-tvOS.a */; };
 		E9A1B2AEDBB62A47724EB51F /* libPods-example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3448672EE0196BB8AD40DF9E /* libPods-example.a */; };
+		FE4D30F52339034500C1C647 /* UseHealthKit.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4D30F32339034400C1C647 /* UseHealthKit.m */; };
+		FE4D30F62339034500C1C647 /* UseHealthKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4D30F42339034400C1C647 /* UseHealthKit.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +69,9 @@
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		EE4DE966F02DE11302328C23 /* Pods-example-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-example-tvOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-example-tvOSTests/Pods-example-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		EE9FCFF0450A85B45BA54702 /* libPods-example-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-example-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE4D30F22339034400C1C647 /* UseHealthKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UseHealthKit-Bridging-Header.h"; path = "UseHealthKit/UseHealthKit-Bridging-Header.h"; sourceTree = "<group>"; };
+		FE4D30F32339034400C1C647 /* UseHealthKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UseHealthKit.m; path = UseHealthKit/UseHealthKit.m; sourceTree = "<group>"; };
+		FE4D30F42339034400C1C647 /* UseHealthKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UseHealthKit.swift; path = UseHealthKit/UseHealthKit.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +130,7 @@
 		13B07FAE1A68108700A75B9A /* example */ = {
 			isa = PBXGroup;
 			children = (
+				FE4D30EA2339028F00C1C647 /* UseHealthKit */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -195,6 +201,16 @@
 				040AEA0D7C95E7CE561B74E2 /* Pods-exampleTests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		FE4D30EA2339028F00C1C647 /* UseHealthKit */ = {
+			isa = PBXGroup;
+			children = (
+				FE4D30F22339034400C1C647 /* UseHealthKit-Bridging-Header.h */,
+				FE4D30F32339034400C1C647 /* UseHealthKit.m */,
+				FE4D30F42339034400C1C647 /* UseHealthKit.swift */,
+			);
+			name = UseHealthKit;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -531,7 +547,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE4D30F62339034500C1C647 /* UseHealthKit.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				FE4D30F52339034500C1C647 /* UseHealthKit.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -585,6 +603,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0F4D1B798631A2422420CBCD /* Pods-exampleTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -608,6 +627,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 040AEA0D7C95E7CE561B74E2 /* Pods-exampleTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = exampleTests/Info.plist;
@@ -641,7 +661,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = example;
-				SWIFT_OBJC_BRIDGING_HEADER = "example-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/UseHealthKit/UseHealthKit-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -664,7 +684,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = example;
-				SWIFT_OBJC_BRIDGING_HEADER = "example-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/UseHealthKit/UseHealthKit-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
