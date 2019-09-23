@@ -1,7 +1,11 @@
 {
   "name": "react-native-use-health-kit",
   "title": "React Native Use Health Kit",
+<<<<<<< HEAD
   "version": "0.0.4",
+=======
+  "version": "0.0.3",
+>>>>>>> ba78b3e8efb7c480dfd6e67dc813e271989b6e1f
   "description": "TODO",
   "main": "index.js",
   "scripts": {
