@@ -5,15 +5,17 @@
   "scripts": {
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "postinstall": "node ../scripts/examples_postinstall.js"
   },
   "dependencies": {
     "react": "16.8.6",
-    "react-native": "0.60.5"
+    "react-native": "0.60.5",
+    "react-native-use-health-kit": "file:../"
   },
   "devDependencies": {
-    "@babel/core": "^7.6.0",
-    "@babel/runtime": "^7.6.0",
+    "@babel/core": "^7.6.2",
+    "@babel/runtime": "^7.6.2",
     "@react-native-community/eslint-config": "^0.0.5",
     "babel-jest": "^24.9.0",
     "eslint": "^6.4.0",
