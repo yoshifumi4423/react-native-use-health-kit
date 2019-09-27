@@ -6,7 +6,8 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "postinstall": "node ../scripts/examples_postinstall.js"
+    "postinstall": "node ../scripts/examples_postinstall.js",
+    "cp": "rm -rf node_modules/react-native-use-health-kit/ios && cp -rv ../ios node_modules/react-native-use-health-kit/"
   },
   "dependencies": {
     "react": "16.8.6",
