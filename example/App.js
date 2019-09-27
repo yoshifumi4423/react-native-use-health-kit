@@ -12,7 +12,7 @@ export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      count: 0,
+      isAvailable: false,
     };
   }
   render() {
@@ -24,28 +24,17 @@ export default class App extends React.Component {
         <Text style={styles.instructions}>STATUS: loaded</Text>
         <Text style={styles.welcome}>☆☆☆</Text>
         <Text style={styles.welcome}>count : {this.state.count}</Text>
-        <TouchableOpacity onPress={this.onPressIncrement}>
-          <Text>Increment</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.onPressDecrement}>
-          <Text>Decrement</Text>
+        <TouchableOpacity onPress={this.onPressIsHealthDataAvailable}>
+          <Text>isAvailable? {this.state.isAvailable ? 'Yes' : 'No'}</Text>
         </TouchableOpacity>
       </View>
     );
   }
 
-  onPressIncrement = () => {
-    NativeModules.UseHealthKit.increment(this.state.count, callbackValue => {
-      this.setState({count: callbackValue});
-    });
-  };
-
-  onPressDecrement = async () => {
+  onPressIsHealthDataAvailable = async () => {
     try {
-      const count = await NativeModules.UseHealthKit.decrement(
-        this.state.count,
-      );
-      this.setState({count});
+      const isAvailable = await NativeModules.UseHealthKit.isHealthDataAvailable();
+      this.setState({isAvailable});
     } catch (error) {
       console.log(error);
     }
