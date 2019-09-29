@@ -5,8 +5,8 @@ RCT_EXTERN_METHOD(isHealthDataAvailable
                   : (RCTPromiseResolveBlock)resolve
                   : (RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(initializeHealthKit
-                  : (NSString )readPermissions
-                  : (NSString )writePermissions
+                  : (NSArray *)readPermissions
+                  : (NSArray *)writePermissions
                   : (RCTPromiseResolveBlock)resolve
                   : (RCTPromiseRejectBlock)reject)
 @end
