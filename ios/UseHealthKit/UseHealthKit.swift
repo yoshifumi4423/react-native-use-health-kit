@@ -8,6 +8,42 @@ class UseHealthKit: NSObject {
         case noPermissions = "No permissions to access user health data"
     }
 
+    let Permissions: [String: HKSampleType] = [
+//        // HKCategoryTypeIdentifier
+//        // Vital Signs
+//        "lowHeartRateEvent": HKObjectType.categoryType(forIdentifier: .lowHeartRateEvent)!,
+//        "highHeartRateEvent": HKObjectType.categoryType(forIdentifier: .highHeartRateEvent)!,
+//        "irregularHeartRhythmEvent": HKObjectType.categoryType(forIdentifier: .irregularHeartRhythmEvent)!,
+//        // Reproductive Health
+//        "cervicalMucusQuality": HKObjectType.categoryType(forIdentifier: .cervicalMucusQuality)!,
+//        "menstrualFlow": HKObjectType.categoryType(forIdentifier: .menstrualFlow)!,
+//        "intermenstrualBleeding": HKObjectType.categoryType(forIdentifier: .intermenstrualBleeding)!,
+//        "ovulationTestResult": HKObjectType.categoryType(forIdentifier: .ovulationTestResult)!,
+//        "sexualActivity": HKObjectType.categoryType(forIdentifier: .sexualActivity)!,
+//        // Activity
+//        "biologicalSex": HKObjectType.categoryType(forIdentifier: .appleStandHour)!,
+//        // Mindfullness and Sleep
+//        "biologicalSex": HKObjectType.categoryType(forIdentifier: .mindfulSession)!,
+//        "biologicalSex": HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!,
+//
+//        // HKCharacteristicTypeIdentifier
+//        "biologicalSex": HKObjectType.characteristicType(forIdentifier: .biologicalSex)!,
+//        "bloodType": HKObjectType.characteristicType(forIdentifier: .bloodType)!,
+//        "dateOfBirth": HKObjectType.characteristicType(forIdentifier: .dateOfBirth)!,
+//        "fitzpatrickSkinType": HKObjectType.characteristicType(forIdentifier: .fitzpatrickSkinType)!,
+//        "wheelchairUse": HKObjectType.characteristicType(forIdentifier: .wheelchairUse)!,
+
+        // HKQuantityTypeIdentifier
+        "stepCount": HKObjectType.quantityType(forIdentifier: .stepCount)!,
+        "heartRate": HKObjectType.quantityType(forIdentifier: .heartRate)!,
+    ]
+
+    let healthStore: HKHealthStore
+
+    override init() {
+        self.healthStore = HKHealthStore()
+    }
+
     func isHealthDataAvailable() -> Bool {
         if HKHealthStore.isHealthDataAvailable() {
             return true
@@ -25,25 +61,22 @@ class UseHealthKit: NSObject {
         resolve(true)
     }
 
-    @objc func initializeHealthKit(_ readPermissions: [String]!, _ writePermissions: [String]!, _ resolve: RCTPromiseResolveBlock, _ reject: RCTPromiseRejectBlock) {
+    @objc func initHealthKit(_ readPermissions: [String]!, _ writePermissions: [String]!, _ resolve: RCTPromiseResolveBlock, _ reject: RCTPromiseRejectBlock) {
         guard isHealthDataAvailable() else {
             reject(Error.error.rawValue, Error.notAvailable.rawValue, nil)
             return
         }
 
-        var readType: Set<HKCharacteristicType>?
+        var readType: Set<HKSampleType>?
         if !readPermissions.isEmpty {
-            readType = Set(arrayLiteral:
-                HKObjectType.characteristicType(forIdentifier: .bloodType)!,
-                           HKObjectType.characteristicType(forIdentifier: .dateOfBirth)!,
-                           HKObjectType.characteristicType(forIdentifier: .biologicalSex)!)
+            let permissions = readPermissions.map { Permissions[$0]! }
+            readType = Set(permissions)
         }
 
         var writeType: Set<HKSampleType>?
         if !writePermissions.isEmpty {
-            writeType = Set(arrayLiteral:
-                HKObjectType.quantityType(forIdentifier: .bodyMass)!,
-                            HKObjectType.quantityType(forIdentifier: .bodyTemperature)!)
+            let permissions = writePermissions.map { Permissions[$0]! }
+            writeType = Set(permissions)
         }
 
         if readType == nil, writeType == nil {
@@ -51,7 +84,6 @@ class UseHealthKit: NSObject {
             return
         }
 
-        let healthStore = HKHealthStore()
         var errorMessage: String?
         healthStore.requestAuthorization(toShare: writeType, read: readType) { _, error in
             if let e = error {
