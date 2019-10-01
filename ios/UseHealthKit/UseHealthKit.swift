@@ -8,34 +8,44 @@ class UseHealthKit: NSObject {
         case noPermissions = "No permissions to access user health data"
     }
 
-    let Permissions: [String: HKSampleType] = [
+    let Permissions: [String: HKObjectType] = [
 //        // HKCategoryTypeIdentifier
 //        // Vital Signs
-//        "lowHeartRateEvent": HKObjectType.categoryType(forIdentifier: .lowHeartRateEvent)!,
-//        "highHeartRateEvent": HKObjectType.categoryType(forIdentifier: .highHeartRateEvent)!,
-//        "irregularHeartRhythmEvent": HKObjectType.categoryType(forIdentifier: .irregularHeartRhythmEvent)!,
+//        "lowHeartRateEvent": HKObjectType.categoryType(forIdentifier: .lowHeartRateEvent)!, // iOS 12.2 or newer
+//        "highHeartRateEvent": HKObjectType.categoryType(forIdentifier: .highHeartRateEvent)!, // iOS 12.2 or newer
+//        "irregularHeartRhythmEvent": HKObjectType.categoryType(forIdentifier: .irregularHeartRhythmEvent)!, // iOS 12.2 or newer
 //        // Reproductive Health
 //        "cervicalMucusQuality": HKObjectType.categoryType(forIdentifier: .cervicalMucusQuality)!,
 //        "menstrualFlow": HKObjectType.categoryType(forIdentifier: .menstrualFlow)!,
 //        "intermenstrualBleeding": HKObjectType.categoryType(forIdentifier: .intermenstrualBleeding)!,
 //        "ovulationTestResult": HKObjectType.categoryType(forIdentifier: .ovulationTestResult)!,
 //        "sexualActivity": HKObjectType.categoryType(forIdentifier: .sexualActivity)!,
-//        // Activity
-//        "biologicalSex": HKObjectType.categoryType(forIdentifier: .appleStandHour)!,
-//        // Mindfullness and Sleep
-//        "biologicalSex": HKObjectType.categoryType(forIdentifier: .mindfulSession)!,
-//        "biologicalSex": HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!,
-//
-//        // HKCharacteristicTypeIdentifier
+        // Activity
+//        "appleStandHour": HKObjectType.categoryType(forIdentifier: .appleStandHour)!,
+        // Mindfullness and Sleep
+//        "mindfulSession": HKObjectType.categoryType(forIdentifier: .mindfulSession)!, // iOS 10.0 or newer
+        "sleepAnalysis": HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!,
+
+        // HKCharacteristicTypeIdentifier
 //        "biologicalSex": HKObjectType.characteristicType(forIdentifier: .biologicalSex)!,
 //        "bloodType": HKObjectType.characteristicType(forIdentifier: .bloodType)!,
 //        "dateOfBirth": HKObjectType.characteristicType(forIdentifier: .dateOfBirth)!,
 //        "fitzpatrickSkinType": HKObjectType.characteristicType(forIdentifier: .fitzpatrickSkinType)!,
-//        "wheelchairUse": HKObjectType.characteristicType(forIdentifier: .wheelchairUse)!,
+        //        "wheelchairUse": HKObjectType.characteristicType(forIdentifier: .wheelchairUse)!, // iOS 10.0 or newer
 
         // HKQuantityTypeIdentifier
-        "stepCount": HKObjectType.quantityType(forIdentifier: .stepCount)!,
         "heartRate": HKObjectType.quantityType(forIdentifier: .heartRate)!,
+        "dietaryWater": HKObjectType.quantityType(forIdentifier: .dietaryWater)!,
+        "bodyMass": HKObjectType.quantityType(forIdentifier: .bodyMass)!,
+        "bodyFatPercentage": HKObjectType.quantityType(forIdentifier: .bodyFatPercentage)!,
+        "restingHeartRate": HKObjectType.quantityType(forIdentifier: .restingHeartRate)!,
+        "activeEnergyBurned": HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
+        "basalEnergyBurned": HKObjectType.quantityType(forIdentifier: .basalEnergyBurned)!,
+        "flightsClimbed": HKObjectType.quantityType(forIdentifier: .flightsClimbed)!,
+        "stepCount": HKObjectType.quantityType(forIdentifier: .stepCount)!,
+        "distanceWalkingRunning": HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!,
+        "dietaryEnergyConsumed": HKObjectType.quantityType(forIdentifier: .dietaryEnergyConsumed)!,
+        "bodyMassIndex": HKObjectType.quantityType(forIdentifier: .bodyMassIndex)!,
     ]
 
     let healthStore: HKHealthStore
@@ -67,13 +77,13 @@ class UseHealthKit: NSObject {
             return
         }
 
-        var readType: Set<HKSampleType>?
+        var readType: Set<HKObjectType>?
         if !readPermissions.isEmpty {
             let permissions = readPermissions.map { Permissions[$0]! }
             readType = Set(permissions)
         }
 
-        var writeType: Set<HKSampleType>?
+        var writeType: Set<HKObjectType>?
         if !writePermissions.isEmpty {
             let permissions = writePermissions.map { Permissions[$0]! }
             writeType = Set(permissions)
@@ -85,7 +95,7 @@ class UseHealthKit: NSObject {
         }
 
         var errorMessage: String?
-        healthStore.requestAuthorization(toShare: writeType, read: readType) { _, error in
+        healthStore.requestAuthorization(toShare: writeType as? Set<HKSampleType>, read: readType) { _, error in
             if let e = error {
                 errorMessage = e.localizedDescription
             }
