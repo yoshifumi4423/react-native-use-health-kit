@@ -106,4 +106,8 @@ class UseHealthKit: NSObject {
         }
         resolve(true)
     }
+
+    @objc static func requiresMainQueueSetup() -> Bool {
+        return false
+    }
 }
