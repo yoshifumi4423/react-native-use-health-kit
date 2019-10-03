@@ -1,11 +1,14 @@
 import HealthKit
 
+/*!
+ @class         UseHealthKit
+ @abstract      This class provides an interface for accessing and storing the user's health data.
+ */
 @objc(UseHealthKit)
 class UseHealthKit: NSObject {
     enum Error: String {
         case error = "Error"
         case notAvailable = "HealthData is not available"
-        case noPermissions = "No permissions to access user health data"
     }
 
     let Permissions: [String: HKObjectType] = [
@@ -48,20 +51,34 @@ class UseHealthKit: NSObject {
         "bodyMassIndex": HKObjectType.quantityType(forIdentifier: .bodyMassIndex)!,
     ]
 
+    
+    /// Keeps instance of HKHealthStore. Will be initialized in initializer.
     let healthStore: HKHealthStore
 
+    
+    /// Initializer.
     override init() {
         self.healthStore = HKHealthStore()
     }
-
+    
+    
+    /// HealthKit is not supported on all iOS devices such as iPad.
+    ///
+    /// - Returns: Returns true if HealthKit is supported on the device; otherwise false.
     func isHealthDataAvailable() -> Bool {
-        if HKHealthStore.isHealthDataAvailable() {
-            return true
+        guard HKHealthStore.isHealthDataAvailable() else {
+            return false
         }
 
-        return false
+        return true
     }
 
+    
+    /// HealthKit is not supported on all iOS devices such as iPad.
+    ///
+    /// - Parameters:
+    ///   - resolve: Return true if HealthKit is supported on the device.
+    ///   - reject: Return false if HealthKit is not supported on the device.
     @objc func isHealthDataAvailable(_ resolve: RCTPromiseResolveBlock, _ reject: RCTPromiseRejectBlock) {
         guard isHealthDataAvailable() else {
             reject(Error.error.rawValue, Error.notAvailable.rawValue, nil)
@@ -70,7 +87,15 @@ class UseHealthKit: NSObject {
 
         resolve(true)
     }
-
+    
+    
+    /// Initialize HKHealthStore with write and read permissions. This method should be called once to prevent unnecessary process.
+    ///
+    /// - Parameters:
+    ///   - readPermissions: Array of string for read permission.
+    ///   - writePermissions: Array of string for write permission.
+    ///   - resolve: Return true if init is succeeded.
+    ///   - reject: Return error message if init is failed.
     @objc func initHealthKit(_ readPermissions: [String]!, _ writePermissions: [String]!, _ resolve: RCTPromiseResolveBlock, _ reject: RCTPromiseRejectBlock) {
         guard isHealthDataAvailable() else {
             reject(Error.error.rawValue, Error.notAvailable.rawValue, nil)
@@ -107,6 +132,11 @@ class UseHealthKit: NSObject {
         resolve(true)
     }
 
+    
+    /// Return true to use this native module in main thread for heavy processing such as rendering UI.
+    /// Return false to use this native module in secondly thread.
+    ///
+    /// - Returns: true for main thread; otherwise false.
     @objc static func requiresMainQueueSetup() -> Bool {
         return false
     }
