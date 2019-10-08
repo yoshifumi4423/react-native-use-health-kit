@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B3E7B58A1CC2AC0600A0062D /* UseHealthKit.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* UseHealthKit.m */; };
 		FE201DC4233CD9E8008730D5 /* UseHealthKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE201DC3233CD9E8008730D5 /* UseHealthKit.swift */; };
+		FEDFC2602344EBDE00973D9D /* QuantityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDFC25F2344EBDE00973D9D /* QuantityType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,6 +29,7 @@
 		B3E7B5891CC2AC0600A0062D /* UseHealthKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UseHealthKit.m; sourceTree = "<group>"; };
 		FE201DC2233CD9E8008730D5 /* UseHealthKit-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UseHealthKit-Bridging-Header.h"; sourceTree = "<group>"; };
 		FE201DC3233CD9E8008730D5 /* UseHealthKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UseHealthKit.swift; sourceTree = "<group>"; };
+		FEDFC25F2344EBDE00973D9D /* QuantityType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuantityType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				FE201DC2233CD9E8008730D5 /* UseHealthKit-Bridging-Header.h */,
 				FE201DC3233CD9E8008730D5 /* UseHealthKit.swift */,
 				B3E7B5891CC2AC0600A0062D /* UseHealthKit.m */,
+				FEDFC25F2344EBDE00973D9D /* QuantityType.swift */,
 			);
 			path = UseHealthKit;
 			sourceTree = "<group>";
@@ -125,6 +128,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FEDFC2602344EBDE00973D9D /* QuantityType.swift in Sources */,
 				FE201DC4233CD9E8008730D5 /* UseHealthKit.swift in Sources */,
 				B3E7B58A1CC2AC0600A0062D /* UseHealthKit.m in Sources */,
 			);
