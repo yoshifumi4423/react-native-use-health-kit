@@ -52,18 +52,22 @@ class UseHealthKit: NSObject {
         "bodyMassIndex": HKObjectType.quantityType(forIdentifier: .bodyMassIndex)!,
     ]
 
-    /// Keeps instance of HKHealthStore. Will be initialized in initializer.
-    let healthStore: HKHealthStore
+    /// Instance of HKHealthStore. Will be initialized in initializer.
+    private let healthStore: HKHealthStore
+
+    /// Instance of QuantityType. Will be initialized in initializer.
+    private let quantityType: QuantityType
 
     /// Initializer.
     override init() {
         healthStore = HKHealthStore()
+        quantityType = QuantityType(healthStore: healthStore)
     }
 
     /// HealthKit is not supported on all iOS devices such as iPad.
     ///
     /// - Returns: Returns true if HealthKit is supported on the device; otherwise false.
-    func isHealthDataAvailable() -> Bool {
+    private func isHealthDataAvailable() -> Bool {
         guard HKHealthStore.isHealthDataAvailable() else {
             return false
         }
@@ -128,23 +132,26 @@ class UseHealthKit: NSObject {
         resolve(true)
     }
 
+    /// Get data of BasalEnergyBurned.
+    ///
+    /// - Parameters:
+    ///   - startDate: start date to get data.
+    ///   - endDate: end date to get data.
+    ///   - resolve: Return true if execution is succeeded.
+    ///   - reject: Return error if execution is failed.
     @objc func getBasalEnergyBurned(_ startDate: Date!, _ endDate: Date!, _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock) {
-        let query: HKQuery = getQueryOfBasalEnergyBurned(startDate, endDate) { (_: HKSampleQuery, results: [HKSample]?, error: Error?) -> Void in
-            if let e = error {
-                reject(UseHealthKitError.error.rawValue, e.localizedDescription, nil)
-                return
+        quantityType.getBasalEnergyBurned(startDate, endDate) { results, error in
+            if let error = error {
+                reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
             }
-
             resolve(results)
         }
-
-        healthStore.execute(query)
     }
 
     /// Return true to use this native module in main thread for heavy processing such as rendering UI.
     /// Return false to use this native module in secondly thread.
     ///
-    /// - Returns: true for main thread; otherwise false.
+    /// - Returns: Return true for main thread; otherwise false.
     @objc static func requiresMainQueueSetup() -> Bool {
         return false
     }
