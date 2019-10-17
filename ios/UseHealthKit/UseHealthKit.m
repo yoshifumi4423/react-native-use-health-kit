@@ -16,4 +16,10 @@ RCT_EXTERN_METHOD(getBasalEnergyBurned
                   : (NSDate *)endDate
                   : (RCTPromiseResolveBlock)resolve
                   : (RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(getBodyMass
+                  : (NSDate *)startDate
+                  : (NSDate *)endDate
+                  : (RCTPromiseResolveBlock)resolve
+                  : (RCTPromiseRejectBlock)reject)
 @end
