@@ -174,6 +174,24 @@ class UseHealthKit: NSObject {
         }
     }
     
+    /// Set array of BodyMass value
+    ///
+    /// - Parameters:
+    ///   - data: This is an array of dictionary which contains startDate, endDate and value.
+    ///   - resolve: Return Bool of success.
+    ///   - reject: Return error message.
+    @objc func setBodyMass(_ data: [[String: Any]], _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock) {
+        quantityType.setBodyMass(data) { success, error in
+            do {
+                if let error = error { throw error }
+                
+                resolve(success)
+            } catch {
+                reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
+            }
+        }
+    }
+    
     /// Return true to use this native module in main thread for heavy processing such as rendering UI.
     /// Return false to use this native module in secondly thread.
     ///

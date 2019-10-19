@@ -22,4 +22,9 @@ RCT_EXTERN_METHOD(getBodyMass
                   : (NSDate *)endDate
                   : (RCTPromiseResolveBlock)resolve
                   : (RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(setBodyMass
+                  : (NSArray *)data
+                  : (RCTPromiseResolveBlock)resolve
+                  : (RCTPromiseRejectBlock)reject)
 @end
