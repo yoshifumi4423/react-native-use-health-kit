@@ -52,4 +52,17 @@ class QuantityType {
         
         self.healthStore.execute(query)
     }
+    
+    /// Set array of BodyMass value.
+    ///
+    /// - Parameters:
+    ///   - data: This is an array of dictionary which contains startDate, endDate and value.
+    ///   - completion: handler when the query completes.
+    func setBodyMass(_: [[String: Any]], _ completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
+        let type = HKObjectType.quantityType(forIdentifier: .bodyMass)!
+        let quantity = HKQuantity(unit: .gramUnit(with: .kilo), doubleValue: 111)
+        let objects = HKQuantitySample(type: type, quantity: quantity, start: Date(), end: Date())
+        
+        self.healthStore.save(objects) { success, error in completion(success, error) }
+    }
 }
