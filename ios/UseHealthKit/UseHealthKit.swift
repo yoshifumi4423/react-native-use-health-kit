@@ -190,7 +190,7 @@ class UseHealthKit: NSObject {
     ///   - data: This is an array of dictionary which contains startDate, endDate and value.
     ///   - resolve: Return Bool of success.
     ///   - reject: Return error message.
-    @objc func setBodyMass(_ data: [[String: An]],
+    @objc func setBodyMass(_ data: [[String: Any]],
                            _ resolve: @escaping RCTPromiseResolveBlock,
                            _ reject: @escaping RCTPromiseRejectBlock) {
         quantityType.setBodyMass(data) { success, error in
