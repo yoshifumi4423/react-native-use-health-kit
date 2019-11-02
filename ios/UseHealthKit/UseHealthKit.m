@@ -12,14 +12,14 @@ RCT_EXTERN_METHOD(initHealthKit
                   : (RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(getBasalEnergyBurned
-                  : (NSDate *)startDate
-                  : (NSDate *)endDate
+                  : (double *)startDate
+                  : (double *)endDate
                   : (RCTPromiseResolveBlock)resolve
                   : (RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(getBodyMass
-                  : (NSDate *)startDate
-                  : (NSDate *)endDate
+                  : (double *)startDate
+                  : (double *)endDate
                   : (RCTPromiseResolveBlock)resolve
                   : (RCTPromiseRejectBlock)reject)
 

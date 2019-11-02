@@ -143,8 +143,8 @@ class UseHealthKit: NSObject {
     ///   - endDate: end date to get data.
     ///   - resolve: Return array of BasalEnergyBurned value.
     ///   - reject: Return error.
-    @objc func getBasalEnergyBurned(_ startDate: Date!,
-                                    _ endDate: Date!,
+    @objc func getBasalEnergyBurned(_ startDate: Double,
+                                    _ endDate: Double,
                                     _ resolve: @escaping RCTPromiseResolveBlock,
                                     _ reject: @escaping RCTPromiseRejectBlock) {
         quantityType.getBasalEnergyBurned(startDate, endDate) { results, error in
@@ -167,8 +167,8 @@ class UseHealthKit: NSObject {
     ///   - endDate: end date to get data.
     ///   - resolve: Return array of BodyMass value.
     ///   - reject: Return error message.
-    @objc func getBodyMass(_ startDate: Date!,
-                           _ endDate: Date!,
+    @objc func getBodyMass(_ startDate: Double,
+                           _ endDate: Double,
                            _ resolve: @escaping RCTPromiseResolveBlock,
                            _ reject: @escaping RCTPromiseRejectBlock) {
         quantityType.getBodyMass(startDate, endDate) { results, error in
@@ -190,7 +190,7 @@ class UseHealthKit: NSObject {
     ///   - data: This is an array of dictionary which contains startDate, endDate and value.
     ///   - resolve: Return Bool of success.
     ///   - reject: Return error message.
-    @objc func setBodyMass(_ data: [[String: Any]],
+    @objc func setBodyMass(_ data: [[String: Double]],
                            _ resolve: @escaping RCTPromiseResolveBlock,
                            _ reject: @escaping RCTPromiseRejectBlock) {
         quantityType.setBodyMass(data) { success, error in
