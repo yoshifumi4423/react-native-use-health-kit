@@ -68,11 +68,11 @@ class UseHealthKit: NSObject {
     ///
     /// - Returns: Returns true if HealthKit is supported on the device; otherwise false.
     private func isHealthDataAvailable() -> Bool {
-        guard HKHealthStore.isHealthDataAvailable() else {
-            return false
+        if HKHealthStore.isHealthDataAvailable() {
+            return true
         }
         
-        return true
+        return false
     }
     
     /// HealthKit is not supported on all iOS devices such as iPad.
@@ -81,7 +81,7 @@ class UseHealthKit: NSObject {
     ///   - resolve: Return true if HealthKit is supported on the device.
     ///   - reject: Return false if HealthKit is not supported on the device.
     @objc func isHealthDataAvailable(_ resolve: RCTPromiseResolveBlock, _ reject: RCTPromiseRejectBlock) {
-        guard isHealthDataAvailable() else {
+        if !isHealthDataAvailable() {
             reject(UseHealthKitError.error.rawValue, UseHealthKitError.notAvailable.rawValue, nil)
             return
         }
@@ -96,8 +96,11 @@ class UseHealthKit: NSObject {
     ///   - writePermissions: Array of string for write permission.
     ///   - resolve: Return true if init is succeeded.
     ///   - reject: Return error message if init is failed.
-    @objc func initHealthKit(_ readPermissions: [String]!, _ writePermissions: [String]!, _ resolve: RCTPromiseResolveBlock, _ reject: RCTPromiseRejectBlock) {
-        guard isHealthDataAvailable() else {
+    @objc func initHealthKit(_ readPermissions: [String]!,
+                             _ writePermissions: [String]!,
+                             _ resolve: @escaping RCTPromiseResolveBlock,
+                             _ reject: @escaping RCTPromiseRejectBlock) {
+        if !isHealthDataAvailable() {
             reject(UseHealthKitError.error.rawValue, UseHealthKitError.notAvailable.rawValue, nil)
             return
         }
@@ -119,17 +122,18 @@ class UseHealthKit: NSObject {
             return
         }
         
-        var errorMessage: String?
-        healthStore.requestAuthorization(toShare: writeType as? Set<HKSampleType>, read: readType) { _, error in
-            if let e = error {
-                errorMessage = e.localizedDescription
+        healthStore.requestAuthorization(toShare: writeType as? Set<HKSampleType>, read: readType) { success, error in
+            if !success {
+                reject(UseHealthKitError.error.rawValue, UseHealthKitError.noPermissions.rawValue, nil)
+                return
             }
+            if let error = error {
+                reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
+                return
+            }
+            
+            resolve(true)
         }
-        if let e = errorMessage {
-            reject(UseHealthKitError.error.rawValue, e, nil)
-            return
-        }
-        resolve(true)
     }
     
     /// Get array of BasalEnergyBurned value.
@@ -139,7 +143,10 @@ class UseHealthKit: NSObject {
     ///   - endDate: end date to get data.
     ///   - resolve: Return array of BasalEnergyBurned value.
     ///   - reject: Return error.
-    @objc func getBasalEnergyBurned(_ startDate: Date!, _ endDate: Date!, _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock) {
+    @objc func getBasalEnergyBurned(_ startDate: Date!,
+                                    _ endDate: Date!,
+                                    _ resolve: @escaping RCTPromiseResolveBlock,
+                                    _ reject: @escaping RCTPromiseRejectBlock) {
         quantityType.getBasalEnergyBurned(startDate, endDate) { results, error in
             do {
                 if let error = error { throw error }
@@ -160,7 +167,10 @@ class UseHealthKit: NSObject {
     ///   - endDate: end date to get data.
     ///   - resolve: Return array of BodyMass value.
     ///   - reject: Return error message.
-    @objc func getBodyMass(_ startDate: Date!, _ endDate: Date!, _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock) {
+    @objc func getBodyMass(_ startDate: Date!,
+                           _ endDate: Date!,
+                           _ resolve: @escaping RCTPromiseResolveBlock,
+                           _ reject: @escaping RCTPromiseRejectBlock) {
         quantityType.getBodyMass(startDate, endDate) { results, error in
             do {
                 if let error = error { throw error }
@@ -180,7 +190,9 @@ class UseHealthKit: NSObject {
     ///   - data: This is an array of dictionary which contains startDate, endDate and value.
     ///   - resolve: Return Bool of success.
     ///   - reject: Return error message.
-    @objc func setBodyMass(_ data: [[String: Any]], _ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock) {
+    @objc func setBodyMass(_ data: [[String: An]],
+                           _ resolve: @escaping RCTPromiseResolveBlock,
+                           _ reject: @escaping RCTPromiseRejectBlock) {
         quantityType.setBodyMass(data) { success, error in
             do {
                 if let error = error { throw error }
