@@ -11,7 +11,7 @@ class UseHealthKit: NSObject {
         case notAvailable = "HealthData is not available"
         case noPermissions = "No permissions to access user health data"
     }
-    
+
     let Permissions: [String: HKObjectType] = [
         //        // HKCategoryTypeIdentifier
         //        // Vital Signs
@@ -29,14 +29,14 @@ class UseHealthKit: NSObject {
         // Mindfullness and Sleep
         //        "mindfulSession": HKObjectType.categoryType(forIdentifier: .mindfulSession)!, // iOS 10.0 or newer
         "sleepAnalysis": HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!,
-        
+
         // HKCharacteristicTypeIdentifier
         //        "biologicalSex": HKObjectType.characteristicType(forIdentifier: .biologicalSex)!,
         //        "bloodType": HKObjectType.characteristicType(forIdentifier: .bloodType)!,
         //        "dateOfBirth": HKObjectType.characteristicType(forIdentifier: .dateOfBirth)!,
         //        "fitzpatrickSkinType": HKObjectType.characteristicType(forIdentifier: .fitzpatrickSkinType)!,
         //        "wheelchairUse": HKObjectType.characteristicType(forIdentifier: .wheelchairUse)!, // iOS 10.0 or newer
-        
+
         // HKQuantityTypeIdentifier
         "heartRate": HKObjectType.quantityType(forIdentifier: .heartRate)!,
         "dietaryWater": HKObjectType.quantityType(forIdentifier: .dietaryWater)!,
@@ -51,19 +51,19 @@ class UseHealthKit: NSObject {
         "dietaryEnergyConsumed": HKObjectType.quantityType(forIdentifier: .dietaryEnergyConsumed)!,
         "bodyMassIndex": HKObjectType.quantityType(forIdentifier: .bodyMassIndex)!,
     ]
-    
+
     /// Instance of HKHealthStore. Will be initialized in initializer.
     private let healthStore: HKHealthStore
-    
+
     /// Instance of QuantityType. Will be initialized in initializer.
     private let quantityType: QuantityType
-    
+
     /// Initializer.
     override init() {
         healthStore = HKHealthStore()
         quantityType = QuantityType(healthStore: healthStore)
     }
-    
+
     /// HealthKit is not supported on all iOS devices such as iPad.
     ///
     /// - Returns: Returns true if HealthKit is supported on the device; otherwise false.
@@ -71,10 +71,10 @@ class UseHealthKit: NSObject {
         if HKHealthStore.isHealthDataAvailable() {
             return true
         }
-        
+
         return false
     }
-    
+
     /// HealthKit is not supported on all iOS devices such as iPad.
     ///
     /// - Parameters:
@@ -85,10 +85,10 @@ class UseHealthKit: NSObject {
             reject(UseHealthKitError.error.rawValue, UseHealthKitError.notAvailable.rawValue, nil)
             return
         }
-        
+
         resolve(true)
     }
-    
+
     /// Initialize HKHealthStore with write and read permissions. This method should be called once to prevent unnecessary process.
     ///
     /// - Parameters:
@@ -104,24 +104,24 @@ class UseHealthKit: NSObject {
             reject(UseHealthKitError.error.rawValue, UseHealthKitError.notAvailable.rawValue, nil)
             return
         }
-        
+
         var readType: Set<HKObjectType>?
         if !readPermissions.isEmpty {
             let permissions = readPermissions.map { Permissions[$0]! }
             readType = Set(permissions)
         }
-        
+
         var writeType: Set<HKObjectType>?
         if !writePermissions.isEmpty {
             let permissions = writePermissions.map { Permissions[$0]! }
             writeType = Set(permissions)
         }
-        
+
         if readType == nil, writeType == nil {
             reject(UseHealthKitError.error.rawValue, UseHealthKitError.noPermissions.rawValue, nil)
             return
         }
-        
+
         healthStore.requestAuthorization(toShare: writeType as? Set<HKSampleType>, read: readType) { success, error in
             if !success {
                 reject(UseHealthKitError.error.rawValue, UseHealthKitError.noPermissions.rawValue, nil)
@@ -131,11 +131,11 @@ class UseHealthKit: NSObject {
                 reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
                 return
             }
-            
+
             resolve(true)
         }
     }
-    
+
     /// Get array of BasalEnergyBurned value.
     ///
     /// - Parameters:
@@ -150,7 +150,7 @@ class UseHealthKit: NSObject {
         quantityType.getBasalEnergyBurned(startDate, endDate) { results, error in
             do {
                 if let error = error { throw error }
-                
+
                 let samples = results as! [HKQuantitySample]
                 let basalEnergyBurnedValues = samples.map { $0.quantity.doubleValue(for: .kilocalorie()) }
                 resolve(["basalEnergyBurned", basalEnergyBurnedValues])
@@ -159,7 +159,7 @@ class UseHealthKit: NSObject {
             }
         }
     }
-    
+
     /// Get array of BodyMass value.
     ///
     /// - Parameters:
@@ -174,7 +174,7 @@ class UseHealthKit: NSObject {
         quantityType.getBodyMass(startDate, endDate) { results, error in
             do {
                 if let error = error { throw error }
-                
+
                 let samples = results as! [HKQuantitySample]
                 let bodyMassValues = samples.map { $0.quantity.doubleValue(for: .gramUnit(with: .kilo)) }
                 resolve(["bodyMass", bodyMassValues])
@@ -183,7 +183,7 @@ class UseHealthKit: NSObject {
             }
         }
     }
-    
+
     /// Set array of BodyMass value
     ///
     /// - Parameters:
@@ -196,14 +196,58 @@ class UseHealthKit: NSObject {
         quantityType.setBodyMass(data) { success, error in
             do {
                 if let error = error { throw error }
-                
+
                 resolve(success)
             } catch {
                 reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
             }
         }
     }
-    
+
+    /// Get array of RestingHeartRate value.
+    ///
+    /// - Parameters:
+    ///   - startDate: start date to get data.
+    ///   - endDate: end date to get data.
+    ///   - resolve: Return array of RestingHeartRate value.
+    ///   - reject: Return error message.
+    @objc func getRestingHeartRate(_ startDate: Double,
+                                   _ endDate: Double,
+                                   _ resolve: @escaping RCTPromiseResolveBlock,
+                                   _ reject: @escaping RCTPromiseRejectBlock) {
+        quantityType.getRestingHeartRate(startDate, endDate) { results, error in
+            do {
+                if let error = error { throw error }
+
+                let samples = results as! [HKQuantitySample]
+                let restingHeartRateValues = samples.map { $0.quantity.doubleValue(for: HKUnit.count().unitDivided(by: HKUnit.minute())) }
+                resolve(["restingHeartRate", restingHeartRateValues])
+            } catch {
+                reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
+            }
+        }
+    }
+
+    /// Set array of RestingHeartRate value
+    ///
+    /// - Parameters:
+    ///   - data: This is an array of dictionary which contains startDate, endDate and value.
+    ///   - resolve: Return Bool of success.
+    ///   - reject: Return error message.
+    @objc func setRestingHeartRate(_ data: [[String: Double]],
+                                   _ resolve: @escaping RCTPromiseResolveBlock,
+                                   _ reject: @escaping RCTPromiseRejectBlock) {
+        quantityType.setRestingHeartRate(data) { success, error in
+            do {
+                if let error = error { throw error }
+
+                resolve(success)
+            } catch {
+                reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
+            }
+        }
+    }
+
     /// Return true to use this native module in main thread for heavy processing such as rendering UI.
     /// Return false to use this native module in secondly thread.
     ///
