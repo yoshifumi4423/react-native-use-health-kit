@@ -42,7 +42,8 @@ class Query {
                                                 _ endDate: Double,
                                                 _ predicate: NSPredicate? = nil,
                                                 _ anchorDate: Date? = nil,
-                                                _ interval: DateComponents? = nil) -> HKStatisticsCollectionQuery {
+                                                _ interval: DateComponents? = nil,
+                                                _ completion: @escaping (_ query: HKStatisticsCollectionQuery, _ result: HKStatisticsCollection?, _ error: Error?) -> Void) -> HKStatisticsCollectionQuery {
         let _predicate = HKQuery.predicateForSamples(withStart: Date(timeIntervalSince1970: startDate),
                                                      end: Date(timeIntervalSince1970: endDate),
                                                      options: [.strictStartDate, .strictEndDate])
@@ -55,10 +56,13 @@ class Query {
         var _interval = DateComponents()
         _interval.day = 1
 
-        return HKStatisticsCollectionQuery(quantityType: type,
-                                           quantitySamplePredicate: (predicate != nil) ? predicate! : _predicate,
-                                           options: options,
-                                           anchorDate: (anchorDate != nil) ? anchorDate! : _anchorDate,
-                                           intervalComponents: (interval != nil) ? interval! : _interval)
+        let query = HKStatisticsCollectionQuery(quantityType: type,
+                                                quantitySamplePredicate: (predicate != nil) ? predicate! : _predicate,
+                                                options: options,
+                                                anchorDate: (anchorDate != nil) ? anchorDate! : _anchorDate,
+                                                intervalComponents: (interval != nil) ? interval! : _interval)
+        query.initialResultsHandler = { query, result, error in completion(query, result, error) }
+
+        return query
     }
 }

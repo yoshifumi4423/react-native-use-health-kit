@@ -48,8 +48,9 @@ class QuantityType {
         let type = HKQuantityType.quantityType(forIdentifier: .bodyMass)!
         let options: HKStatisticsOptions = [.discreteAverage]
 
-        let query = Query.makeHKStatisticsCollectionQuery(type, options, startDate, endDate)
-        query.initialResultsHandler = completion
+        let query = Query.makeHKStatisticsCollectionQuery(type, options, startDate, endDate) {
+            query, result, error in completion(query, result, error)
+        }
 
         healthStore.execute(query)
     }
