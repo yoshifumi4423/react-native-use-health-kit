@@ -171,12 +171,20 @@ class UseHealthKit: NSObject {
                            _ endDate: Double,
                            _ resolve: @escaping RCTPromiseResolveBlock,
                            _ reject: @escaping RCTPromiseRejectBlock) {
-        quantityType.getBodyMass(startDate, endDate) { results, error in
+        quantityType.getBodyMass(startDate, endDate) { _, result, error in
             do {
                 if let error = error { throw error }
 
-                let samples = results as! [HKQuantitySample]
-                let bodyMassValues = samples.map { $0.quantity.doubleValue(for: .gramUnit(with: .kilo)) }
+                var bodyMassValues: [[String: Double]] = []
+                result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
+                                            to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
+                    if let quantity = statistic.averageQuantity() {
+                        let date = String(Int(statistic.startDate.timeIntervalSince1970))
+                        let value = quantity.doubleValue(for: .gramUnit(with: .kilo))
+                        bodyMassValues.append([date: value])
+                    }
+                }
+
                 resolve(["bodyMass", bodyMassValues])
             } catch {
                 reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
