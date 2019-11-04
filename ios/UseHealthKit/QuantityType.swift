@@ -1,3 +1,4 @@
+import Foundation
 import HealthKit
 
 /// QuantityType
@@ -51,27 +52,9 @@ class QuantityType {
                      _ endDate: Double,
                      _ completion: @escaping (_ query: HKStatisticsCollectionQuery, _ result: HKStatisticsCollection?, _ error: Error?) -> Void) {
         let type = HKQuantityType.quantityType(forIdentifier: .bodyMass)!
-
-        let predicate = HKQuery.predicateForSamples(withStart: Date(timeIntervalSince1970: startDate),
-                                                    end: Date(timeIntervalSince1970: endDate),
-                                                    options: [.strictStartDate, .strictEndDate])
-
         let options: HKStatisticsOptions = [.discreteAverage]
 
-        let from = Date(timeIntervalSince1970: startDate)
-        var anchorDateComponent = Calendar.current.dateComponents([.year, .month, .day], from: from)
-        anchorDateComponent.hour = 0
-        let anchorDate = Calendar.current.date(from: anchorDateComponent)!
-
-        var interval = DateComponents()
-        interval.day = 1
-
-        let query = HKStatisticsCollectionQuery(quantityType: type,
-                                                quantitySamplePredicate: predicate,
-                                                options: options,
-                                                anchorDate: anchorDate,
-                                                intervalComponents: interval)
-
+        let query = Query.makeHKStatisticsCollectionQuery(type, options, startDate, endDate)
         query.initialResultsHandler = completion
 
         healthStore.execute(query)
