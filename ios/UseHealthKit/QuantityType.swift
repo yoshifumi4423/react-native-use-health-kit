@@ -1,3 +1,4 @@
+import Foundation
 import HealthKit
 
 /// QuantityType
@@ -27,16 +28,13 @@ class QuantityType {
     ///   - completion: handler when the query completes.
     func getBasalEnergyBurned(_ startDate: Double,
                               _ endDate: Double,
-                              _ completion: @escaping (_ results: [HKSample]?, _ error: Error?) -> Void) {
+                              _ completion: @escaping (_ query: HKStatisticsCollectionQuery, _ result: HKStatisticsCollection?, _ error: Error?) -> Void) {
         let type = HKQuantityType.quantityType(forIdentifier: .basalEnergyBurned)!
-        let predicate = HKQuery.predicateForSamples(withStart: Date(timeIntervalSince1970: startDate),
-                                                    end: Date(timeIntervalSince1970: endDate),
-                                                    options: [.strictStartDate, .strictEndDate])
-        let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: true)
-        let query = HKSampleQuery(sampleType: type,
-                                  predicate: predicate,
-                                  limit: HKObjectQueryNoLimit,
-                                  sortDescriptors: [sortDescriptor]) { _, results, error in completion(results, error) }
+        let options: HKStatisticsOptions = [.cumulativeSum]
+
+        let query = Query.makeHKStatisticsCollectionQuery(type, options, startDate, endDate) {
+            query, result, error in completion(query, result, error)
+        }
 
         healthStore.execute(query)
     }
@@ -49,16 +47,13 @@ class QuantityType {
     ///   - completion: handler when the query completes.
     func getBodyMass(_ startDate: Double,
                      _ endDate: Double,
-                     _ completion: @escaping (_ results: [HKSample]?, _ error: Error?) -> Void) {
+                     _ completion: @escaping (_ query: HKStatisticsCollectionQuery, _ result: HKStatisticsCollection?, _ error: Error?) -> Void) {
         let type = HKQuantityType.quantityType(forIdentifier: .bodyMass)!
-        let predicate = HKQuery.predicateForSamples(withStart: Date(timeIntervalSince1970: startDate),
-                                                    end: Date(timeIntervalSince1970: endDate),
-                                                    options: [.strictStartDate, .strictEndDate])
-        let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: true)
-        let query = HKSampleQuery(sampleType: type,
-                                  predicate: predicate,
-                                  limit: HKObjectQueryNoLimit,
-                                  sortDescriptors: [sortDescriptor]) { _, results, error in completion(results, error) }
+        let options: HKStatisticsOptions = [.discreteAverage]
+
+        let query = Query.makeHKStatisticsCollectionQuery(type, options, startDate, endDate) {
+            query, result, error in completion(query, result, error)
+        }
 
         healthStore.execute(query)
     }
@@ -87,16 +82,13 @@ class QuantityType {
     ///   - completion: handler when the query completes.
     func getRestingHeartRate(_ startDate: Double,
                              _ endDate: Double,
-                             _ completion: @escaping (_ results: [HKSample]?, _ error: Error?) -> Void) {
+                             _ completion: @escaping (_ query: HKStatisticsCollectionQuery, _ result: HKStatisticsCollection?, _ error: Error?) -> Void) {
         let type = HKQuantityType.quantityType(forIdentifier: .restingHeartRate)!
-        let predicate = HKQuery.predicateForSamples(withStart: Date(timeIntervalSince1970: startDate),
-                                                    end: Date(timeIntervalSince1970: endDate),
-                                                    options: [.strictStartDate, .strictEndDate])
-        let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: true)
-        let query = HKSampleQuery(sampleType: type,
-                                  predicate: predicate,
-                                  limit: HKObjectQueryNoLimit,
-                                  sortDescriptors: [sortDescriptor]) { _, results, error in completion(results, error) }
+        let options: HKStatisticsOptions = [.discreteAverage]
+
+        let query = Query.makeHKStatisticsCollectionQuery(type, options, startDate, endDate) {
+            query, result, error in completion(query, result, error)
+        }
 
         healthStore.execute(query)
     }
