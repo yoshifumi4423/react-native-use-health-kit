@@ -2,9 +2,33 @@ import Foundation
 import HealthKit
 
 class Query {
-    /// Get sample data of BodyMass.
+    /// Get HKSampleQuery.
+    ///
     /// - Parameters:
-    ///   - type: type to get data
+    ///   - type: type to get data.
+    ///   - startDate: start date to get data.
+    ///   - endDate: end date to get data.
+    ///   - completion: handler when the query completes.
+    static func makeHKSampleQuery(_ type: HKQuantityType,
+                                  _ startDate: Double,
+                                  _ endDate: Double,
+                                  _ completion: @escaping (_ query: HKSampleQuery, _ results: [HKSample]?, _ error: Error?) -> Void) -> HKSampleQuery {
+        let predicate = HKQuery.predicateForSamples(withStart: Date(timeIntervalSince1970: startDate),
+                                                    end: Date(timeIntervalSince1970: endDate),
+                                                    options: [.strictStartDate, .strictEndDate])
+        let limit = HKObjectQueryNoLimit
+        let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: true)
+        let query = HKSampleQuery(sampleType: type,
+                                  predicate: predicate,
+                                  limit: limit,
+                                  sortDescriptors: [sortDescriptor]) { query, results, error in completion(query, results, error) }
+
+        return query
+    }
+
+    /// Get HKStatisticsCollectionQuery.
+    /// - Parameters:
+    ///   - type: type to get data.
     ///   - options: <#options description#>
     ///   - startDate: start date to get data.
     ///   - endDate: end date to get data.

@@ -30,14 +30,8 @@ class QuantityType {
                               _ endDate: Double,
                               _ completion: @escaping (_ results: [HKSample]?, _ error: Error?) -> Void) {
         let type = HKQuantityType.quantityType(forIdentifier: .basalEnergyBurned)!
-        let predicate = HKQuery.predicateForSamples(withStart: Date(timeIntervalSince1970: startDate),
-                                                    end: Date(timeIntervalSince1970: endDate),
-                                                    options: [.strictStartDate, .strictEndDate])
-        let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: true)
-        let query = HKSampleQuery(sampleType: type,
-                                  predicate: predicate,
-                                  limit: HKObjectQueryNoLimit,
-                                  sortDescriptors: [sortDescriptor]) { _, results, error in completion(results, error) }
+
+        let query = Query.makeHKSampleQuery(type, startDate, endDate) { _, results, error in completion(results, error) }
 
         healthStore.execute(query)
     }
@@ -86,14 +80,8 @@ class QuantityType {
                              _ endDate: Double,
                              _ completion: @escaping (_ results: [HKSample]?, _ error: Error?) -> Void) {
         let type = HKQuantityType.quantityType(forIdentifier: .restingHeartRate)!
-        let predicate = HKQuery.predicateForSamples(withStart: Date(timeIntervalSince1970: startDate),
-                                                    end: Date(timeIntervalSince1970: endDate),
-                                                    options: [.strictStartDate, .strictEndDate])
-        let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: true)
-        let query = HKSampleQuery(sampleType: type,
-                                  predicate: predicate,
-                                  limit: HKObjectQueryNoLimit,
-                                  sortDescriptors: [sortDescriptor]) { _, results, error in completion(results, error) }
+
+        let query = Query.makeHKSampleQuery(type, startDate, endDate) { _, results, error in completion(results, error) }
 
         healthStore.execute(query)
     }
