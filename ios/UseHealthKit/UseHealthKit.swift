@@ -147,13 +147,21 @@ class UseHealthKit: NSObject {
                                     _ endDate: Double,
                                     _ resolve: @escaping RCTPromiseResolveBlock,
                                     _ reject: @escaping RCTPromiseRejectBlock) {
-        quantityType.getBasalEnergyBurned(startDate, endDate) { results, error in
+        quantityType.getBasalEnergyBurned(startDate, endDate) { _, result, error in
             do {
                 if let error = error { throw error }
 
-                let samples = results as! [HKQuantitySample]
-                let basalEnergyBurnedValues = samples.map { $0.quantity.doubleValue(for: .kilocalorie()) }
-                resolve(["basalEnergyBurned", basalEnergyBurnedValues])
+                var basalEnergyBurned: [[String: Double]] = []
+                result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
+                                            to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
+                    if let quantity = statistic.sumQuantity() {
+                        let date = String(Int(statistic.startDate.timeIntervalSince1970))
+                        let value = quantity.doubleValue(for: .kilocalorie())
+                        basalEnergyBurned.append([date: value])
+                    }
+                }
+
+                resolve(["basalEnergyBurned", basalEnergyBurned])
             } catch {
                 reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
             }
@@ -223,12 +231,20 @@ class UseHealthKit: NSObject {
                                    _ endDate: Double,
                                    _ resolve: @escaping RCTPromiseResolveBlock,
                                    _ reject: @escaping RCTPromiseRejectBlock) {
-        quantityType.getRestingHeartRate(startDate, endDate) { results, error in
+        quantityType.getRestingHeartRate(startDate, endDate) { _, result, error in
             do {
                 if let error = error { throw error }
 
-                let samples = results as! [HKQuantitySample]
-                let restingHeartRateValues = samples.map { $0.quantity.doubleValue(for: HKUnit.count().unitDivided(by: HKUnit.minute())) }
+                var restingHeartRateValues: [[String: Double]] = []
+                result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
+                                            to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
+                    if let quantity = statistic.averageQuantity() {
+                        let date = String(Int(statistic.startDate.timeIntervalSince1970))
+                        let value = quantity.doubleValue(for: HKUnit.count().unitDivided(by: HKUnit.minute()))
+                        restingHeartRateValues.append([date: value])
+                    }
+                }
+
                 resolve(["restingHeartRate", restingHeartRateValues])
             } catch {
                 reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)

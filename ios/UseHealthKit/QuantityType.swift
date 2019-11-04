@@ -28,10 +28,13 @@ class QuantityType {
     ///   - completion: handler when the query completes.
     func getBasalEnergyBurned(_ startDate: Double,
                               _ endDate: Double,
-                              _ completion: @escaping (_ results: [HKSample]?, _ error: Error?) -> Void) {
+                              _ completion: @escaping (_ query: HKStatisticsCollectionQuery, _ result: HKStatisticsCollection?, _ error: Error?) -> Void) {
         let type = HKQuantityType.quantityType(forIdentifier: .basalEnergyBurned)!
+        let options: HKStatisticsOptions = [.cumulativeSum]
 
-        let query = Query.makeHKSampleQuery(type, startDate, endDate) { _, results, error in completion(results, error) }
+        let query = Query.makeHKStatisticsCollectionQuery(type, options, startDate, endDate) {
+            query, result, error in completion(query, result, error)
+        }
 
         healthStore.execute(query)
     }
@@ -79,10 +82,13 @@ class QuantityType {
     ///   - completion: handler when the query completes.
     func getRestingHeartRate(_ startDate: Double,
                              _ endDate: Double,
-                             _ completion: @escaping (_ results: [HKSample]?, _ error: Error?) -> Void) {
+                             _ completion: @escaping (_ query: HKStatisticsCollectionQuery, _ result: HKStatisticsCollection?, _ error: Error?) -> Void) {
         let type = HKQuantityType.quantityType(forIdentifier: .restingHeartRate)!
+        let options: HKStatisticsOptions = [.discreteAverage]
 
-        let query = Query.makeHKSampleQuery(type, startDate, endDate) { _, results, error in completion(results, error) }
+        let query = Query.makeHKStatisticsCollectionQuery(type, options, startDate, endDate) {
+            query, result, error in completion(query, result, error)
+        }
 
         healthStore.execute(query)
     }
