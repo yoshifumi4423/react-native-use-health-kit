@@ -28,6 +28,17 @@ RCT_EXTERN_METHOD(setBodyMass
                   : (RCTPromiseResolveBlock)resolve
                   : (RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(getBodyFatPercentage
+                  : (double *)startDate
+                  : (double *)endDate
+                  : (RCTPromiseResolveBlock)resolve
+                  : (RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(setBodyFatPercentage
+                  : (NSArray *)data
+                  : (RCTPromiseResolveBlock)resolve
+                  : (RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(getRestingHeartRate
                   : (double *)startDate
                   : (double *)endDate

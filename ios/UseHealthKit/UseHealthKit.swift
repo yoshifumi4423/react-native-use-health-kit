@@ -220,6 +220,58 @@ class UseHealthKit: NSObject {
         }
     }
 
+    /// Get array of BodyFatPercentage value.
+    ///
+    /// - Parameters:
+    ///   - startDate: start date to get data.
+    ///   - endDate: end date to get data.
+    ///   - resolve: Return array of BodyFatPercentage value.
+    ///   - reject: Return error message.
+    @objc func getBodyFatPercentage(_ startDate: Double,
+                                    _ endDate: Double,
+                                    _ resolve: @escaping RCTPromiseResolveBlock,
+                                    _ reject: @escaping RCTPromiseRejectBlock) {
+        quantityType.getBodyFatPercentage(startDate, endDate) { _, result, error in
+            do {
+                if let error = error { throw error }
+
+                var bodyFatPercentageValues: [[String: Double]] = []
+                result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
+                                            to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
+                    if let quantity = statistic.averageQuantity() {
+                        let date = String(Int(statistic.startDate.timeIntervalSince1970))
+                        let value = quantity.doubleValue(for: .percent())
+                        bodyFatPercentageValues.append([date: value])
+                    }
+                }
+
+                resolve(["bodyFatPercentage", bodyFatPercentageValues])
+            } catch {
+                reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
+            }
+        }
+    }
+
+    /// Set array of BodyFatPercentage value
+    ///
+    /// - Parameters:
+    ///   - data: This is an array of dictionary which contains startDate, endDate and value.
+    ///   - resolve: Return Bool of success.
+    ///   - reject: Return error message.
+    @objc func setBodyFatPercentage(_ data: [[String: Double]],
+                                    _ resolve: @escaping RCTPromiseResolveBlock,
+                                    _ reject: @escaping RCTPromiseRejectBlock) {
+        quantityType.setBodyFatPercentage(data) { success, error in
+            do {
+                if let error = error { throw error }
+
+                resolve(success)
+            } catch {
+                reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
+            }
+        }
+    }
+
     /// Get array of RestingHeartRate value.
     ///
     /// - Parameters:
