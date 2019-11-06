@@ -11,6 +11,17 @@ RCT_EXTERN_METHOD(initHealthKit
                   : (RCTPromiseResolveBlock)resolve
                   : (RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(getDietaryWater
+                  : (double *)startDate
+                  : (double *)endDate
+                  : (RCTPromiseResolveBlock)resolve
+                  : (RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(setDietaryWater
+                  : (NSArray *)data
+                  : (RCTPromiseResolveBlock)resolve
+                  : (RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(getBasalEnergyBurned
                   : (double *)startDate
                   : (double *)endDate
