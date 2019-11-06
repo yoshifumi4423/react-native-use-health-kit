@@ -71,4 +71,15 @@ RCT_EXTERN_METHOD(setFlightsClimbed
                   : (NSArray *)data
                   : (RCTPromiseResolveBlock)resolve
                   : (RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(getStepCount
+                  : (double *)startDate
+                  : (double *)endDate
+                  : (RCTPromiseResolveBlock)resolve
+                  : (RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(setStepCount
+                  : (NSArray *)data
+                  : (RCTPromiseResolveBlock)resolve
+                  : (RCTPromiseRejectBlock)reject)
 @end
