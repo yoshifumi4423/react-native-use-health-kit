@@ -249,4 +249,39 @@ class QuantityType {
 
         healthStore.save(objects) { success, error in completion(success, error) }
     }
+
+    /// Get sample data of DistanceWalkingRunning.
+    ///
+    /// - Parameters:
+    ///   - startDate: start date to get data.
+    ///   - endDate: end date to get data.
+    ///   - completion: handler when the query completes.
+    func getDistanceWalkingRunning(_ startDate: Double,
+                                   _ endDate: Double,
+                                   _ completion: @escaping (_ query: HKStatisticsCollectionQuery, _ result: HKStatisticsCollection?, _ error: Error?) -> Void) {
+        let type = HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)!
+        let options: HKStatisticsOptions = [.cumulativeSum]
+
+        let query = Query.makeHKStatisticsCollectionQuery(type, options, startDate, endDate) {
+            query, result, error in completion(query, result, error)
+        }
+
+        healthStore.execute(query)
+    }
+
+    /// Set array of DistanceWalkingRunning value.
+    ///
+    /// - Parameters:
+    ///   - data: This is an array of dictionary which contains startDate, endDate and value.
+    ///   - completion: handler when the query completes.
+    func setDistanceWalkingRunning(_ DistanceWalkingRunningData: [[String: Double]],
+                                   _ completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
+        let type = HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!
+        let objects = DistanceWalkingRunningData.map { HKQuantitySample(type: type,
+                                                                        quantity: HKQuantity(unit: .meter(), doubleValue: $0["value"]!),
+                                                                        start: Date(timeIntervalSince1970: $0["startDate"]!),
+                                                                        end: Date(timeIntervalSince1970: $0["endDate"]!)) }
+
+        healthStore.save(objects) { success, error in completion(success, error) }
+    }
 }
