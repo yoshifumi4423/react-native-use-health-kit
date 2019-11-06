@@ -376,6 +376,58 @@ class UseHealthKit: NSObject {
         }
     }
 
+    /// Get array of FlightsClimbed value.
+    ///
+    /// - Parameters:
+    ///   - startDate: start date to get data.
+    ///   - endDate: end date to get data.
+    ///   - resolve: Return array of FlightsClimbed value.
+    ///   - reject: Return error message.
+    @objc func getFlightsClimbed(_ startDate: Double,
+                                 _ endDate: Double,
+                                 _ resolve: @escaping RCTPromiseResolveBlock,
+                                 _ reject: @escaping RCTPromiseRejectBlock) {
+        quantityType.getFlightsClimbed(startDate, endDate) { _, result, error in
+            do {
+                if let error = error { throw error }
+
+                var flightsClimbedValues: [[String: Double]] = []
+                result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
+                                            to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
+                    if let quantity = statistic.sumQuantity() {
+                        let date = String(Int(statistic.startDate.timeIntervalSince1970))
+                        let value = quantity.doubleValue(for: .meter())
+                        flightsClimbedValues.append([date: value])
+                    }
+                }
+
+                resolve(["flightsClimbed", flightsClimbedValues])
+            } catch {
+                reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
+            }
+        }
+    }
+
+    /// Set array of FlightsClimbed value
+    ///
+    /// - Parameters:
+    ///   - data: This is an array of dictionary which contains startDate, endDate and value.
+    ///   - resolve: Return Bool of success.
+    ///   - reject: Return error message.
+    @objc func setFlightsClimbed(_ data: [[String: Double]],
+                                 _ resolve: @escaping RCTPromiseResolveBlock,
+                                 _ reject: @escaping RCTPromiseRejectBlock) {
+        quantityType.setFlightsClimbed(data) { success, error in
+            do {
+                if let error = error { throw error }
+
+                resolve(success)
+            } catch {
+                reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
+            }
+        }
+    }
+
     /// Return true to use this native module in main thread for heavy processing such as rendering UI.
     /// Return false to use this native module in secondly thread.
     ///
