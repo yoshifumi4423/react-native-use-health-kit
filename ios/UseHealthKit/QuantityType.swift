@@ -39,6 +39,41 @@ class QuantityType {
         healthStore.execute(query)
     }
 
+    /// Get sample data of DietaryWater.
+    ///
+    /// - Parameters:
+    ///   - startDate: start date to get data.
+    ///   - endDate: end date to get data.
+    ///   - completion: handler when the query completes.
+    func getDietaryWater(_ startDate: Double,
+                         _ endDate: Double,
+                         _ completion: @escaping (_ query: HKStatisticsCollectionQuery, _ result: HKStatisticsCollection?, _ error: Error?) -> Void) {
+        let type = HKQuantityType.quantityType(forIdentifier: .dietaryWater)!
+        let options: HKStatisticsOptions = [.cumulativeSum]
+
+        let query = Query.makeHKStatisticsCollectionQuery(type, options, startDate, endDate) {
+            query, result, error in completion(query, result, error)
+        }
+
+        healthStore.execute(query)
+    }
+
+    /// Set array of DietaryWater value.
+    ///
+    /// - Parameters:
+    ///   - data: This is an array of dictionary which contains startDate, endDate and value.
+    ///   - completion: handler when the query completes.
+    func setDietaryWater(_ DietaryWaterData: [[String: Double]],
+                         _ completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
+        let type = HKObjectType.quantityType(forIdentifier: .dietaryWater)!
+        let objects = DietaryWaterData.map { HKQuantitySample(type: type,
+                                                              quantity: HKQuantity(unit: .liter(), doubleValue: $0["value"]!),
+                                                              start: Date(timeIntervalSince1970: $0["startDate"]!),
+                                                              end: Date(timeIntervalSince1970: $0["endDate"]!)) }
+
+        healthStore.save(objects) { success, error in completion(success, error) }
+    }
+
     /// Get sample data of BodyMass.
     ///
     /// - Parameters:
