@@ -136,38 +136,6 @@ class UseHealthKit: NSObject {
         }
     }
 
-    /// Get array of BasalEnergyBurned value.
-    ///
-    /// - Parameters:
-    ///   - startDate: start date to get data.
-    ///   - endDate: end date to get data.
-    ///   - resolve: Return array of BasalEnergyBurned value.
-    ///   - reject: Return error.
-    @objc func getBasalEnergyBurned(_ startDate: Double,
-                                    _ endDate: Double,
-                                    _ resolve: @escaping RCTPromiseResolveBlock,
-                                    _ reject: @escaping RCTPromiseRejectBlock) {
-        quantityType.getBasalEnergyBurned(startDate, endDate) { _, result, error in
-            do {
-                if let error = error { throw error }
-
-                var basalEnergyBurned: [[String: Double]] = []
-                result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
-                                            to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
-                    if let quantity = statistic.sumQuantity() {
-                        let date = String(Int(statistic.startDate.timeIntervalSince1970))
-                        let value = quantity.doubleValue(for: .kilocalorie())
-                        basalEnergyBurned.append([date: value])
-                    }
-                }
-
-                resolve(["basalEnergyBurned", basalEnergyBurned])
-            } catch {
-                reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
-            }
-        }
-    }
-
     /// Get array of DietaryWater value.
     ///
     /// - Parameters:
@@ -418,6 +386,58 @@ class UseHealthKit: NSObject {
                                      _ resolve: @escaping RCTPromiseResolveBlock,
                                      _ reject: @escaping RCTPromiseRejectBlock) {
         quantityType.setActiveEnergyBurned(data) { success, error in
+            do {
+                if let error = error { throw error }
+
+                resolve(success)
+            } catch {
+                reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
+            }
+        }
+    }
+
+    /// Get array of BasalEnergyBurned value.
+    ///
+    /// - Parameters:
+    ///   - startDate: start date to get data.
+    ///   - endDate: end date to get data.
+    ///   - resolve: Return array of BasalEnergyBurned value.
+    ///   - reject: Return error.
+    @objc func getBasalEnergyBurned(_ startDate: Double,
+                                    _ endDate: Double,
+                                    _ resolve: @escaping RCTPromiseResolveBlock,
+                                    _ reject: @escaping RCTPromiseRejectBlock) {
+        quantityType.getBasalEnergyBurned(startDate, endDate) { _, result, error in
+            do {
+                if let error = error { throw error }
+
+                var basalEnergyBurned: [[String: Double]] = []
+                result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
+                                            to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
+                    if let quantity = statistic.sumQuantity() {
+                        let date = String(Int(statistic.startDate.timeIntervalSince1970))
+                        let value = quantity.doubleValue(for: .kilocalorie())
+                        basalEnergyBurned.append([date: value])
+                    }
+                }
+
+                resolve(["basalEnergyBurned", basalEnergyBurned])
+            } catch {
+                reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
+            }
+        }
+    }
+
+    /// Set array of BasalEnergyBurned value
+    ///
+    /// - Parameters:
+    ///   - data: This is an array of dictionary which contains startDate, endDate and value.
+    ///   - resolve: Return Bool of success.
+    ///   - reject: Return error message.
+    @objc func setBasalEnergyBurned(_ data: [[String: Double]],
+                                    _ resolve: @escaping RCTPromiseResolveBlock,
+                                    _ reject: @escaping RCTPromiseRejectBlock) {
+        quantityType.setBasalEnergyBurned(data) { success, error in
             do {
                 if let error = error { throw error }
 
