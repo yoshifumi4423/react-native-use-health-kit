@@ -93,4 +93,15 @@ RCT_EXTERN_METHOD(setDistanceWalkingRunning
                   : (NSArray *)data
                   : (RCTPromiseResolveBlock)resolve
                   : (RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(getBodyMassIndex
+                  : (double *)startDate
+                  : (double *)endDate
+                  : (RCTPromiseResolveBlock)resolve
+                  : (RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(setBodyMassIndex
+                  : (NSArray *)data
+                  : (RCTPromiseResolveBlock)resolve
+                  : (RCTPromiseRejectBlock)reject)
 @end
