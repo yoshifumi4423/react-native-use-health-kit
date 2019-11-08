@@ -61,6 +61,17 @@ RCT_EXTERN_METHOD(setRestingHeartRate
                   : (RCTPromiseResolveBlock)resolve
                   : (RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(getActiveEnergyBurned
+                  : (double *)startDate
+                  : (double *)endDate
+                  : (RCTPromiseResolveBlock)resolve
+                  : (RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(setActiveEnergyBurned
+                  : (NSArray *)data
+                  : (RCTPromiseResolveBlock)resolve
+                  : (RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(getFlightsClimbed
                   : (double *)startDate
                   : (double *)endDate
