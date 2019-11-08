@@ -136,38 +136,6 @@ class UseHealthKit: NSObject {
         }
     }
 
-    /// Get array of BasalEnergyBurned value.
-    ///
-    /// - Parameters:
-    ///   - startDate: start date to get data.
-    ///   - endDate: end date to get data.
-    ///   - resolve: Return array of BasalEnergyBurned value.
-    ///   - reject: Return error.
-    @objc func getBasalEnergyBurned(_ startDate: Double,
-                                    _ endDate: Double,
-                                    _ resolve: @escaping RCTPromiseResolveBlock,
-                                    _ reject: @escaping RCTPromiseRejectBlock) {
-        quantityType.getBasalEnergyBurned(startDate, endDate) { _, result, error in
-            do {
-                if let error = error { throw error }
-
-                var basalEnergyBurned: [[String: Double]] = []
-                result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
-                                            to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
-                    if let quantity = statistic.sumQuantity() {
-                        let date = String(Int(statistic.startDate.timeIntervalSince1970))
-                        let value = quantity.doubleValue(for: .kilocalorie())
-                        basalEnergyBurned.append([date: value])
-                    }
-                }
-
-                resolve(["basalEnergyBurned", basalEnergyBurned])
-            } catch {
-                reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
-            }
-        }
-    }
-
     /// Get array of DietaryWater value.
     ///
     /// - Parameters:
@@ -183,17 +151,17 @@ class UseHealthKit: NSObject {
             do {
                 if let error = error { throw error }
 
-                var dietaryWaterValues: [[String: Double]] = []
+                var values: [[String: Double]] = []
                 result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
                                             to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
                     if let quantity = statistic.sumQuantity() {
                         let date = String(Int(statistic.startDate.timeIntervalSince1970))
                         let value = quantity.doubleValue(for: .liter())
-                        dietaryWaterValues.append([date: value])
+                        values.append([date: value])
                     }
                 }
 
-                resolve(["dietaryWater", dietaryWaterValues])
+                resolve(["dietaryWater", values])
             } catch {
                 reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
             }
@@ -235,17 +203,17 @@ class UseHealthKit: NSObject {
             do {
                 if let error = error { throw error }
 
-                var bodyMassValues: [[String: Double]] = []
+                var values: [[String: Double]] = []
                 result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
                                             to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
                     if let quantity = statistic.averageQuantity() {
                         let date = String(Int(statistic.startDate.timeIntervalSince1970))
                         let value = quantity.doubleValue(for: .gramUnit(with: .kilo))
-                        bodyMassValues.append([date: value])
+                        values.append([date: value])
                     }
                 }
 
-                resolve(["bodyMass", bodyMassValues])
+                resolve(["bodyMass", values])
             } catch {
                 reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
             }
@@ -287,17 +255,17 @@ class UseHealthKit: NSObject {
             do {
                 if let error = error { throw error }
 
-                var bodyFatPercentageValues: [[String: Double]] = []
+                var values: [[String: Double]] = []
                 result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
                                             to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
                     if let quantity = statistic.averageQuantity() {
                         let date = String(Int(statistic.startDate.timeIntervalSince1970))
                         let value = quantity.doubleValue(for: .percent())
-                        bodyFatPercentageValues.append([date: value])
+                        values.append([date: value])
                     }
                 }
 
-                resolve(["bodyFatPercentage", bodyFatPercentageValues])
+                resolve(["bodyFatPercentage", values])
             } catch {
                 reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
             }
@@ -339,17 +307,17 @@ class UseHealthKit: NSObject {
             do {
                 if let error = error { throw error }
 
-                var restingHeartRateValues: [[String: Double]] = []
+                var values: [[String: Double]] = []
                 result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
                                             to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
                     if let quantity = statistic.averageQuantity() {
                         let date = String(Int(statistic.startDate.timeIntervalSince1970))
                         let value = quantity.doubleValue(for: HKUnit.count().unitDivided(by: HKUnit.minute()))
-                        restingHeartRateValues.append([date: value])
+                        values.append([date: value])
                     }
                 }
 
-                resolve(["restingHeartRate", restingHeartRateValues])
+                resolve(["restingHeartRate", values])
             } catch {
                 reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
             }
@@ -391,17 +359,17 @@ class UseHealthKit: NSObject {
             do {
                 if let error = error { throw error }
 
-                var activeEnergyBurnedValues: [[String: Double]] = []
+                var values: [[String: Double]] = []
                 result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
                                             to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
                     if let quantity = statistic.sumQuantity() {
                         let date = String(Int(statistic.startDate.timeIntervalSince1970))
                         let value = quantity.doubleValue(for: .kilocalorie())
-                        activeEnergyBurnedValues.append([date: value])
+                        values.append([date: value])
                     }
                 }
 
-                resolve(["activeEnergyBurned", activeEnergyBurnedValues])
+                resolve(["activeEnergyBurned", values])
             } catch {
                 reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
             }
@@ -428,6 +396,58 @@ class UseHealthKit: NSObject {
         }
     }
 
+    /// Get array of BasalEnergyBurned value.
+    ///
+    /// - Parameters:
+    ///   - startDate: start date to get data.
+    ///   - endDate: end date to get data.
+    ///   - resolve: Return array of BasalEnergyBurned value.
+    ///   - reject: Return error.
+    @objc func getBasalEnergyBurned(_ startDate: Double,
+                                    _ endDate: Double,
+                                    _ resolve: @escaping RCTPromiseResolveBlock,
+                                    _ reject: @escaping RCTPromiseRejectBlock) {
+        quantityType.getBasalEnergyBurned(startDate, endDate) { _, result, error in
+            do {
+                if let error = error { throw error }
+
+                var basalEnergyBurned: [[String: Double]] = []
+                result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
+                                            to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
+                    if let quantity = statistic.sumQuantity() {
+                        let date = String(Int(statistic.startDate.timeIntervalSince1970))
+                        let value = quantity.doubleValue(for: .kilocalorie())
+                        basalEnergyBurned.append([date: value])
+                    }
+                }
+
+                resolve(["basalEnergyBurned", basalEnergyBurned])
+            } catch {
+                reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
+            }
+        }
+    }
+
+    /// Set array of BasalEnergyBurned value
+    ///
+    /// - Parameters:
+    ///   - data: This is an array of dictionary which contains startDate, endDate and value.
+    ///   - resolve: Return Bool of success.
+    ///   - reject: Return error message.
+    @objc func setBasalEnergyBurned(_ data: [[String: Double]],
+                                    _ resolve: @escaping RCTPromiseResolveBlock,
+                                    _ reject: @escaping RCTPromiseRejectBlock) {
+        quantityType.setBasalEnergyBurned(data) { success, error in
+            do {
+                if let error = error { throw error }
+
+                resolve(success)
+            } catch {
+                reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
+            }
+        }
+    }
+
     /// Get array of FlightsClimbed value.
     ///
     /// - Parameters:
@@ -443,17 +463,17 @@ class UseHealthKit: NSObject {
             do {
                 if let error = error { throw error }
 
-                var flightsClimbedValues: [[String: Double]] = []
+                var values: [[String: Double]] = []
                 result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
                                             to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
                     if let quantity = statistic.sumQuantity() {
                         let date = String(Int(statistic.startDate.timeIntervalSince1970))
                         let value = quantity.doubleValue(for: .count())
-                        flightsClimbedValues.append([date: value])
+                        values.append([date: value])
                     }
                 }
 
-                resolve(["flightsClimbed", flightsClimbedValues])
+                resolve(["flightsClimbed", values])
             } catch {
                 reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
             }
@@ -495,17 +515,17 @@ class UseHealthKit: NSObject {
             do {
                 if let error = error { throw error }
 
-                var stepCountValues: [[String: Double]] = []
+                var values: [[String: Double]] = []
                 result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
                                             to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
                     if let quantity = statistic.sumQuantity() {
                         let date = String(Int(statistic.startDate.timeIntervalSince1970))
                         let value = quantity.doubleValue(for: .count())
-                        stepCountValues.append([date: value])
+                        values.append([date: value])
                     }
                 }
 
-                resolve(["stepCount", stepCountValues])
+                resolve(["stepCount", values])
             } catch {
                 reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
             }
@@ -547,17 +567,17 @@ class UseHealthKit: NSObject {
             do {
                 if let error = error { throw error }
 
-                var distanceWalkingRunningValues: [[String: Double]] = []
+                var values: [[String: Double]] = []
                 result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
                                             to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
                     if let quantity = statistic.sumQuantity() {
                         let date = String(Int(statistic.startDate.timeIntervalSince1970))
                         let value = quantity.doubleValue(for: .meter())
-                        distanceWalkingRunningValues.append([date: value])
+                        values.append([date: value])
                     }
                 }
 
-                resolve(["distanceWalkingRunning", distanceWalkingRunningValues])
+                resolve(["distanceWalkingRunning", values])
             } catch {
                 reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
             }
@@ -599,17 +619,17 @@ class UseHealthKit: NSObject {
             do {
                 if let error = error { throw error }
 
-                var dietaryEnergyConsumedValues: [[String: Double]] = []
+                var values: [[String: Double]] = []
                 result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
                                             to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
                     if let quantity = statistic.sumQuantity() {
                         let date = String(Int(statistic.startDate.timeIntervalSince1970))
                         let value = quantity.doubleValue(for: .kilocalorie())
-                        dietaryEnergyConsumedValues.append([date: value])
+                        values.append([date: value])
                     }
                 }
 
-                resolve(["dietaryEnergyConsumed", dietaryEnergyConsumedValues])
+                resolve(["dietaryEnergyConsumed", values])
             } catch {
                 reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
             }
@@ -651,17 +671,17 @@ class UseHealthKit: NSObject {
             do {
                 if let error = error { throw error }
 
-                var bodyMassIndexValues: [[String: Double]] = []
+                var values: [[String: Double]] = []
                 result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
                                             to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
                     if let quantity = statistic.averageQuantity() {
                         let date = String(Int(statistic.startDate.timeIntervalSince1970))
                         let value = quantity.doubleValue(for: .count())
-                        bodyMassIndexValues.append([date: value])
+                        values.append([date: value])
                     }
                 }
 
-                resolve(["bodyMassIndex", bodyMassIndexValues])
+                resolve(["bodyMassIndex", values])
             } catch {
                 reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
             }

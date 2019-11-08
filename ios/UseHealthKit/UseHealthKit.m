@@ -22,12 +22,6 @@ RCT_EXTERN_METHOD(setDietaryWater
                   : (RCTPromiseResolveBlock)resolve
                   : (RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(getBasalEnergyBurned
-                  : (double *)startDate
-                  : (double *)endDate
-                  : (RCTPromiseResolveBlock)resolve
-                  : (RCTPromiseRejectBlock)reject)
-
 RCT_EXTERN_METHOD(getBodyMass
                   : (double *)startDate
                   : (double *)endDate
@@ -68,6 +62,17 @@ RCT_EXTERN_METHOD(getActiveEnergyBurned
                   : (RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(setActiveEnergyBurned
+                  : (NSArray *)data
+                  : (RCTPromiseResolveBlock)resolve
+                  : (RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(getBasalEnergyBurned
+                  : (double *)startDate
+                  : (double *)endDate
+                  : (RCTPromiseResolveBlock)resolve
+                  : (RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(setBasalEnergyBurned
                   : (NSArray *)data
                   : (RCTPromiseResolveBlock)resolve
                   : (RCTPromiseRejectBlock)reject)
