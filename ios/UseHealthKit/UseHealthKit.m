@@ -105,6 +105,17 @@ RCT_EXTERN_METHOD(setDistanceWalkingRunning
                   : (RCTPromiseResolveBlock)resolve
                   : (RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(getDietaryEnergyConsumed
+                  : (double *)startDate
+                  : (double *)endDate
+                  : (RCTPromiseResolveBlock)resolve
+                  : (RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(setDietaryEnergyConsumed
+                  : (NSArray *)data
+                  : (RCTPromiseResolveBlock)resolve
+                  : (RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(getBodyMassIndex
                   : (double *)startDate
                   : (double *)endDate
