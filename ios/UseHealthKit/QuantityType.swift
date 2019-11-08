@@ -29,7 +29,7 @@ class QuantityType {
     func getBasalEnergyBurned(_ startDate: Double,
                               _ endDate: Double,
                               _ completion: @escaping (_ query: HKStatisticsCollectionQuery, _ result: HKStatisticsCollection?, _ error: Error?) -> Void) {
-        let type = HKQuantityType.quantityType(forIdentifier: .basalEnergyBurned)!
+        let type = HKObjectType.quantityType(forIdentifier: .basalEnergyBurned)!
         let options: HKStatisticsOptions = [.cumulativeSum]
 
         let query = Query.makeHKStatisticsCollectionQuery(type, options, startDate, endDate) {
@@ -48,7 +48,7 @@ class QuantityType {
     func getDietaryWater(_ startDate: Double,
                          _ endDate: Double,
                          _ completion: @escaping (_ query: HKStatisticsCollectionQuery, _ result: HKStatisticsCollection?, _ error: Error?) -> Void) {
-        let type = HKQuantityType.quantityType(forIdentifier: .dietaryWater)!
+        let type = HKObjectType.quantityType(forIdentifier: .dietaryWater)!
         let options: HKStatisticsOptions = [.cumulativeSum]
 
         let query = Query.makeHKStatisticsCollectionQuery(type, options, startDate, endDate) {
@@ -63,13 +63,14 @@ class QuantityType {
     /// - Parameters:
     ///   - data: This is an array of dictionary which contains startDate, endDate and value.
     ///   - completion: handler when the query completes.
-    func setDietaryWater(_ DietaryWaterData: [[String: Double]],
+    func setDietaryWater(_ data: [[String: Double]],
                          _ completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
         let type = HKObjectType.quantityType(forIdentifier: .dietaryWater)!
-        let objects = DietaryWaterData.map { HKQuantitySample(type: type,
-                                                              quantity: HKQuantity(unit: .liter(), doubleValue: $0["value"]!),
-                                                              start: Date(timeIntervalSince1970: $0["startDate"]!),
-                                                              end: Date(timeIntervalSince1970: $0["endDate"]!)) }
+        let unit = HKUnit.liter()
+        let objects = data.map { HKQuantitySample(type: type,
+                                                  quantity: HKQuantity(unit: unit, doubleValue: $0["value"]!),
+                                                  start: Date(timeIntervalSince1970: $0["startDate"]!),
+                                                  end: Date(timeIntervalSince1970: $0["endDate"]!)) }
 
         healthStore.save(objects) { success, error in completion(success, error) }
     }
@@ -83,7 +84,7 @@ class QuantityType {
     func getBodyMass(_ startDate: Double,
                      _ endDate: Double,
                      _ completion: @escaping (_ query: HKStatisticsCollectionQuery, _ result: HKStatisticsCollection?, _ error: Error?) -> Void) {
-        let type = HKQuantityType.quantityType(forIdentifier: .bodyMass)!
+        let type = HKObjectType.quantityType(forIdentifier: .bodyMass)!
         let options: HKStatisticsOptions = [.discreteAverage]
 
         let query = Query.makeHKStatisticsCollectionQuery(type, options, startDate, endDate) {
@@ -98,13 +99,14 @@ class QuantityType {
     /// - Parameters:
     ///   - data: This is an array of dictionary which contains startDate, endDate and value.
     ///   - completion: handler when the query completes.
-    func setBodyMass(_ bodyMassData: [[String: Double]],
+    func setBodyMass(_ data: [[String: Double]],
                      _ completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
         let type = HKObjectType.quantityType(forIdentifier: .bodyMass)!
-        let objects = bodyMassData.map { HKQuantitySample(type: type,
-                                                          quantity: HKQuantity(unit: .gramUnit(with: .kilo), doubleValue: $0["value"]!),
-                                                          start: Date(timeIntervalSince1970: $0["startDate"]!),
-                                                          end: Date(timeIntervalSince1970: $0["endDate"]!)) }
+        let unit = HKUnit.gramUnit(with: .kilo)
+        let objects = data.map { HKQuantitySample(type: type,
+                                                  quantity: HKQuantity(unit: unit, doubleValue: $0["value"]!),
+                                                  start: Date(timeIntervalSince1970: $0["startDate"]!),
+                                                  end: Date(timeIntervalSince1970: $0["endDate"]!)) }
 
         healthStore.save(objects) { success, error in completion(success, error) }
     }
@@ -118,7 +120,7 @@ class QuantityType {
     func getBodyFatPercentage(_ startDate: Double,
                               _ endDate: Double,
                               _ completion: @escaping (_ query: HKStatisticsCollectionQuery, _ result: HKStatisticsCollection?, _ error: Error?) -> Void) {
-        let type = HKQuantityType.quantityType(forIdentifier: .bodyFatPercentage)!
+        let type = HKObjectType.quantityType(forIdentifier: .bodyFatPercentage)!
         let options: HKStatisticsOptions = [.discreteAverage]
 
         let query = Query.makeHKStatisticsCollectionQuery(type, options, startDate, endDate) {
@@ -133,13 +135,14 @@ class QuantityType {
     /// - Parameters:
     ///   - data: This is an array of dictionary which contains startDate, endDate and value.
     ///   - completion: handler when the query completes.
-    func setBodyFatPercentage(_ bodyFatPercentageData: [[String: Double]],
+    func setBodyFatPercentage(_ data: [[String: Double]],
                               _ completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
         let type = HKObjectType.quantityType(forIdentifier: .bodyFatPercentage)!
-        let objects = bodyFatPercentageData.map { HKQuantitySample(type: type,
-                                                                   quantity: HKQuantity(unit: .percent(), doubleValue: $0["value"]!),
-                                                                   start: Date(timeIntervalSince1970: $0["startDate"]!),
-                                                                   end: Date(timeIntervalSince1970: $0["endDate"]!)) }
+        let unit = HKUnit.percent()
+        let objects = data.map { HKQuantitySample(type: type,
+                                                  quantity: HKQuantity(unit: unit, doubleValue: $0["value"]!),
+                                                  start: Date(timeIntervalSince1970: $0["startDate"]!),
+                                                  end: Date(timeIntervalSince1970: $0["endDate"]!)) }
 
         healthStore.save(objects) { success, error in completion(success, error) }
     }
@@ -153,7 +156,7 @@ class QuantityType {
     func getRestingHeartRate(_ startDate: Double,
                              _ endDate: Double,
                              _ completion: @escaping (_ query: HKStatisticsCollectionQuery, _ result: HKStatisticsCollection?, _ error: Error?) -> Void) {
-        let type = HKQuantityType.quantityType(forIdentifier: .restingHeartRate)!
+        let type = HKObjectType.quantityType(forIdentifier: .restingHeartRate)!
         let options: HKStatisticsOptions = [.discreteAverage]
 
         let query = Query.makeHKStatisticsCollectionQuery(type, options, startDate, endDate) {
@@ -168,14 +171,14 @@ class QuantityType {
     /// - Parameters:
     ///   - data: This is an array of dictionary which contains startDate, endDate and value.
     ///   - completion: handler when the query completes.
-    func setRestingHeartRate(_ restingHeartRateData: [[String: Double]],
+    func setRestingHeartRate(_ data: [[String: Double]],
                              _ completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
         let type = HKObjectType.quantityType(forIdentifier: .restingHeartRate)!
         let unit = HKUnit.count().unitDivided(by: HKUnit.minute())
-        let objects = restingHeartRateData.map { HKQuantitySample(type: type,
-                                                                  quantity: HKQuantity(unit: unit, doubleValue: $0["value"]!),
-                                                                  start: Date(timeIntervalSince1970: $0["startDate"]!),
-                                                                  end: Date(timeIntervalSince1970: $0["endDate"]!)) }
+        let objects = data.map { HKQuantitySample(type: type,
+                                                  quantity: HKQuantity(unit: unit, doubleValue: $0["value"]!),
+                                                  start: Date(timeIntervalSince1970: $0["startDate"]!),
+                                                  end: Date(timeIntervalSince1970: $0["endDate"]!)) }
 
         healthStore.save(objects) { success, error in completion(success, error) }
     }
@@ -189,7 +192,7 @@ class QuantityType {
     func getActiveEnergyBurned(_ startDate: Double,
                                _ endDate: Double,
                                _ completion: @escaping (_ query: HKStatisticsCollectionQuery, _ result: HKStatisticsCollection?, _ error: Error?) -> Void) {
-        let type = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!
+        let type = HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
         let options: HKStatisticsOptions = [.cumulativeSum]
 
         let query = Query.makeHKStatisticsCollectionQuery(type, options, startDate, endDate) {
@@ -204,13 +207,14 @@ class QuantityType {
     /// - Parameters:
     ///   - data: This is an array of dictionary which contains startDate, endDate and value.
     ///   - completion: handler when the query completes.
-    func setActiveEnergyBurned(_ activeEnergyBurnedData: [[String: Double]],
+    func setActiveEnergyBurned(_ data: [[String: Double]],
                                _ completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
         let type = HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
-        let objects = activeEnergyBurnedData.map { HKQuantitySample(type: type,
-                                                                    quantity: HKQuantity(unit: .kilocalorie(), doubleValue: $0["value"]!),
-                                                                    start: Date(timeIntervalSince1970: $0["startDate"]!),
-                                                                    end: Date(timeIntervalSince1970: $0["endDate"]!)) }
+        let unit = HKUnit.kilocalorie()
+        let objects = data.map { HKQuantitySample(type: type,
+                                                  quantity: HKQuantity(unit: unit, doubleValue: $0["value"]!),
+                                                  start: Date(timeIntervalSince1970: $0["startDate"]!),
+                                                  end: Date(timeIntervalSince1970: $0["endDate"]!)) }
 
         healthStore.save(objects) { success, error in completion(success, error) }
     }
@@ -224,7 +228,7 @@ class QuantityType {
     func getFlightsClimbed(_ startDate: Double,
                            _ endDate: Double,
                            _ completion: @escaping (_ query: HKStatisticsCollectionQuery, _ result: HKStatisticsCollection?, _ error: Error?) -> Void) {
-        let type = HKQuantityType.quantityType(forIdentifier: .flightsClimbed)!
+        let type = HKObjectType.quantityType(forIdentifier: .flightsClimbed)!
         let options: HKStatisticsOptions = [.cumulativeSum]
 
         let query = Query.makeHKStatisticsCollectionQuery(type, options, startDate, endDate) {
@@ -239,13 +243,14 @@ class QuantityType {
     /// - Parameters:
     ///   - data: This is an array of dictionary which contains startDate, endDate and value.
     ///   - completion: handler when the query completes.
-    func setFlightsClimbed(_ FlightsClimbedData: [[String: Double]],
+    func setFlightsClimbed(_ data: [[String: Double]],
                            _ completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
         let type = HKObjectType.quantityType(forIdentifier: .flightsClimbed)!
-        let objects = FlightsClimbedData.map { HKQuantitySample(type: type,
-                                                                quantity: HKQuantity(unit: .count(), doubleValue: $0["value"]!),
-                                                                start: Date(timeIntervalSince1970: $0["startDate"]!),
-                                                                end: Date(timeIntervalSince1970: $0["endDate"]!)) }
+        let unit = HKUnit.count()
+        let objects = data.map { HKQuantitySample(type: type,
+                                                  quantity: HKQuantity(unit: unit, doubleValue: $0["value"]!),
+                                                  start: Date(timeIntervalSince1970: $0["startDate"]!),
+                                                  end: Date(timeIntervalSince1970: $0["endDate"]!)) }
 
         healthStore.save(objects) { success, error in completion(success, error) }
     }
@@ -259,7 +264,7 @@ class QuantityType {
     func getStepCount(_ startDate: Double,
                       _ endDate: Double,
                       _ completion: @escaping (_ query: HKStatisticsCollectionQuery, _ result: HKStatisticsCollection?, _ error: Error?) -> Void) {
-        let type = HKQuantityType.quantityType(forIdentifier: .stepCount)!
+        let type = HKObjectType.quantityType(forIdentifier: .stepCount)!
         let options: HKStatisticsOptions = [.cumulativeSum]
 
         let query = Query.makeHKStatisticsCollectionQuery(type, options, startDate, endDate) {
@@ -274,13 +279,14 @@ class QuantityType {
     /// - Parameters:
     ///   - data: This is an array of dictionary which contains startDate, endDate and value.
     ///   - completion: handler when the query completes.
-    func setStepCount(_ StepCountData: [[String: Double]],
+    func setStepCount(_ data: [[String: Double]],
                       _ completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
         let type = HKObjectType.quantityType(forIdentifier: .stepCount)!
-        let objects = StepCountData.map { HKQuantitySample(type: type,
-                                                           quantity: HKQuantity(unit: .count(), doubleValue: $0["value"]!),
-                                                           start: Date(timeIntervalSince1970: $0["startDate"]!),
-                                                           end: Date(timeIntervalSince1970: $0["endDate"]!)) }
+        let unit = HKUnit.count()
+        let objects = data.map { HKQuantitySample(type: type,
+                                                  quantity: HKQuantity(unit: unit, doubleValue: $0["value"]!),
+                                                  start: Date(timeIntervalSince1970: $0["startDate"]!),
+                                                  end: Date(timeIntervalSince1970: $0["endDate"]!)) }
 
         healthStore.save(objects) { success, error in completion(success, error) }
     }
@@ -294,7 +300,7 @@ class QuantityType {
     func getDistanceWalkingRunning(_ startDate: Double,
                                    _ endDate: Double,
                                    _ completion: @escaping (_ query: HKStatisticsCollectionQuery, _ result: HKStatisticsCollection?, _ error: Error?) -> Void) {
-        let type = HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)!
+        let type = HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!
         let options: HKStatisticsOptions = [.cumulativeSum]
 
         let query = Query.makeHKStatisticsCollectionQuery(type, options, startDate, endDate) {
@@ -309,13 +315,14 @@ class QuantityType {
     /// - Parameters:
     ///   - data: This is an array of dictionary which contains startDate, endDate and value.
     ///   - completion: handler when the query completes.
-    func setDistanceWalkingRunning(_ DistanceWalkingRunningData: [[String: Double]],
+    func setDistanceWalkingRunning(_ data: [[String: Double]],
                                    _ completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
         let type = HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!
-        let objects = DistanceWalkingRunningData.map { HKQuantitySample(type: type,
-                                                                        quantity: HKQuantity(unit: .meter(), doubleValue: $0["value"]!),
-                                                                        start: Date(timeIntervalSince1970: $0["startDate"]!),
-                                                                        end: Date(timeIntervalSince1970: $0["endDate"]!)) }
+        let unit = HKUnit.meter()
+        let objects = data.map { HKQuantitySample(type: type,
+                                                  quantity: HKQuantity(unit: unit, doubleValue: $0["value"]!),
+                                                  start: Date(timeIntervalSince1970: $0["startDate"]!),
+                                                  end: Date(timeIntervalSince1970: $0["endDate"]!)) }
 
         healthStore.save(objects) { success, error in completion(success, error) }
     }
@@ -329,7 +336,7 @@ class QuantityType {
     func getDietaryEnergyConsumed(_ startDate: Double,
                                   _ endDate: Double,
                                   _ completion: @escaping (_ query: HKStatisticsCollectionQuery, _ result: HKStatisticsCollection?, _ error: Error?) -> Void) {
-        let type = HKQuantityType.quantityType(forIdentifier: .dietaryEnergyConsumed)!
+        let type = HKObjectType.quantityType(forIdentifier: .dietaryEnergyConsumed)!
         let options: HKStatisticsOptions = [.cumulativeSum]
 
         let query = Query.makeHKStatisticsCollectionQuery(type, options, startDate, endDate) {
@@ -344,13 +351,14 @@ class QuantityType {
     /// - Parameters:
     ///   - data: This is an array of dictionary which contains startDate, endDate and value.
     ///   - completion: handler when the query completes.
-    func setDietaryEnergyConsumed(_ DietaryEnergyConsumedData: [[String: Double]],
+    func setDietaryEnergyConsumed(_ data: [[String: Double]],
                                   _ completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
         let type = HKObjectType.quantityType(forIdentifier: .dietaryEnergyConsumed)!
-        let objects = DietaryEnergyConsumedData.map { HKQuantitySample(type: type,
-                                                                       quantity: HKQuantity(unit: .kilocalorie(), doubleValue: $0["value"]!),
-                                                                       start: Date(timeIntervalSince1970: $0["startDate"]!),
-                                                                       end: Date(timeIntervalSince1970: $0["endDate"]!)) }
+        let unit = HKUnit.kilocalorie()
+        let objects = data.map { HKQuantitySample(type: type,
+                                                  quantity: HKQuantity(unit: unit, doubleValue: $0["value"]!),
+                                                  start: Date(timeIntervalSince1970: $0["startDate"]!),
+                                                  end: Date(timeIntervalSince1970: $0["endDate"]!)) }
 
         healthStore.save(objects) { success, error in completion(success, error) }
     }
@@ -364,7 +372,7 @@ class QuantityType {
     func getBodyMassIndex(_ startDate: Double,
                           _ endDate: Double,
                           _ completion: @escaping (_ query: HKStatisticsCollectionQuery, _ result: HKStatisticsCollection?, _ error: Error?) -> Void) {
-        let type = HKQuantityType.quantityType(forIdentifier: .bodyMassIndex)!
+        let type = HKObjectType.quantityType(forIdentifier: .bodyMassIndex)!
         let options: HKStatisticsOptions = [.discreteAverage]
 
         let query = Query.makeHKStatisticsCollectionQuery(type, options, startDate, endDate) {
@@ -379,13 +387,14 @@ class QuantityType {
     /// - Parameters:
     ///   - data: This is an array of dictionary which contains startDate, endDate and value.
     ///   - completion: handler when the query completes.
-    func setBodyMassIndex(_ BodyMassIndexData: [[String: Double]],
+    func setBodyMassIndex(_ data: [[String: Double]],
                           _ completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
         let type = HKObjectType.quantityType(forIdentifier: .bodyMassIndex)!
-        let objects = BodyMassIndexData.map { HKQuantitySample(type: type,
-                                                               quantity: HKQuantity(unit: .count(), doubleValue: $0["value"]!),
-                                                               start: Date(timeIntervalSince1970: $0["startDate"]!),
-                                                               end: Date(timeIntervalSince1970: $0["endDate"]!)) }
+        let unit = HKUnit.count()
+        let objects = data.map { HKQuantitySample(type: type,
+                                                  quantity: HKQuantity(unit: unit, doubleValue: $0["value"]!),
+                                                  start: Date(timeIntervalSince1970: $0["startDate"]!),
+                                                  end: Date(timeIntervalSince1970: $0["endDate"]!)) }
 
         healthStore.save(objects) { success, error in completion(success, error) }
     }
