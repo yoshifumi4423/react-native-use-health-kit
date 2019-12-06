@@ -5165,6 +5165,10 @@ react-is@^16.8.1, react-is@^16.8.4, react-is@^16.8.6:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.9.0.tgz#21ca9561399aad0ff1a7701c01683e8ca981edcb"
   integrity sha512-tJBzzzIgnnRfEm046qRcURvwQnZVXmuCbscxUO5RWrGTXpon2d4c8mI0D8WE6ydVIm29JiLB6+RslkIvym9Rjw==
 
+"react-native-use-health-kit@git+https://github.com/yoshifumi4423/react-native-use-health-kit":
+  version "1.0.0"
+  resolved "git+https://github.com/yoshifumi4423/react-native-use-health-kit#cbc526a1d4d15e2cc23f940bc681a91b66469e4b"
+
 react-native@0.60.5:
   version "0.60.5"
   resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.60.5.tgz#3c1d9c06a0fbab9807220b6acac09488d39186ee"
