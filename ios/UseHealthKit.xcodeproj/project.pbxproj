@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B3E7B58A1CC2AC0600A0062D /* UseHealthKit.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* UseHealthKit.m */; };
-		FE201DC4233CD9E8008730D5 /* UseHealthKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE201DC3233CD9E8008730D5 /* UseHealthKit.swift */; };
-		FE5A0B3823705ACE00C0AAD5 /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE5A0B3723705ACE00C0AAD5 /* Query.swift */; };
-		FEDFC2602344EBDE00973D9D /* QuantityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDFC25F2344EBDE00973D9D /* QuantityType.swift */; };
+		FE13710F239AC4DA002001E2 /* UseHealthKit.m in Sources */ = {isa = PBXBuildFile; fileRef = FE13710A239AC4DA002001E2 /* UseHealthKit.m */; };
+		FE137110239AC4DA002001E2 /* UseHealthKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE13710B239AC4DA002001E2 /* UseHealthKit.swift */; };
+		FE137111239AC4DA002001E2 /* QuantityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE13710C239AC4DA002001E2 /* QuantityType.swift */; };
+		FE137112239AC4DA002001E2 /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE13710E239AC4DA002001E2 /* Query.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,11 +27,11 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libUseHealthKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libUseHealthKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		B3E7B5891CC2AC0600A0062D /* UseHealthKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UseHealthKit.m; sourceTree = "<group>"; };
-		FE201DC2233CD9E8008730D5 /* UseHealthKit-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UseHealthKit-Bridging-Header.h"; sourceTree = "<group>"; };
-		FE201DC3233CD9E8008730D5 /* UseHealthKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UseHealthKit.swift; sourceTree = "<group>"; };
-		FE5A0B3723705ACE00C0AAD5 /* Query.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Query.swift; sourceTree = "<group>"; };
-		FEDFC25F2344EBDE00973D9D /* QuantityType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuantityType.swift; sourceTree = "<group>"; };
+		FE13710A239AC4DA002001E2 /* UseHealthKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UseHealthKit.m; sourceTree = "<group>"; };
+		FE13710B239AC4DA002001E2 /* UseHealthKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UseHealthKit.swift; sourceTree = "<group>"; };
+		FE13710C239AC4DA002001E2 /* QuantityType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuantityType.swift; sourceTree = "<group>"; };
+		FE13710D239AC4DA002001E2 /* UseHealthKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UseHealthKit-Bridging-Header.h"; sourceTree = "<group>"; };
+		FE13710E239AC4DA002001E2 /* Query.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Query.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,11 +64,11 @@
 		FE201DC8233CE4BD008730D5 /* UseHealthKit */ = {
 			isa = PBXGroup;
 			children = (
-				FE201DC2233CD9E8008730D5 /* UseHealthKit-Bridging-Header.h */,
-				FE201DC3233CD9E8008730D5 /* UseHealthKit.swift */,
-				B3E7B5891CC2AC0600A0062D /* UseHealthKit.m */,
-				FEDFC25F2344EBDE00973D9D /* QuantityType.swift */,
-				FE5A0B3723705ACE00C0AAD5 /* Query.swift */,
+				FE13710C239AC4DA002001E2 /* QuantityType.swift */,
+				FE13710E239AC4DA002001E2 /* Query.swift */,
+				FE13710D239AC4DA002001E2 /* UseHealthKit-Bridging-Header.h */,
+				FE13710A239AC4DA002001E2 /* UseHealthKit.m */,
+				FE13710B239AC4DA002001E2 /* UseHealthKit.swift */,
 			);
 			path = UseHealthKit;
 			sourceTree = "<group>";
@@ -131,10 +131,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FEDFC2602344EBDE00973D9D /* QuantityType.swift in Sources */,
-				FE201DC4233CD9E8008730D5 /* UseHealthKit.swift in Sources */,
-				FE5A0B3823705ACE00C0AAD5 /* Query.swift in Sources */,
-				B3E7B58A1CC2AC0600A0062D /* UseHealthKit.m in Sources */,
+				FE137112239AC4DA002001E2 /* Query.swift in Sources */,
+				FE137111239AC4DA002001E2 /* QuantityType.swift in Sources */,
+				FE137110239AC4DA002001E2 /* UseHealthKit.swift in Sources */,
+				FE13710F239AC4DA002001E2 /* UseHealthKit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -184,10 +184,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "${SRCROOT}/UseHealthKit/UseHealthKit-Bridging-Header.h";
 			};
 			name = Debug;
 		};
@@ -227,9 +228,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "${SRCROOT}/UseHealthKit/UseHealthKit-Bridging-Header.h";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -249,7 +251,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = UseHealthKit;
 				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "UseHealthKit-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "${SRCROOT}/UseHealthKit/UseHealthKit-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
@@ -270,7 +272,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = UseHealthKit;
 				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "UseHealthKit-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "${SRCROOT}/UseHealthKit/UseHealthKit-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;

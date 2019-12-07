@@ -12,46 +12,8 @@ class UseHealthKit: NSObject {
         case noPermissions = "No permissions to access user health data"
     }
 
-    let Permissions: [String: HKObjectType] = [
-        //        // HKCategoryTypeIdentifier
-        //        // Vital Signs
-        //        "lowHeartRateEvent": HKObjectType.categoryType(forIdentifier: .lowHeartRateEvent)!, // iOS 12.2 or newer
-        //        "highHeartRateEvent": HKObjectType.categoryType(forIdentifier: .highHeartRateEvent)!, // iOS 12.2 or newer
-        //        "irregularHeartRhythmEvent": HKObjectType.categoryType(forIdentifier: .irregularHeartRhythmEvent)!, // iOS 12.2 or newer
-        //        // Reproductive Health
-        //        "cervicalMucusQuality": HKObjectType.categoryType(forIdentifier: .cervicalMucusQuality)!,
-        //        "menstrualFlow": HKObjectType.categoryType(forIdentifier: .menstrualFlow)!,
-        //        "intermenstrualBleeding": HKObjectType.categoryType(forIdentifier: .intermenstrualBleeding)!,
-        //        "ovulationTestResult": HKObjectType.categoryType(forIdentifier: .ovulationTestResult)!,
-        //        "sexualActivity": HKObjectType.categoryType(forIdentifier: .sexualActivity)!,
-        // Activity
-        //        "appleStandHour": HKObjectType.categoryType(forIdentifier: .appleStandHour)!,
-        // Mindfullness and Sleep
-        //        "mindfulSession": HKObjectType.categoryType(forIdentifier: .mindfulSession)!, // iOS 10.0 or newer
-        "sleepAnalysis": HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!,
-
-        // HKCharacteristicTypeIdentifier
-        //        "biologicalSex": HKObjectType.characteristicType(forIdentifier: .biologicalSex)!,
-        //        "bloodType": HKObjectType.characteristicType(forIdentifier: .bloodType)!,
-        //        "dateOfBirth": HKObjectType.characteristicType(forIdentifier: .dateOfBirth)!,
-        //        "fitzpatrickSkinType": HKObjectType.characteristicType(forIdentifier: .fitzpatrickSkinType)!,
-        //        "wheelchairUse": HKObjectType.characteristicType(forIdentifier: .wheelchairUse)!, // iOS 10.0 or newer
-
-        // HKQuantityTypeIdentifier
-        "heartRate": HKObjectType.quantityType(forIdentifier: .heartRate)!,
-        "dietaryWater": HKObjectType.quantityType(forIdentifier: .dietaryWater)!,
-        "bodyMass": HKObjectType.quantityType(forIdentifier: .bodyMass)!,
-        "bodyFatPercentage": HKObjectType.quantityType(forIdentifier: .bodyFatPercentage)!,
-        "restingHeartRate": HKObjectType.quantityType(forIdentifier: .restingHeartRate)!,
-        "activeEnergyBurned": HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
-        "basalEnergyBurned": HKObjectType.quantityType(forIdentifier: .basalEnergyBurned)!,
-        "flightsClimbed": HKObjectType.quantityType(forIdentifier: .flightsClimbed)!,
-        "stepCount": HKObjectType.quantityType(forIdentifier: .stepCount)!,
-        "distanceWalkingRunning": HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!,
-        "dietaryEnergyConsumed": HKObjectType.quantityType(forIdentifier: .dietaryEnergyConsumed)!,
-        "bodyMassIndex": HKObjectType.quantityType(forIdentifier: .bodyMassIndex)!,
-    ]
-
+    let Permissions: [String:HKObjectType] = getPermissions()
+    
     /// Instance of HKHealthStore. Will be initialized in initializer.
     private let healthStore: HKHealthStore
 
@@ -62,6 +24,53 @@ class UseHealthKit: NSObject {
     override init() {
         healthStore = HKHealthStore()
         quantityType = QuantityType(healthStore: healthStore)
+    }
+    
+    static private func getPermissions() -> [String:HKObjectType] {
+        var permissions: [String: HKObjectType] = [
+            //        // HKCategoryTypeIdentifier
+            //        // Vital Signs
+            //        "lowHeartRateEvent": HKObjectType.categoryType(forIdentifier: .lowHeartRateEvent)!, // iOS 12.2 or newer
+            //        "highHeartRateEvent": HKObjectType.categoryType(forIdentifier: .highHeartRateEvent)!, // iOS 12.2 or newer
+            //        "irregularHeartRhythmEvent": HKObjectType.categoryType(forIdentifier: .irregularHeartRhythmEvent)!, // iOS 12.2 or newer
+            //        // Reproductive Health
+            //        "cervicalMucusQuality": HKObjectType.categoryType(forIdentifier: .cervicalMucusQuality)!,
+            //        "menstrualFlow": HKObjectType.categoryType(forIdentifier: .menstrualFlow)!,
+            //        "intermenstrualBleeding": HKObjectType.categoryType(forIdentifier: .intermenstrualBleeding)!,
+            //        "ovulationTestResult": HKObjectType.categoryType(forIdentifier: .ovulationTestResult)!,
+            //        "sexualActivity": HKObjectType.categoryType(forIdentifier: .sexualActivity)!,
+            // Activity
+            //        "appleStandHour": HKObjectType.categoryType(forIdentifier: .appleStandHour)!,
+            // Mindfullness and Sleep
+            //        "mindfulSession": HKObjectType.categoryType(forIdentifier: .mindfulSession)!, // iOS 10.0 or newer
+            "sleepAnalysis": HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!,
+
+            // HKCharacteristicTypeIdentifier
+            //        "biologicalSex": HKObjectType.characteristicType(forIdentifier: .biologicalSex)!,
+            //        "bloodType": HKObjectType.characteristicType(forIdentifier: .bloodType)!,
+            //        "dateOfBirth": HKObjectType.characteristicType(forIdentifier: .dateOfBirth)!,
+            //        "fitzpatrickSkinType": HKObjectType.characteristicType(forIdentifier: .fitzpatrickSkinType)!,
+            //        "wheelchairUse": HKObjectType.characteristicType(forIdentifier: .wheelchairUse)!, // iOS 10.0 or newer
+
+            // HKQuantityTypeIdentifier
+            "heartRate": HKObjectType.quantityType(forIdentifier: .heartRate)!,
+            "dietaryWater": HKObjectType.quantityType(forIdentifier: .dietaryWater)!,
+            "bodyMass": HKObjectType.quantityType(forIdentifier: .bodyMass)!,
+            "bodyFatPercentage": HKObjectType.quantityType(forIdentifier: .bodyFatPercentage)!,
+            "activeEnergyBurned": HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
+            "basalEnergyBurned": HKObjectType.quantityType(forIdentifier: .basalEnergyBurned)!,
+            "flightsClimbed": HKObjectType.quantityType(forIdentifier: .flightsClimbed)!,
+            "stepCount": HKObjectType.quantityType(forIdentifier: .stepCount)!,
+            "distanceWalkingRunning": HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!,
+            "dietaryEnergyConsumed": HKObjectType.quantityType(forIdentifier: .dietaryEnergyConsumed)!,
+            "bodyMassIndex": HKObjectType.quantityType(forIdentifier: .bodyMassIndex)!,
+        ]
+        if #available(iOS 11.0, *) {
+            permissions.updateValue(HKObjectType.quantityType(forIdentifier: .restingHeartRate)!,
+                                    forKey: "restingHeartRate")
+        }
+        
+        return permissions
     }
 
     /// HealthKit is not supported on all iOS devices such as iPad.
@@ -303,24 +312,28 @@ class UseHealthKit: NSObject {
                                    _ endDate: Double,
                                    _ resolve: @escaping RCTPromiseResolveBlock,
                                    _ reject: @escaping RCTPromiseRejectBlock) {
-        quantityType.getRestingHeartRate(startDate, endDate) { _, result, error in
-            do {
-                if let error = error { throw error }
+        if #available(iOS 11.0, *) {
+            quantityType.getRestingHeartRate(startDate, endDate) { _, result, error in
+                do {
+                    if let error = error { throw error }
 
-                var values: [[String: Double]] = []
-                result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
-                                            to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
-                    if let quantity = statistic.averageQuantity() {
-                        let date = String(Int(statistic.startDate.timeIntervalSince1970))
-                        let value = quantity.doubleValue(for: HKUnit.count().unitDivided(by: HKUnit.minute()))
-                        values.append([date: value])
+                    var values: [[String: Double]] = []
+                    result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
+                                                to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
+                        if let quantity = statistic.averageQuantity() {
+                            let date = String(Int(statistic.startDate.timeIntervalSince1970))
+                            let value = quantity.doubleValue(for: HKUnit.count().unitDivided(by: HKUnit.minute()))
+                            values.append([date: value])
+                        }
                     }
-                }
 
-                resolve(["restingHeartRate", values])
-            } catch {
-                reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
+                    resolve(["restingHeartRate", values])
+                } catch {
+                    reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
+                }
             }
+        } else {
+            // Fallback on earlier versions
         }
     }
 
@@ -333,14 +346,18 @@ class UseHealthKit: NSObject {
     @objc func setRestingHeartRate(_ data: [[String: Double]],
                                    _ resolve: @escaping RCTPromiseResolveBlock,
                                    _ reject: @escaping RCTPromiseRejectBlock) {
-        quantityType.setRestingHeartRate(data) { success, error in
-            do {
-                if let error = error { throw error }
+        if #available(iOS 11.0, *) {
+            quantityType.setRestingHeartRate(data) { success, error in
+                do {
+                    if let error = error { throw error }
 
-                resolve(success)
-            } catch {
-                reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
+                    resolve(success)
+                } catch {
+                    reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
+                }
             }
+        } else {
+            // Fallback on earlier versions
         }
     }
 
