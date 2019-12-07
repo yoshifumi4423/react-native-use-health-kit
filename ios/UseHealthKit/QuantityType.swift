@@ -134,6 +134,7 @@ class QuantityType {
     ///   - startDate: start date to get data.
     ///   - endDate: end date to get data.
     ///   - completion: handler when the query completes.
+    @available(iOS 11.0, *)
     func getRestingHeartRate(_ startDate: Double,
                              _ endDate: Double,
                              _ completion: @escaping (_ query: HKStatisticsCollectionQuery, _ result: HKStatisticsCollection?, _ error: Error?) -> Void) {
@@ -152,6 +153,7 @@ class QuantityType {
     /// - Parameters:
     ///   - data: This is an array of dictionary which contains startDate, endDate and value.
     ///   - completion: handler when the query completes.
+    @available(iOS 11.0, *)
     func setRestingHeartRate(_ data: [[String: Double]],
                              _ completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
         let type = HKObjectType.quantityType(forIdentifier: .restingHeartRate)!
