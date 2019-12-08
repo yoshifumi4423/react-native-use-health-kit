@@ -33,7 +33,6 @@ You can access below types for both of Read and Write.
 
 ```javascript
   "sleepAnalysis",
-  "heartRate",
   "dietaryWater",
   "bodyMass",
   "bodyFatPercentage",
@@ -56,7 +55,6 @@ if (!(await UseHealthKit.isHealthDataAvailable())) {
 }
 const permissions = [
   "sleepAnalysis",
-  "heartRate",
   "dietaryWater",
   "bodyMass",
   "bodyFatPercentage",
