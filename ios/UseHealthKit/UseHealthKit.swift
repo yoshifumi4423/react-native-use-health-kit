@@ -12,8 +12,6 @@ class UseHealthKit: NSObject {
         case noPermissions = "No permissions to access user health data"
     }
 
-    let Permissions: [String:HKObjectType] = getPermissions()
-    
     /// Instance of HKHealthStore. Will be initialized in initializer.
     private let healthStore: HKHealthStore
 
@@ -24,53 +22,6 @@ class UseHealthKit: NSObject {
     override init() {
         healthStore = HKHealthStore()
         quantityType = QuantityType(healthStore: healthStore)
-    }
-    
-    static private func getPermissions() -> [String:HKObjectType] {
-        var permissions: [String: HKObjectType] = [
-            //        // HKCategoryTypeIdentifier
-            //        // Vital Signs
-            //        "lowHeartRateEvent": HKObjectType.categoryType(forIdentifier: .lowHeartRateEvent)!, // iOS 12.2 or newer
-            //        "highHeartRateEvent": HKObjectType.categoryType(forIdentifier: .highHeartRateEvent)!, // iOS 12.2 or newer
-            //        "irregularHeartRhythmEvent": HKObjectType.categoryType(forIdentifier: .irregularHeartRhythmEvent)!, // iOS 12.2 or newer
-            //        // Reproductive Health
-            //        "cervicalMucusQuality": HKObjectType.categoryType(forIdentifier: .cervicalMucusQuality)!,
-            //        "menstrualFlow": HKObjectType.categoryType(forIdentifier: .menstrualFlow)!,
-            //        "intermenstrualBleeding": HKObjectType.categoryType(forIdentifier: .intermenstrualBleeding)!,
-            //        "ovulationTestResult": HKObjectType.categoryType(forIdentifier: .ovulationTestResult)!,
-            //        "sexualActivity": HKObjectType.categoryType(forIdentifier: .sexualActivity)!,
-            // Activity
-            //        "appleStandHour": HKObjectType.categoryType(forIdentifier: .appleStandHour)!,
-            // Mindfullness and Sleep
-            //        "mindfulSession": HKObjectType.categoryType(forIdentifier: .mindfulSession)!, // iOS 10.0 or newer
-            "sleepAnalysis": HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!,
-
-            // HKCharacteristicTypeIdentifier
-            //        "biologicalSex": HKObjectType.characteristicType(forIdentifier: .biologicalSex)!,
-            //        "bloodType": HKObjectType.characteristicType(forIdentifier: .bloodType)!,
-            //        "dateOfBirth": HKObjectType.characteristicType(forIdentifier: .dateOfBirth)!,
-            //        "fitzpatrickSkinType": HKObjectType.characteristicType(forIdentifier: .fitzpatrickSkinType)!,
-            //        "wheelchairUse": HKObjectType.characteristicType(forIdentifier: .wheelchairUse)!, // iOS 10.0 or newer
-
-            // HKQuantityTypeIdentifier
-            "heartRate": HKObjectType.quantityType(forIdentifier: .heartRate)!,
-            "dietaryWater": HKObjectType.quantityType(forIdentifier: .dietaryWater)!,
-            "bodyMass": HKObjectType.quantityType(forIdentifier: .bodyMass)!,
-            "bodyFatPercentage": HKObjectType.quantityType(forIdentifier: .bodyFatPercentage)!,
-            "activeEnergyBurned": HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
-            "basalEnergyBurned": HKObjectType.quantityType(forIdentifier: .basalEnergyBurned)!,
-            "flightsClimbed": HKObjectType.quantityType(forIdentifier: .flightsClimbed)!,
-            "stepCount": HKObjectType.quantityType(forIdentifier: .stepCount)!,
-            "distanceWalkingRunning": HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!,
-            "dietaryEnergyConsumed": HKObjectType.quantityType(forIdentifier: .dietaryEnergyConsumed)!,
-            "bodyMassIndex": HKObjectType.quantityType(forIdentifier: .bodyMassIndex)!,
-        ]
-        if #available(iOS 11.0, *) {
-            permissions.updateValue(HKObjectType.quantityType(forIdentifier: .restingHeartRate)!,
-                                    forKey: "restingHeartRate")
-        }
-        
-        return permissions
     }
 
     /// HealthKit is not supported on all iOS devices such as iPad.
@@ -114,15 +65,17 @@ class UseHealthKit: NSObject {
             return
         }
 
+        let permissions = getPermissions()
+
         var readType: Set<HKObjectType>?
         if !readPermissions.isEmpty {
-            let permissions = readPermissions.map { Permissions[$0]! }
+            let permissions = readPermissions.map { permissions[$0]! }
             readType = Set(permissions)
         }
 
         var writeType: Set<HKObjectType>?
         if !writePermissions.isEmpty {
-            let permissions = writePermissions.map { Permissions[$0]! }
+            let permissions = writePermissions.map { permissions[$0]! }
             writeType = Set(permissions)
         }
 
@@ -142,6 +95,20 @@ class UseHealthKit: NSObject {
             }
 
             resolve(true)
+        }
+    }
+
+    @objc func setQuantityData(_ data: [String: Any],
+                               _ resolve: @escaping RCTPromiseResolveBlock,
+                               _ reject: @escaping RCTPromiseRejectBlock) {
+        quantityType.setQuantityData(data) { success, error in
+            do {
+                if let error = error { throw error }
+
+                resolve(success)
+            } catch {
+                reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
+            }
         }
     }
 
@@ -171,26 +138,6 @@ class UseHealthKit: NSObject {
                 }
 
                 resolve(["dietaryWater", values])
-            } catch {
-                reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
-            }
-        }
-    }
-
-    /// Set array of DietaryWater value
-    ///
-    /// - Parameters:
-    ///   - data: This is an array of dictionary which contains startDate, endDate and value.
-    ///   - resolve: Return Bool of success.
-    ///   - reject: Return error message.
-    @objc func setDietaryWater(_ data: [[String: Double]],
-                               _ resolve: @escaping RCTPromiseResolveBlock,
-                               _ reject: @escaping RCTPromiseRejectBlock) {
-        quantityType.setDietaryWater(data) { success, error in
-            do {
-                if let error = error { throw error }
-
-                resolve(success)
             } catch {
                 reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
             }
@@ -229,26 +176,6 @@ class UseHealthKit: NSObject {
         }
     }
 
-    /// Set array of BodyMass value
-    ///
-    /// - Parameters:
-    ///   - data: This is an array of dictionary which contains startDate, endDate and value.
-    ///   - resolve: Return Bool of success.
-    ///   - reject: Return error message.
-    @objc func setBodyMass(_ data: [[String: Double]],
-                           _ resolve: @escaping RCTPromiseResolveBlock,
-                           _ reject: @escaping RCTPromiseRejectBlock) {
-        quantityType.setBodyMass(data) { success, error in
-            do {
-                if let error = error { throw error }
-
-                resolve(success)
-            } catch {
-                reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
-            }
-        }
-    }
-
     /// Get array of BodyFatPercentage value.
     ///
     /// - Parameters:
@@ -275,26 +202,6 @@ class UseHealthKit: NSObject {
                 }
 
                 resolve(["bodyFatPercentage", values])
-            } catch {
-                reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
-            }
-        }
-    }
-
-    /// Set array of BodyFatPercentage value
-    ///
-    /// - Parameters:
-    ///   - data: This is an array of dictionary which contains startDate, endDate and value.
-    ///   - resolve: Return Bool of success.
-    ///   - reject: Return error message.
-    @objc func setBodyFatPercentage(_ data: [[String: Double]],
-                                    _ resolve: @escaping RCTPromiseResolveBlock,
-                                    _ reject: @escaping RCTPromiseRejectBlock) {
-        quantityType.setBodyFatPercentage(data) { success, error in
-            do {
-                if let error = error { throw error }
-
-                resolve(success)
             } catch {
                 reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
             }
@@ -337,30 +244,6 @@ class UseHealthKit: NSObject {
         }
     }
 
-    /// Set array of RestingHeartRate value
-    ///
-    /// - Parameters:
-    ///   - data: This is an array of dictionary which contains startDate, endDate and value.
-    ///   - resolve: Return Bool of success.
-    ///   - reject: Return error message.
-    @objc func setRestingHeartRate(_ data: [[String: Double]],
-                                   _ resolve: @escaping RCTPromiseResolveBlock,
-                                   _ reject: @escaping RCTPromiseRejectBlock) {
-        if #available(iOS 11.0, *) {
-            quantityType.setRestingHeartRate(data) { success, error in
-                do {
-                    if let error = error { throw error }
-
-                    resolve(success)
-                } catch {
-                    reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
-                }
-            }
-        } else {
-            // Fallback on earlier versions
-        }
-    }
-
     /// Get array of ActiveEnergyBurned value.
     ///
     /// - Parameters:
@@ -387,26 +270,6 @@ class UseHealthKit: NSObject {
                 }
 
                 resolve(["activeEnergyBurned", values])
-            } catch {
-                reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
-            }
-        }
-    }
-
-    /// Set array of ActiveEnergyBurned value
-    ///
-    /// - Parameters:
-    ///   - data: This is an array of dictionary which contains startDate, endDate and value.
-    ///   - resolve: Return Bool of success.
-    ///   - reject: Return error message.
-    @objc func setActiveEnergyBurned(_ data: [[String: Double]],
-                                     _ resolve: @escaping RCTPromiseResolveBlock,
-                                     _ reject: @escaping RCTPromiseRejectBlock) {
-        quantityType.setActiveEnergyBurned(data) { success, error in
-            do {
-                if let error = error { throw error }
-
-                resolve(success)
             } catch {
                 reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
             }
@@ -445,26 +308,6 @@ class UseHealthKit: NSObject {
         }
     }
 
-    /// Set array of BasalEnergyBurned value
-    ///
-    /// - Parameters:
-    ///   - data: This is an array of dictionary which contains startDate, endDate and value.
-    ///   - resolve: Return Bool of success.
-    ///   - reject: Return error message.
-    @objc func setBasalEnergyBurned(_ data: [[String: Double]],
-                                    _ resolve: @escaping RCTPromiseResolveBlock,
-                                    _ reject: @escaping RCTPromiseRejectBlock) {
-        quantityType.setBasalEnergyBurned(data) { success, error in
-            do {
-                if let error = error { throw error }
-
-                resolve(success)
-            } catch {
-                reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
-            }
-        }
-    }
-
     /// Get array of FlightsClimbed value.
     ///
     /// - Parameters:
@@ -491,26 +334,6 @@ class UseHealthKit: NSObject {
                 }
 
                 resolve(["flightsClimbed", values])
-            } catch {
-                reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
-            }
-        }
-    }
-
-    /// Set array of FlightsClimbed value
-    ///
-    /// - Parameters:
-    ///   - data: This is an array of dictionary which contains startDate, endDate and value.
-    ///   - resolve: Return Bool of success.
-    ///   - reject: Return error message.
-    @objc func setFlightsClimbed(_ data: [[String: Double]],
-                                 _ resolve: @escaping RCTPromiseResolveBlock,
-                                 _ reject: @escaping RCTPromiseRejectBlock) {
-        quantityType.setFlightsClimbed(data) { success, error in
-            do {
-                if let error = error { throw error }
-
-                resolve(success)
             } catch {
                 reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
             }
@@ -549,26 +372,6 @@ class UseHealthKit: NSObject {
         }
     }
 
-    /// Set array of StepCount value
-    ///
-    /// - Parameters:
-    ///   - data: This is an array of dictionary which contains startDate, endDate and value.
-    ///   - resolve: Return Bool of success.
-    ///   - reject: Return error message.
-    @objc func setStepCount(_ data: [[String: Double]],
-                            _ resolve: @escaping RCTPromiseResolveBlock,
-                            _ reject: @escaping RCTPromiseRejectBlock) {
-        quantityType.setStepCount(data) { success, error in
-            do {
-                if let error = error { throw error }
-
-                resolve(success)
-            } catch {
-                reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
-            }
-        }
-    }
-
     /// Get array of DistanceWalkingRunning value.
     ///
     /// - Parameters:
@@ -595,26 +398,6 @@ class UseHealthKit: NSObject {
                 }
 
                 resolve(["distanceWalkingRunning", values])
-            } catch {
-                reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
-            }
-        }
-    }
-
-    /// Set array of DistanceWalkingRunning value
-    ///
-    /// - Parameters:
-    ///   - data: This is an array of dictionary which contains startDate, endDate and value.
-    ///   - resolve: Return Bool of success.
-    ///   - reject: Return error message.
-    @objc func setDistanceWalkingRunning(_ data: [[String: Double]],
-                                         _ resolve: @escaping RCTPromiseResolveBlock,
-                                         _ reject: @escaping RCTPromiseRejectBlock) {
-        quantityType.setDistanceWalkingRunning(data) { success, error in
-            do {
-                if let error = error { throw error }
-
-                resolve(success)
             } catch {
                 reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
             }
@@ -653,26 +436,6 @@ class UseHealthKit: NSObject {
         }
     }
 
-    /// Set array of DietaryEnergyConsumed value
-    ///
-    /// - Parameters:
-    ///   - data: This is an array of dictionary which contains startDate, endDate and value.
-    ///   - resolve: Return Bool of success.
-    ///   - reject: Return error message.
-    @objc func setDietaryEnergyConsumed(_ data: [[String: Double]],
-                                        _ resolve: @escaping RCTPromiseResolveBlock,
-                                        _ reject: @escaping RCTPromiseRejectBlock) {
-        quantityType.setDietaryEnergyConsumed(data) { success, error in
-            do {
-                if let error = error { throw error }
-
-                resolve(success)
-            } catch {
-                reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
-            }
-        }
-    }
-
     /// Get array of BodyMassIndex value.
     ///
     /// - Parameters:
@@ -699,26 +462,6 @@ class UseHealthKit: NSObject {
                 }
 
                 resolve(["bodyMassIndex", values])
-            } catch {
-                reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
-            }
-        }
-    }
-
-    /// Set array of BodyMassIndex value
-    ///
-    /// - Parameters:
-    ///   - data: This is an array of dictionary which contains startDate, endDate and value.
-    ///   - resolve: Return Bool of success.
-    ///   - reject: Return error message.
-    @objc func setBodyMassIndex(_ data: [[String: Double]],
-                                _ resolve: @escaping RCTPromiseResolveBlock,
-                                _ reject: @escaping RCTPromiseRejectBlock) {
-        quantityType.setBodyMassIndex(data) { success, error in
-            do {
-                if let error = error { throw error }
-
-                resolve(success)
             } catch {
                 reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
             }
