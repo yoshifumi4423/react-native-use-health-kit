@@ -29,10 +29,10 @@
 
 ## Usage
 
+### Permissions & Types for Write Data
 You can access below types for both of Read and Write.
 
 ```javascript
-  "sleepAnalysis",
   "dietaryWater",
   "bodyMass",
   "bodyFatPercentage",
@@ -46,6 +46,20 @@ You can access below types for both of Read and Write.
   "bodyMassIndex",
 ```
 
+### Unit
+You can check more unit in [Apple's document](https://developer.apple.com/documentation/healthkit/hkunit/1615733-init).
+
+"cal" for Calories.
+“g” for Grams.
+“m” for Meters.
+“L” or “l” for Liters.
+"count" for Count.
+"min" for Minute.
+"%" for Percentage.
+
+## Example
+
+### Configuration
 ```javascript
 import UseHealthKit from "react-native-use-health-kit";
 
@@ -54,7 +68,6 @@ if (!(await UseHealthKit.isHealthDataAvailable())) {
   throw "Health Kit is not available.";
 }
 const permissions = [
-  "sleepAnalysis",
   "dietaryWater",
   "bodyMass",
   "bodyFatPercentage",
@@ -70,8 +83,11 @@ const permissions = [
 const readPermissions = permissions;
 const writePermissions = permissions;
 await UseHealthKit.initHealthKit(writePermissions, readPermissions);
+```
 
-// Read data to Apple-Health
+### Read data from Apple-Health
+```javascript
+// Read data from Apple-Health
 const startDate = moment()
   .add("months", -6)
   .unix();
@@ -89,39 +105,110 @@ return Promise.all([
   UseHealthKit.getDietaryEnergyConsumed(startDate, endDate),
   UseHealthKit.getBodyMassIndex(startDate, endDate),
 ]);
+```
 
-// Write data from Apple-Health
-dates = [
+### Write data to Apple-Health
+```javascript
+// Write data to Apple-Health
+const today = moment().unix();
+dataList = [
+  // Active Energy
   {
-    startDate: moment()
-      .add("hours", -2)
-      .unix(),
-    endDate: moment()
-      .add("hours", 0)
-      .unix(),
-    value: 111,
+    type: "activeEnergyBurned",
+    unit: "kcal",
+    data: [
+      { startDate: today, endDate: today, value: 1000 },
+      { startDate: today, endDate: today, value: 1200 },
+    ],
   },
+  // Basal Energy
   {
-    startDate: moment()
-      .add("hours", -28)
-      .unix(),
-    endDate: moment()
-      .add("hours", -24)
-      .unix(),
-    value: 112,
+    type: "basalEnergyBurned",
+    unit: "kcal",
+    data: [
+      { startDate: today, endDate: today, value: 1000 },
+      { startDate: today, endDate: today, value: 1200 },
+    ],
+  },
+  // Walking + Running Distance
+  {
+    type: "distance",
+    unit: "m",
+    data: [
+      { startDate: today, endDate: today, value: 1000 },
+      { startDate: today, endDate: today, value: 1200 },
+    ],
+  },
+  // Flights Climbed
+  {
+    type: "flightsClimbed",
+    unit: "count",
+    data: [
+      { startDate: today, endDate: today, value: 100 },
+      { startDate: today, endDate: today, value: 200 },
+    ],
+  },
+  // Steps
+  {
+    type: "stepCount",
+    unit: "count",
+    data: [
+      { startDate: today, endDate: today, value: 3000 },
+      { startDate: today, endDate: today, value: 2200 },
+    ],
+  },
+  // Water
+  {
+    type: "dietaryWater",
+    unit: "ml",
+    data: [
+      { startDate: today, endDate: today, value: 1000 },
+      { startDate: today, endDate: today, value: 1200 },
+    ],
+  },
+  // Resting Heart Rate
+  {
+    type: "restingHeartRate",
+    unit: "count/min",
+    data: [
+      { startDate: today, endDate: today, value: 68 },
+      { startDate: today, endDate: today, value: 69 },
+    ],
+  },
+  // Weight
+  {
+    type: "bodyMass",
+    unit: "kg",
+    data: [
+      { startDate: today, endDate: today, value: 70 },
+      { startDate: today, endDate: today, value: 72 },
+    ],
+  },
+  // Body Mass Index
+  {
+    type: "bodyMassIndex",
+    unit: "count",
+    data: [
+      { startDate: today, endDate: today, value: 10.0 },
+      { startDate: today, endDate: today, value: 12.0 },
+    ],
+  },
+  // Body Fat Percentage
+  {
+    type: "bodyFatPercentage",
+    unit: "%",
+    data: [
+      { startDate: today, endDate: today, value: 10.0 },
+      { startDate: today, endDate: today, value: 12.0 },
+    ],
   },
 ];
-await UseHealthKit.setDietaryWater(dates);
-await UseHealthKit.setBodyMass(dates);
-await UseHealthKit.setBodyFatPercentage(dates);
-await UseHealthKit.setRestingHeartRate(dates);
-await UseHealthKit.setActiveEnergyBurned(dates);
-await UseHealthKit.setBasalEnergyBurned(dates);
-await UseHealthKit.setFlightsClimbed(dates);
-await UseHealthKit.setStepCount(dates);
-await UseHealthKit.setDistanceWalkingRunning(dates);
-await UseHealthKit.setDietaryEnergyConsumed(dates);
-await UseHealthKit.setBodyMassIndex(dates);
+
+
+
+await Promise.all(
+  dataList.map(data => UseHealthKit.setQuantityData(data)),
+);
 ```
 
 ## Author
