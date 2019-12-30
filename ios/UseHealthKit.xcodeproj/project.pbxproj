@@ -11,6 +11,7 @@
 		FE137110239AC4DA002001E2 /* UseHealthKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE13710B239AC4DA002001E2 /* UseHealthKit.swift */; };
 		FE137111239AC4DA002001E2 /* QuantityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE13710C239AC4DA002001E2 /* QuantityType.swift */; };
 		FE137112239AC4DA002001E2 /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE13710E239AC4DA002001E2 /* Query.swift */; };
+		FEE6B48723BA243D00B16368 /* Counterpart.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE6B48623BA243D00B16368 /* Counterpart.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -32,6 +33,7 @@
 		FE13710C239AC4DA002001E2 /* QuantityType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuantityType.swift; sourceTree = "<group>"; };
 		FE13710D239AC4DA002001E2 /* UseHealthKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UseHealthKit-Bridging-Header.h"; sourceTree = "<group>"; };
 		FE13710E239AC4DA002001E2 /* Query.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Query.swift; sourceTree = "<group>"; };
+		FEE6B48623BA243D00B16368 /* Counterpart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Counterpart.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +66,7 @@
 		FE201DC8233CE4BD008730D5 /* UseHealthKit */ = {
 			isa = PBXGroup;
 			children = (
+				FEE6B48623BA243D00B16368 /* Counterpart.swift */,
 				FE13710C239AC4DA002001E2 /* QuantityType.swift */,
 				FE13710E239AC4DA002001E2 /* Query.swift */,
 				FE13710D239AC4DA002001E2 /* UseHealthKit-Bridging-Header.h */,
@@ -133,6 +136,7 @@
 			files = (
 				FE137112239AC4DA002001E2 /* Query.swift in Sources */,
 				FE137111239AC4DA002001E2 /* QuantityType.swift in Sources */,
+				FEE6B48723BA243D00B16368 /* Counterpart.swift in Sources */,
 				FE137110239AC4DA002001E2 /* UseHealthKit.swift in Sources */,
 				FE13710F239AC4DA002001E2 /* UseHealthKit.m in Sources */,
 			);
