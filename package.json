@@ -1,7 +1,7 @@
 {
   "name": "react-native-use-health-kit",
   "title": "React Native Use Health Kit",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "React Native module which allows app to access Health Kit.",
   "main": "index.js",
   "scripts": {
