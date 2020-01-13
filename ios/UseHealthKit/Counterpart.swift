@@ -34,7 +34,7 @@ private var Permissions: [String: HKObjectType] = [
 func getPermissions() -> [String: HKObjectType] {
     if #available(iOS 11.0, *) {
         if !(Permissions[HealthType.restingHeartRate.rawValue] != nil) {
-            Permissions.updateValue(HKObjectType.quantityType(forIdentifier: .bodyMassIndex)!,
+            Permissions.updateValue(HKObjectType.quantityType(forIdentifier: .restingHeartRate)!,
                                     forKey: HealthType.restingHeartRate.rawValue)
         }
     }
