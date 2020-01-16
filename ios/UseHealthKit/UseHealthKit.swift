@@ -468,6 +468,26 @@ class UseHealthKit: NSObject {
         }
     }
 
+    /// Delete data of Quantity type.
+    /// - Parameters:
+    ///   - data:Dictionary of data. It should be like this.
+    ///   - resolve: Return array of DietaryWater value.
+    ///   - reject: Return error message.
+    @objc func deleteQuantityData(_ data: [String: Any],
+                                  _ resolve: @escaping RCTPromiseResolveBlock,
+                                  _ reject: @escaping RCTPromiseRejectBlock) {
+        quantityType.deleteQuantityData(data) { success, deletedObjectCount, error in
+            do {
+                if let error = error { throw error }
+
+                let results: [String: Any] = ["success": success, "deletedObjectCount": deletedObjectCount]
+                resolve(results)
+            } catch {
+                reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
+            }
+        }
+    }
+
     /// Return true to use this native module in main thread for heavy processing such as rendering UI.
     /// Return false to use this native module in secondly thread.
     ///
