@@ -82,4 +82,8 @@ RCT_EXTERN_METHOD(getBodyMassIndex
                   : (RCTPromiseResolveBlock)resolve
                   : (RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(deleteQuantityData
+                  : (NSDictionary *)data
+                  : (RCTPromiseResolveBlock)resolve
+                  : (RCTPromiseRejectBlock)reject)
 @end

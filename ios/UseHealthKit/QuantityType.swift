@@ -31,6 +31,19 @@ class QuantityType {
                                 end: Date(timeIntervalSince1970: endDate))
     }
 
+    /// Set data of Quantity type.
+    /// - Parameters:
+    ///   - data:Dictionary of data. It should be like this.
+    ///         [
+    ///             "type" : "activeEnergyBurned"
+    ///             "unit" : "kcal"
+    ///             "data" ": [
+    ///                 "value" : 1000;
+    ///                 "startDate" : 1578915422;
+    ///                 "endDate" : 1578915422
+    ///             ]
+    ///         ],
+    ///   - completion: handler when the query completes.
     func setQuantityData(_ data: [String: Any],
                          _ completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
         let identifier = getQuantityTypeIdentifiers()[data["type"] as! String]!
@@ -254,5 +267,29 @@ class QuantityType {
         }
 
         healthStore.execute(query)
+    }
+
+    /// Delete quantity data between start-date to end-date
+    /// - Parameters:
+    ///   - data:Dictionary of data. It should be like this.
+    ///         [
+    ///             "type" : "activeEnergyBurned"
+    ///             "startDate" : 1578915422
+    ///             "endDate" : 1578915422
+    ///         ],
+    ///  - completion: handler when the query completes
+    func deleteQuantityData(_ data: [String: Any],
+                            _ completion: @escaping (_ success: Bool, _ deletedObjectCount: Int, _ error: Error?) -> Void) {
+        let type = getQuantityTypeIdentifiers()[data["type"] as! String]!
+        let quantityType = HKObjectType.quantityType(forIdentifier: type)!
+        let startDate = data["startDate"] as! Double
+        let endDate = data["endDate"] as! Double
+        let predicate = HKQuery.predicateForSamples(withStart: Date(timeIntervalSince1970: startDate),
+                                                    end: Date(timeIntervalSince1970: endDate),
+                                                    options: [])
+
+        healthStore.deleteObjects(of: quantityType, predicate: predicate) {
+            success, deletedObjectCount, error in completion(success, deletedObjectCount, error)
+        }
     }
 }
