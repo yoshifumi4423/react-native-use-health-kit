@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "react": "16.8.6",
-    "react-native": "0.60.5",
+    "react-native": "0.71.2",
     "react-native-use-health-kit": "git+https://github.com/yoshifumi4423/react-native-use-health-kit"
   },
   "devDependencies": {
