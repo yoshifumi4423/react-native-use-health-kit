@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import {
   isHealthDataAvailable,
   initHealthKit,
@@ -69,7 +69,7 @@ export default function App() {
   const handleGetData = useCallback(async () => {
     await authorize();
     const data = await getData();
-    console.log(data);
+    console.log('GET DATA : ', data);
   }, [authorize, getData]);
 
   const setData = useCallback(async () => {
@@ -191,8 +191,12 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={handleGetData}>GetData</TouchableOpacity>
-      <TouchableOpacity onPress={handleSetData}>SetData</TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={handleGetData}>
+        <Text>GetData</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={handleSetData}>
+        <Text>SetData</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -203,9 +207,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  box: {
-    width: 60,
+  button: {
+    width: 120,
     height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'gray',
     marginVertical: 20,
   },
 });
