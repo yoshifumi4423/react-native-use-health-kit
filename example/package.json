@@ -1,14 +1,14 @@
 {
-  "name": "UseHealthKitExample",
+  "name": "use-health-kit",
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
+    "ios": "react-native run-ios --device",
     "start": "react-native start",
     "pods": "pod-install --quiet"
   },
   "dependencies": {
+    "moment": "^2.29.4",
     "react": "18.2.0",
     "react-native": "0.71.4"
   },
@@ -16,7 +16,7 @@
     "@babel/core": "^7.20.0",
     "@babel/preset-env": "^7.20.0",
     "@babel/runtime": "^7.20.0",
-    "metro-react-native-babel-preset": "0.73.8",
-    "babel-plugin-module-resolver": "^4.1.0"
+    "babel-plugin-module-resolver": "^4.1.0",
+    "metro-react-native-babel-preset": "0.73.8"
   }
 }
