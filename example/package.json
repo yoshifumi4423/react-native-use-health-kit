@@ -1,28 +1,22 @@
 {
-  "name": "example",
+  "name": "use-health-kit",
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "ios": "react-native run-ios --device",
     "start": "react-native start",
-    "test": "jest",
-    "lint": "eslint ."
+    "pods": "pod-install"
   },
   "dependencies": {
-    "react": "16.8.6",
-    "react-native": "0.60.5",
-    "react-native-use-health-kit": "git+https://github.com/yoshifumi4423/react-native-use-health-kit"
+    "moment": "^2.29.4",
+    "react": "18.2.0",
+    "react-native": "0.71.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.6.0",
-    "@babel/runtime": "^7.6.0",
-    "@react-native-community/eslint-config": "^0.0.5",
-    "babel-jest": "^24.9.0",
-    "eslint": "^6.4.0",
-    "jest": "^24.9.0",
-    "metro-react-native-babel-preset": "^0.56.0",
-    "react-test-renderer": "16.8.6"
-  },
-  "jest": {
-    "preset": "react-native"
+    "@babel/core": "^7.20.0",
+    "@babel/preset-env": "^7.20.0",
+    "@babel/runtime": "^7.20.0",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "metro-react-native-babel-preset": "0.73.8"
   }
 }
