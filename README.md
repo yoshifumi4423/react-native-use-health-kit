@@ -1,6 +1,12 @@
 # react-native-use-health-kit
 
+React Native module which allows app to access Health Kit.
+
 ## Getting started
+
+### Installation For Expo
+
+1. 🚨 Expo: This package is not available in the [Expo Go](https://expo.io/client) app. Learn how you can use it with [custom dev clients](/docs/Expo.md).
 
 ### Installation - For yarn
 
@@ -10,29 +16,13 @@
 
 `$ npm install react-native-use-health-kit --save`
 
-### AutoLinking - For ReactNative >= 0.60.0
-
-[ReactNative AutoLinking](https://github.com/react-native-community/cli/blob/master/docs/autolinking.md)
-
-1. `cd ios && pod install`
-
-### Mostly automatic installation - For ReactNative < 0.60.0
-
-1. `$ react-native link react-native-use-health-kit`
-
-### Manual installation - For ReactNative < 0.60.0
-
-1. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
-2. Go to `node_modules` ➜ `react-native-use-health-kit` and add `UseHealthKit.xcodeproj`
-3. In XCode, in the project navigator, select your project. Add `libUseHealthKit.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
-4. Run your project (`Cmd+R`)<
-
 ## Usage
 
 ### Permissions & Types for Write Data
+
 You can access below types for both of Read and Write.
 
-```javascript
+```typescript
   "dietaryWater",
   "bodyMass",
   "bodyFatPercentage",
@@ -47,6 +37,7 @@ You can access below types for both of Read and Write.
 ```
 
 ### Unit
+
 You can check more unit in [Apple's document](https://developer.apple.com/documentation/healthkit/hkunit/1615733-init).
 
 "cal" for Calories.
@@ -59,162 +50,183 @@ You can check more unit in [Apple's document](https://developer.apple.com/docume
 
 ## Example
 
-### Configuration
-```javascript
-import UseHealthKit from "react-native-use-health-kit";
+### Authorization
 
-// Init
-if (!(await UseHealthKit.isHealthDataAvailable())) {
-  throw "Health Kit is not available.";
-}
-const permissions = [
-  "dietaryWater",
-  "bodyMass",
-  "bodyFatPercentage",
-  "restingHeartRate",
-  "activeEnergyBurned",
-  "basalEnergyBurned",
-  "flightsClimbed",
-  "stepCount",
-  "distanceWalkingRunning",
-  "dietaryEnergyConsumed",
-  "bodyMassIndex",
+```typescript
+import UseHealthKit from 'react-native-use-health-kit';
+
+// Authorization
+const TYPES: HealthType[] = [
+  'dietaryWater',
+  'bodyMass',
+  'bodyFatPercentage',
+  'restingHeartRate',
+  'activeEnergyBurned',
+  'basalEnergyBurned',
+  'flightsClimbed',
+  'stepCount',
+  'distanceWalkingRunning',
+  'dietaryEnergyConsumed',
+  'bodyMassIndex',
 ];
-const readPermissions = permissions;
-const writePermissions = permissions;
-await UseHealthKit.initHealthKit(writePermissions, readPermissions);
+const authorize = useCallback(async () => {
+  if (TYPES.length === 0) return;
+
+  const isAvailable = await isHealthDataAvailable();
+  if (!isAvailable) throw new Error('HealthKit is not available.');
+
+  const isAuthorized = await initHealthKit(TYPES, TYPES);
+  if (!isAuthorized) throw new Error('HealthKit is not authorized.');
+}, []);
 ```
 
 ### Read data from Apple-Health
-```javascript
+
+```typescript
 // Read data from Apple-Health
-const startDate = moment()
-  .add("months", -6)
-  .unix();
-const endDate = moment().unix();
-return Promise.all([
-  UseHealthKit.getDietaryWater(startDate, endDate),
-  UseHealthKit.getBodyMass(startDate, endDate),
-  UseHealthKit.getBodyFatPercentage(startDate, endDate),
-  UseHealthKit.getRestingHeartRate(startDate, endDate),
-  UseHealthKit.getActiveEnergyBurned(startDate, endDate),
-  UseHealthKit.getBasalEnergyBurned(startDate, endDate),
-  UseHealthKit.getFlightsClimbed(startDate, endDate),
-  UseHealthKit.getStepCount(startDate, endDate),
-  UseHealthKit.getDistanceWalkingRunning(startDate, endDate),
-  UseHealthKit.getDietaryEnergyConsumed(startDate, endDate),
-  UseHealthKit.getBodyMassIndex(startDate, endDate),
-]);
+const today = moment().startOf('months');
+const startDate = moment(today).add(-1, 'months').unix();
+const endDate = moment(today).unix();
+
+const functions = [];
+functions.push(getActiveEnergyBurned(startDate, endDate));
+functions.push(getBasalEnergyBurned(startDate, endDate));
+functions.push(getBodyFatPercentage(startDate, endDate));
+functions.push(getBodyMass(startDate, endDate));
+functions.push(getBodyMassIndex(startDate, endDate));
+functions.push(getDietaryEnergyConsumed(startDate, endDate));
+functions.push(getDietaryWater(startDate, endDate));
+functions.push(getDistanceWalkingRunning(startDate, endDate));
+functions.push(getFlightsClimbed(startDate, endDate));
+functions.push(getRestingHeartRate(startDate, endDate));
+functions.push(getStepCount(startDate, endDate));
+
+return Promise.all(functions);
 ```
 
 ### Write data to Apple-Health
-```javascript
+
+```typescript
 // Write data to Apple-Health
-const today = moment().unix();
-dataList = [
+const date = moment().startOf('days');
+const twoDaysAgo = moment(date).add(-2, 'days').unix();
+const yesterday = moment(date).add(-1, 'days').unix();
+const today = moment(date).unix();
+
+const dataList: QuantitySetData[] = [
   // Active Energy
   {
-    type: "activeEnergyBurned",
-    unit: "kcal",
+    type: 'activeEnergyBurned',
+    unit: 'kcal',
     data: [
-      { startDate: today, endDate: today, value: 1000 },
+      { startDate: twoDaysAgo, endDate: twoDaysAgo, value: 1000 },
+      { startDate: yesterday, endDate: yesterday, value: 1100 },
       { startDate: today, endDate: today, value: 1200 },
     ],
   },
   // Basal Energy
   {
-    type: "basalEnergyBurned",
-    unit: "kcal",
+    type: 'basalEnergyBurned',
+    unit: 'kcal',
     data: [
-      { startDate: today, endDate: today, value: 1000 },
+      { startDate: twoDaysAgo, endDate: twoDaysAgo, value: 1000 },
+      { startDate: yesterday, endDate: yesterday, value: 1100 },
       { startDate: today, endDate: today, value: 1200 },
     ],
   },
   // Walking + Running Distance
   {
-    type: "distance",
-    unit: "m",
+    type: 'distanceWalkingRunning',
+    unit: 'm',
     data: [
-      { startDate: today, endDate: today, value: 1000 },
+      { startDate: twoDaysAgo, endDate: twoDaysAgo, value: 1000 },
+      { startDate: yesterday, endDate: yesterday, value: 1100 },
       { startDate: today, endDate: today, value: 1200 },
     ],
   },
   // Flights Climbed
   {
-    type: "flightsClimbed",
-    unit: "count",
+    type: 'flightsClimbed',
+    unit: 'count',
     data: [
-      { startDate: today, endDate: today, value: 100 },
-      { startDate: today, endDate: today, value: 200 },
+      { startDate: twoDaysAgo, endDate: twoDaysAgo, value: 100 },
+      { startDate: yesterday, endDate: yesterday, value: 110 },
+      { startDate: today, endDate: today, value: 120 },
     ],
   },
   // Steps
   {
-    type: "stepCount",
-    unit: "count",
+    type: 'stepCount',
+    unit: 'count',
     data: [
-      { startDate: today, endDate: today, value: 3000 },
-      { startDate: today, endDate: today, value: 2200 },
+      { startDate: twoDaysAgo, endDate: twoDaysAgo, value: 1000 },
+      { startDate: yesterday, endDate: yesterday, value: 1100 },
+      { startDate: today, endDate: today, value: 1200 },
     ],
   },
   // Water
   {
-    type: "dietaryWater",
-    unit: "ml",
+    type: 'dietaryWater',
+    unit: 'ml',
     data: [
-      { startDate: today, endDate: today, value: 1000 },
+      { startDate: twoDaysAgo, endDate: twoDaysAgo, value: 1000 },
+      { startDate: yesterday, endDate: yesterday, value: 1100 },
       { startDate: today, endDate: today, value: 1200 },
     ],
   },
   // Resting Heart Rate
   {
-    type: "restingHeartRate",
-    unit: "count/min",
+    type: 'restingHeartRate',
+    unit: 'count/min',
     data: [
-      { startDate: today, endDate: today, value: 68 },
-      { startDate: today, endDate: today, value: 69 },
+      { startDate: twoDaysAgo, endDate: twoDaysAgo, value: 65 },
+      { startDate: yesterday, endDate: yesterday, value: 66 },
+      { startDate: today, endDate: today, value: 67 },
     ],
   },
   // Weight
   {
-    type: "bodyMass",
-    unit: "kg",
+    type: 'bodyMass',
+    unit: 'kg',
     data: [
-      { startDate: today, endDate: today, value: 70 },
-      { startDate: today, endDate: today, value: 72 },
+      { startDate: twoDaysAgo, endDate: twoDaysAgo, value: 70 },
+      { startDate: yesterday, endDate: yesterday, value: 70.5 },
+      { startDate: today, endDate: today, value: 71 },
     ],
   },
   // Body Mass Index
   {
-    type: "bodyMassIndex",
-    unit: "count",
+    type: 'bodyMassIndex',
+    unit: 'count',
     data: [
-      { startDate: today, endDate: today, value: 10.0 },
-      { startDate: today, endDate: today, value: 12.0 },
+      { startDate: twoDaysAgo, endDate: twoDaysAgo, value: 18.0 },
+      { startDate: yesterday, endDate: yesterday, value: 18.0 },
+      { startDate: today, endDate: today, value: 18.0 },
     ],
   },
   // Body Fat Percentage
   {
-    type: "bodyFatPercentage",
-    unit: "%",
+    type: 'bodyFatPercentage',
+    unit: '%',
     data: [
-      { startDate: today, endDate: today, value: 10.0 },
-      { startDate: today, endDate: today, value: 12.0 },
+      { startDate: twoDaysAgo, endDate: twoDaysAgo, value: 18.0 },
+      { startDate: yesterday, endDate: yesterday, value: 18.0 },
+      { startDate: today, endDate: today, value: 18.0 },
     ],
   },
 ];
 
-
-
-await Promise.all(
-  dataList.map(data => UseHealthKit.setQuantityData(data)),
-);
+await Promise.all(dataList.map((data) => setQuantityData(data)));
 ```
 
-## Author
+## Contributing
 
-yoshifumi4423, ykpublicjp@gmail.com
+See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
 
 ## License
 
-react-native-use-health-kit is available under the MIT license. See the LICENSE file for more info.
+MIT
+
+---
+
+Made with [create-react-native-library](https://github.com/callstack/react-native-builder-bob)
