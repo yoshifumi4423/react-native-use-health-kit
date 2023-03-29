@@ -5,7 +5,7 @@
   "scripts": {
     "ios": "react-native run-ios --device",
     "start": "react-native start",
-    "pods": "pod-install --quiet"
+    "pods": "pod-install"
   },
   "dependencies": {
     "moment": "^2.29.4",
