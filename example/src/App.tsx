@@ -46,9 +46,9 @@ export default function App() {
   }, []);
 
   const getData = useCallback(async () => {
-    const today = moment().startOf('months');
-    const startDate = moment(today).add(-1, 'months').unix();
-    const endDate = moment(today).unix();
+    const today = moment().startOf('days');
+    const startDate = moment(today).add(-3, 'months').unix();
+    const endDate = moment(today).endOf('days').unix();
 
     const functions = [];
     functions.push(getActiveEnergyBurned(startDate, endDate));
@@ -68,8 +68,7 @@ export default function App() {
 
   const handleGetData = useCallback(async () => {
     await authorize();
-    const data = await getData();
-    console.log('GET DATA : ', data);
+    await getData();
   }, [authorize, getData]);
 
   const setData = useCallback(async () => {
@@ -174,14 +173,14 @@ export default function App() {
         type: 'bodyFatPercentage',
         unit: '%',
         data: [
-          { startDate: twoDaysAgo, endDate: twoDaysAgo, value: 18.0 },
-          { startDate: yesterday, endDate: yesterday, value: 18.0 },
-          { startDate: today, endDate: today, value: 18.0 },
+          { startDate: twoDaysAgo, endDate: twoDaysAgo, value: 0.18 },
+          { startDate: yesterday, endDate: yesterday, value: 0.18 },
+          { startDate: today, endDate: today, value: 0.18 },
         ],
       },
     ];
 
-    await Promise.all(dataList.map((data) => setQuantityData(data)));
+    return await Promise.all(dataList.map((data) => setQuantityData(data)));
   }, []);
 
   const handleSetData = useCallback(async () => {
