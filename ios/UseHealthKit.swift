@@ -129,15 +129,15 @@ class UseHealthKit: NSObject {
 
               var values: [[String: Double]] = []
               result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
-                                          to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
-                  if let quantity = statistic.sumQuantity() {
-                      let date = String(Int(statistic.startDate.timeIntervalSince1970))
+                                          to: Date(timeIntervalSince1970: endDate)) { statistics, _ in
+                  if let quantity = statistics.sumQuantity() {
+                      let date = String(Int(statistics.startDate.timeIntervalSince1970))
                       let value = quantity.doubleValue(for: .liter())
                       values.append([date: value])
                   }
               }
 
-              resolve(["dietaryWater", values])
+              resolve(["dietaryWater": values])
           } catch {
               reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
           }
@@ -161,15 +161,15 @@ class UseHealthKit: NSObject {
 
               var values: [[String: Double]] = []
               result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
-                                          to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
-                  if let quantity = statistic.averageQuantity() {
-                      let date = String(Int(statistic.startDate.timeIntervalSince1970))
+                                          to: Date(timeIntervalSince1970: endDate)) { statistics, _ in
+                  if let quantity = statistics.averageQuantity() {
+                      let date = String(Int(statistics.startDate.timeIntervalSince1970))
                       let value = quantity.doubleValue(for: .gramUnit(with: .kilo))
                       values.append([date: value])
                   }
               }
 
-              resolve(["bodyMass", values])
+              resolve(["bodyMass": values])
           } catch {
               reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
           }
@@ -193,15 +193,15 @@ class UseHealthKit: NSObject {
 
               var values: [[String: Double]] = []
               result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
-                                          to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
-                  if let quantity = statistic.averageQuantity() {
-                      let date = String(Int(statistic.startDate.timeIntervalSince1970))
+                                          to: Date(timeIntervalSince1970: endDate)) { statistics, _ in
+                  if let quantity = statistics.averageQuantity() {
+                      let date = String(Int(statistics.startDate.timeIntervalSince1970))
                       let value = quantity.doubleValue(for: .percent())
                       values.append([date: value])
                   }
               }
 
-              resolve(["bodyFatPercentage", values])
+              resolve(["bodyFatPercentage": values])
           } catch {
               reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
           }
@@ -226,15 +226,15 @@ class UseHealthKit: NSObject {
 
                   var values: [[String: Double]] = []
                   result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
-                                              to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
-                      if let quantity = statistic.averageQuantity() {
-                          let date = String(Int(statistic.startDate.timeIntervalSince1970))
+                                              to: Date(timeIntervalSince1970: endDate)) { statistics, _ in
+                      if let quantity = statistics.averageQuantity() {
+                          let date = String(Int(statistics.startDate.timeIntervalSince1970))
                           let value = quantity.doubleValue(for: HKUnit.count().unitDivided(by: HKUnit.minute()))
                           values.append([date: value])
                       }
                   }
 
-                  resolve(["restingHeartRate", values])
+                  resolve(["restingHeartRate": values])
               } catch {
                   reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
               }
@@ -261,15 +261,15 @@ class UseHealthKit: NSObject {
 
               var values: [[String: Double]] = []
               result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
-                                          to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
-                  if let quantity = statistic.sumQuantity() {
-                      let date = String(Int(statistic.startDate.timeIntervalSince1970))
+                                          to: Date(timeIntervalSince1970: endDate)) { statistics, _ in
+                  if let quantity = statistics.sumQuantity() {
+                      let date = String(Int(statistics.startDate.timeIntervalSince1970))
                       let value = quantity.doubleValue(for: .kilocalorie())
                       values.append([date: value])
                   }
               }
 
-              resolve(["activeEnergyBurned", values])
+              resolve(["activeEnergyBurned": values])
           } catch {
               reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
           }
@@ -293,15 +293,15 @@ class UseHealthKit: NSObject {
 
               var basalEnergyBurned: [[String: Double]] = []
               result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
-                                          to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
-                  if let quantity = statistic.sumQuantity() {
-                      let date = String(Int(statistic.startDate.timeIntervalSince1970))
+                                          to: Date(timeIntervalSince1970: endDate)) { statistics, _ in
+                  if let quantity = statistics.sumQuantity() {
+                      let date = String(Int(statistics.startDate.timeIntervalSince1970))
                       let value = quantity.doubleValue(for: .kilocalorie())
                       basalEnergyBurned.append([date: value])
                   }
               }
 
-              resolve(["basalEnergyBurned", basalEnergyBurned])
+              resolve(["basalEnergyBurned": basalEnergyBurned])
           } catch {
               reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
           }
@@ -325,15 +325,15 @@ class UseHealthKit: NSObject {
 
               var values: [[String: Double]] = []
               result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
-                                          to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
-                  if let quantity = statistic.sumQuantity() {
-                      let date = String(Int(statistic.startDate.timeIntervalSince1970))
+                                          to: Date(timeIntervalSince1970: endDate)) { statistics, _ in
+                  if let quantity = statistics.sumQuantity() {
+                      let date = String(Int(statistics.startDate.timeIntervalSince1970))
                       let value = quantity.doubleValue(for: .count())
                       values.append([date: value])
                   }
               }
 
-              resolve(["flightsClimbed", values])
+              resolve(["flightsClimbed": values])
           } catch {
               reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
           }
@@ -357,15 +357,15 @@ class UseHealthKit: NSObject {
 
               var values: [[String: Double]] = []
               result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
-                                          to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
-                  if let quantity = statistic.sumQuantity() {
-                      let date = String(Int(statistic.startDate.timeIntervalSince1970))
+                                          to: Date(timeIntervalSince1970: endDate)) { statistics, _ in
+                  if let quantity = statistics.sumQuantity() {
+                      let date = String(Int(statistics.startDate.timeIntervalSince1970))
                       let value = quantity.doubleValue(for: .count())
                       values.append([date: value])
                   }
               }
 
-              resolve(["stepCount", values])
+              resolve(["stepCount": values])
           } catch {
               reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
           }
@@ -389,15 +389,15 @@ class UseHealthKit: NSObject {
 
               var values: [[String: Double]] = []
               result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
-                                          to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
-                  if let quantity = statistic.sumQuantity() {
-                      let date = String(Int(statistic.startDate.timeIntervalSince1970))
+                                          to: Date(timeIntervalSince1970: endDate)) { statistics, _ in
+                  if let quantity = statistics.sumQuantity() {
+                      let date = String(Int(statistics.startDate.timeIntervalSince1970))
                       let value = quantity.doubleValue(for: .meter())
                       values.append([date: value])
                   }
               }
 
-              resolve(["distanceWalkingRunning", values])
+              resolve(["distanceWalkingRunning": values])
           } catch {
               reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
           }
@@ -421,15 +421,15 @@ class UseHealthKit: NSObject {
 
               var values: [[String: Double]] = []
               result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
-                                          to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
-                  if let quantity = statistic.sumQuantity() {
-                      let date = String(Int(statistic.startDate.timeIntervalSince1970))
+                                          to: Date(timeIntervalSince1970: endDate)) { statistics, _ in
+                  if let quantity = statistics.sumQuantity() {
+                      let date = String(Int(statistics.startDate.timeIntervalSince1970))
                       let value = quantity.doubleValue(for: .kilocalorie())
                       values.append([date: value])
                   }
               }
 
-              resolve(["dietaryEnergyConsumed", values])
+              resolve(["dietaryEnergyConsumed": values])
           } catch {
               reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
           }
@@ -453,15 +453,15 @@ class UseHealthKit: NSObject {
 
               var values: [[String: Double]] = []
               result!.enumerateStatistics(from: Date(timeIntervalSince1970: startDate),
-                                          to: Date(timeIntervalSince1970: endDate)) { statistic, _ in
-                  if let quantity = statistic.averageQuantity() {
-                      let date = String(Int(statistic.startDate.timeIntervalSince1970))
+                                          to: Date(timeIntervalSince1970: endDate)) { statistics, _ in
+                  if let quantity = statistics.averageQuantity() {
+                      let date = String(Int(statistics.startDate.timeIntervalSince1970))
                       let value = quantity.doubleValue(for: .count())
                       values.append([date: value])
                   }
               }
 
-              resolve(["bodyMassIndex", values])
+              resolve(["bodyMassIndex": values])
           } catch {
               reject(UseHealthKitError.error.rawValue, error.localizedDescription, nil)
           }
