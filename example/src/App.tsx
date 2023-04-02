@@ -16,22 +16,24 @@ import {
   getRestingHeartRate,
   getStepCount,
   setQuantityData,
-  QuantitySetData,
+  deleteQuantityData,
+  SetOptions,
+  DeleteOptions,
 } from 'react-native-use-health-kit';
 import moment from 'moment';
 
 const TYPES: HealthType[] = [
-  'dietaryWater',
-  'bodyMass',
-  'bodyFatPercentage',
-  'restingHeartRate',
   'activeEnergyBurned',
   'basalEnergyBurned',
-  'flightsClimbed',
-  'stepCount',
-  'distanceWalkingRunning',
-  'dietaryEnergyConsumed',
+  'bodyFatPercentage',
+  'bodyMass',
   'bodyMassIndex',
+  'dietaryEnergyConsumed',
+  'dietaryWater',
+  'distanceWalkingRunning',
+  'flightsClimbed',
+  'restingHeartRate',
+  'stepCount',
 ];
 
 export default function App() {
@@ -49,19 +51,20 @@ export default function App() {
     const today = moment().startOf('days');
     const startDate = moment(today).add(-3, 'months').unix();
     const endDate = moment(today).endOf('days').unix();
+    const options = { startDate, endDate };
 
     const functions = [];
-    functions.push(getActiveEnergyBurned(startDate, endDate));
-    functions.push(getBasalEnergyBurned(startDate, endDate));
-    functions.push(getBodyFatPercentage(startDate, endDate));
-    functions.push(getBodyMass(startDate, endDate));
-    functions.push(getBodyMassIndex(startDate, endDate));
-    functions.push(getDietaryEnergyConsumed(startDate, endDate));
-    functions.push(getDietaryWater(startDate, endDate));
-    functions.push(getDistanceWalkingRunning(startDate, endDate));
-    functions.push(getFlightsClimbed(startDate, endDate));
-    functions.push(getRestingHeartRate(startDate, endDate));
-    functions.push(getStepCount(startDate, endDate));
+    functions.push(getActiveEnergyBurned(options));
+    functions.push(getBasalEnergyBurned(options));
+    functions.push(getBodyFatPercentage(options));
+    functions.push(getBodyMass(options));
+    functions.push(getBodyMassIndex(options));
+    functions.push(getDietaryEnergyConsumed(options));
+    functions.push(getDietaryWater(options));
+    functions.push(getDistanceWalkingRunning(options));
+    functions.push(getFlightsClimbed(options));
+    functions.push(getRestingHeartRate(options));
+    functions.push(getStepCount(options));
 
     return Promise.all(functions);
   }, []);
@@ -77,7 +80,7 @@ export default function App() {
     const yesterday = moment(date).add(-1, 'days').unix();
     const today = moment(date).unix();
 
-    const dataList: QuantitySetData[] = [
+    const optionsList: SetOptions[] = [
       // Active Energy
       {
         type: 'activeEnergyBurned',
@@ -180,13 +183,94 @@ export default function App() {
       },
     ];
 
-    return await Promise.all(dataList.map((data) => setQuantityData(data)));
+    return await Promise.all(
+      optionsList.map((options) => setQuantityData(options))
+    );
   }, []);
 
   const handleSetData = useCallback(async () => {
     await authorize();
     await setData();
   }, [authorize, setData]);
+
+  const deleteData = useCallback(async () => {
+    const date = moment().startOf('days');
+    const twoDaysAgo = moment(date).add(-2, 'days').unix();
+    const yesterday = moment(date).add(-1, 'days').unix();
+    const today = moment(date).endOf('days').unix();
+
+    const optionsList: DeleteOptions[] = [
+      // Active Energy
+      {
+        type: 'activeEnergyBurned',
+        startDate: twoDaysAgo,
+        endDate: today,
+      },
+      // Basal Energy
+      {
+        type: 'basalEnergyBurned',
+        startDate: twoDaysAgo,
+        endDate: today,
+      },
+      // Walking + Running Distance
+      {
+        type: 'distanceWalkingRunning',
+        startDate: twoDaysAgo,
+        endDate: today,
+      },
+      // Flights Climbed
+      {
+        type: 'flightsClimbed',
+        startDate: twoDaysAgo,
+        endDate: today,
+      },
+      // Steps
+      {
+        type: 'stepCount',
+        startDate: twoDaysAgo,
+        endDate: today,
+      },
+      // Water
+      {
+        type: 'dietaryWater',
+        startDate: twoDaysAgo,
+        endDate: today,
+      },
+      // Resting Heart Rate
+      {
+        type: 'restingHeartRate',
+        startDate: twoDaysAgo,
+        endDate: today,
+      },
+      // Weight
+      {
+        type: 'bodyMass',
+        startDate: twoDaysAgo,
+        endDate: today,
+      },
+      // Body Mass Index
+      {
+        type: 'bodyMassIndex',
+        startDate: twoDaysAgo,
+        endDate: today,
+      },
+      // Body Fat Percentage
+      {
+        type: 'bodyFatPercentage',
+        startDate: twoDaysAgo,
+        endDate: today,
+      },
+    ];
+
+    return await Promise.all(
+      optionsList.map((options) => deleteQuantityData(options))
+    );
+  }, []);
+
+  const handleDeleteData = useCallback(async () => {
+    await authorize();
+    console.log(await deleteData());
+  }, [authorize, deleteData]);
 
   return (
     <View style={styles.container}>
@@ -195,6 +279,9 @@ export default function App() {
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={handleSetData}>
         <Text>SetData</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={handleDeleteData}>
+        <Text>DeleteData</Text>
       </TouchableOpacity>
     </View>
   );
