@@ -1,28 +1,28 @@
 /**
- * @param dietaryWater - water intake
- * @param bodyMass - body mass
- * @param bodyFatPercentage - body fat percentage
- * @param restingHeartRate - resting heart rate
  * @param activeEnergyBurned - active energy burned
  * @param basalEnergyBurned - basal energy burned
- * @param flightsClimbed - flights climbed
- * @param stepCount - step count
+ * @param bodyFatPercentage - body fat percentage
+ * @param bodyMass - body mass
+ * @param bodyMassIndex - body mass index
+ * @param dietaryEnergyConsumed - dietary energy consumed
+ * @param dietaryWater - dietary water
  * @param distanceWalkingRunning - distance walking running
- * @param dietaryEnergyConsumed - energy consumed
- *  @param bodyMassIndex - body mass index
+ * @param flightsClimbed - flights climbed
+ * @param restingHeartRate - resting heart rate
+ * @param stepCount - step count
  */
 export type HealthType =
-  | 'dietaryWater'
-  | 'bodyMass'
-  | 'bodyFatPercentage'
-  | 'restingHeartRate'
   | 'activeEnergyBurned'
   | 'basalEnergyBurned'
-  | 'flightsClimbed'
-  | 'stepCount'
-  | 'distanceWalkingRunning'
+  | 'bodyFatPercentage'
+  | 'bodyMass'
+  | 'bodyMassIndex'
   | 'dietaryEnergyConsumed'
-  | 'bodyMassIndex';
+  | 'dietaryWater'
+  | 'distanceWalkingRunning'
+  | 'flightsClimbed'
+  | 'restingHeartRate'
+  | 'stepCount';
 
 /**
  * @param kcal - kilocalories
@@ -51,8 +51,28 @@ export type QuantityData = {
  * @param unit - unit of the data
  * @param data - array of data
  */
-export type QuantitySetData = {
+export type SetOptions = {
   type: HealthType;
   unit: Unit;
   data: QuantityData[];
+};
+
+/**
+ * @param type - type of the data
+ * @param startDate - start date of the data in unix time
+ * @param endDate - end date of the data in unix time
+ */
+export type DeleteOptions = {
+  type: HealthType;
+  startDate: number;
+  endDate: number;
+};
+
+/**
+ * @param startDate - start date of the data in unix time
+ * @param endDate - end date of the data in unix time
+ */
+export type GetOptions = {
+  startDate: number;
+  endDate: number;
 };

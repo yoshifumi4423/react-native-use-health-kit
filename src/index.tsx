@@ -1,5 +1,10 @@
 import { NativeModules, Platform } from 'react-native';
-import type { HealthType, QuantitySetData } from './types';
+import type {
+  DeleteOptions,
+  GetOptions,
+  HealthType,
+  SetOptions,
+} from './types';
 
 export * from './types';
 
@@ -31,83 +36,62 @@ export function initHealthKit(
   return UseHealthKit.initHealthKit(readPermissions, writePermissions);
 }
 
-export function setQuantityData(data: QuantitySetData): Promise<boolean> {
-  return UseHealthKit.setQuantityData(data);
+export function setQuantityData(options: SetOptions): Promise<boolean> {
+  return UseHealthKit.setQuantityData(options);
 }
 
-export function getDietaryWater(
-  startDate: number,
-  endDate: number
-): Promise<number> {
-  return UseHealthKit.getDietaryWater(startDate, endDate);
+export function deleteQuantityData(options: DeleteOptions): Promise<boolean> {
+  return UseHealthKit.deleteQuantityData(options);
 }
 
-export function getBodyMass(
-  startDate: number,
-  endDate: number
-): Promise<number> {
-  return UseHealthKit.getBodyMass(startDate, endDate);
+export function getDietaryWater(options: GetOptions): Promise<number> {
+  return UseHealthKit.getDietaryWater(options.startDate, options.endDate);
 }
 
-export function getBodyFatPercentage(
-  startDate: number,
-  endDate: number
-): Promise<number> {
-  return UseHealthKit.getBodyFatPercentage(startDate, endDate);
+export function getBodyMass(options: GetOptions): Promise<number> {
+  return UseHealthKit.getBodyMass(options.startDate, options.endDate);
 }
 
-export function getRestingHeartRate(
-  startDate: number,
-  endDate: number
-): Promise<number> {
-  return UseHealthKit.getRestingHeartRate(startDate, endDate);
+export function getBodyFatPercentage(options: GetOptions): Promise<number> {
+  return UseHealthKit.getBodyFatPercentage(options.startDate, options.endDate);
 }
 
-export function getActiveEnergyBurned(
-  startDate: number,
-  endDate: number
-): Promise<number> {
-  return UseHealthKit.getActiveEnergyBurned(startDate, endDate);
+export function getRestingHeartRate(options: GetOptions): Promise<number> {
+  return UseHealthKit.getRestingHeartRate(options.startDate, options.endDate);
 }
 
-export function getBasalEnergyBurned(
-  startDate: number,
-  endDate: number
-): Promise<number> {
-  return UseHealthKit.getBasalEnergyBurned(startDate, endDate);
+export function getActiveEnergyBurned(options: GetOptions): Promise<number> {
+  return UseHealthKit.getActiveEnergyBurned(options.startDate, options.endDate);
 }
 
-export function getFlightsClimbed(
-  startDate: number,
-  endDate: number
-): Promise<number> {
-  return UseHealthKit.getFlightsClimbed(startDate, endDate);
+export function getBasalEnergyBurned(options: GetOptions): Promise<number> {
+  return UseHealthKit.getBasalEnergyBurned(options.startDate, options.endDate);
 }
 
-export function getStepCount(
-  startDate: number,
-  endDate: number
-): Promise<number> {
-  return UseHealthKit.getStepCount(startDate, endDate);
+export function getFlightsClimbed(options: GetOptions): Promise<number> {
+  return UseHealthKit.getFlightsClimbed(options.startDate, options.endDate);
+}
+
+export function getStepCount(options: GetOptions): Promise<number> {
+  return UseHealthKit.getStepCount(options.startDate, options.endDate);
 }
 
 export function getDistanceWalkingRunning(
-  startDate: number,
-  endDate: number
+  options: GetOptions
 ): Promise<number> {
-  return UseHealthKit.getDistanceWalkingRunning(startDate, endDate);
+  return UseHealthKit.getDistanceWalkingRunning(
+    options.startDate,
+    options.endDate
+  );
 }
 
-export function getDietaryEnergyConsumed(
-  startDate: number,
-  endDate: number
-): Promise<number> {
-  return UseHealthKit.getDietaryEnergyConsumed(startDate, endDate);
+export function getDietaryEnergyConsumed(options: GetOptions): Promise<number> {
+  return UseHealthKit.getDietaryEnergyConsumed(
+    options.startDate,
+    options.endDate
+  );
 }
 
-export function getBodyMassIndex(
-  startDate: number,
-  endDate: number
-): Promise<number> {
-  return UseHealthKit.getBodyMassIndex(startDate, endDate);
+export function getBodyMassIndex(options: GetOptions): Promise<number> {
+  return UseHealthKit.getBodyMassIndex(options.startDate, options.endDate);
 }
