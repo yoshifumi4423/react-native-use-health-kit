@@ -36,14 +36,14 @@ export type HealthType =
 export type Unit = 'kcal' | 'm' | 'count' | 'ml' | 'count/min' | 'kg' | '%';
 
 /**
- * @param startDate - start date of the data in unix time
- * @param endDate - end date of the data in unix time
  * @param value - value of the data
+ * @param startDate - start date of the data
+ * @param endDate - end date of the data
  */
 export type QuantityData = {
-  startDate: number;
-  endDate: number;
   value: number;
+  startDate: Date;
+  endDate: Date;
 };
 
 /**
@@ -59,20 +59,20 @@ export type SetOptions = {
 
 /**
  * @param type - type of the data
- * @param startDate - start date of the data in unix time
- * @param endDate - end date of the data in unix time
+ * @param startDate - start date of the data
+ * @param endDate - end date of the data
  */
 export type DeleteOptions = {
   type: HealthType;
-  startDate: number;
-  endDate: number;
+  startDate: Date;
+  endDate: Date;
 };
 
 /**
- * @param startDate - start date of the data in unix time
- * @param endDate - end date of the data in unix time
+ * @param startDate - start date of the data
+ * @param endDate - end date of the data
  */
 export type GetOptions = {
-  startDate: number;
-  endDate: number;
+  startDate: Date;
+  endDate: Date;
 };

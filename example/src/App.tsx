@@ -49,8 +49,8 @@ export default function App() {
 
   const getData = useCallback(async () => {
     const today = moment().startOf('days');
-    const startDate = moment(today).add(-3, 'months').unix();
-    const endDate = moment(today).endOf('days').unix();
+    const startDate = moment(today).add(-3, 'months').toDate();
+    const endDate = moment(today).endOf('days').toDate();
     const options = { startDate, endDate };
 
     const functions = [];
@@ -76,9 +76,9 @@ export default function App() {
 
   const setData = useCallback(async () => {
     const date = moment().startOf('days');
-    const twoDaysAgo = moment(date).add(-2, 'days').unix();
-    const yesterday = moment(date).add(-1, 'days').unix();
-    const today = moment(date).unix();
+    const twoDaysAgo = moment(date).add(-2, 'days').toDate();
+    const yesterday = moment(date).add(-1, 'days').toDate();
+    const today = moment(date).toDate();
 
     const optionsList: SetOptions[] = [
       // Active Energy
@@ -195,71 +195,31 @@ export default function App() {
 
   const deleteData = useCallback(async () => {
     const date = moment().startOf('days');
-    const twoDaysAgo = moment(date).add(-2, 'days').unix();
-    const yesterday = moment(date).add(-1, 'days').unix();
-    const today = moment(date).endOf('days').unix();
+    const twoDaysAgo = moment(date).add(-2, 'days').toDate();
+    const yesterday = moment(date).add(-1, 'days').toDate();
+    const today = moment(date).endOf('days').toDate();
 
     const optionsList: DeleteOptions[] = [
       // Active Energy
-      {
-        type: 'activeEnergyBurned',
-        startDate: twoDaysAgo,
-        endDate: today,
-      },
+      { type: 'activeEnergyBurned', startDate: twoDaysAgo, endDate: today },
       // Basal Energy
-      {
-        type: 'basalEnergyBurned',
-        startDate: twoDaysAgo,
-        endDate: today,
-      },
+      { type: 'basalEnergyBurned', startDate: twoDaysAgo, endDate: today },
       // Walking + Running Distance
-      {
-        type: 'distanceWalkingRunning',
-        startDate: twoDaysAgo,
-        endDate: today,
-      },
+      { type: 'distanceWalkingRunning', startDate: twoDaysAgo, endDate: today },
       // Flights Climbed
-      {
-        type: 'flightsClimbed',
-        startDate: twoDaysAgo,
-        endDate: today,
-      },
+      { type: 'flightsClimbed', startDate: twoDaysAgo, endDate: today },
       // Steps
-      {
-        type: 'stepCount',
-        startDate: twoDaysAgo,
-        endDate: today,
-      },
+      { type: 'stepCount', startDate: twoDaysAgo, endDate: today },
       // Water
-      {
-        type: 'dietaryWater',
-        startDate: twoDaysAgo,
-        endDate: today,
-      },
+      { type: 'dietaryWater', startDate: twoDaysAgo, endDate: today },
       // Resting Heart Rate
-      {
-        type: 'restingHeartRate',
-        startDate: twoDaysAgo,
-        endDate: today,
-      },
+      { type: 'restingHeartRate', startDate: twoDaysAgo, endDate: today },
       // Weight
-      {
-        type: 'bodyMass',
-        startDate: twoDaysAgo,
-        endDate: today,
-      },
+      { type: 'bodyMass', startDate: twoDaysAgo, endDate: today },
       // Body Mass Index
-      {
-        type: 'bodyMassIndex',
-        startDate: twoDaysAgo,
-        endDate: today,
-      },
+      { type: 'bodyMassIndex', startDate: twoDaysAgo, endDate: today },
       // Body Fat Percentage
-      {
-        type: 'bodyFatPercentage',
-        startDate: twoDaysAgo,
-        endDate: today,
-      },
+      { type: 'bodyFatPercentage', startDate: twoDaysAgo, endDate: today },
     ];
 
     return await Promise.all(
