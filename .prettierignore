@@ -1,0 +1,12 @@
+# Ignore artifacts:
+.expo
+.expo-shared
+assets
+data
+firebase
+ios
+android
+node_modules
+
+build
+coverage
