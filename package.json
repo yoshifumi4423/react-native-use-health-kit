@@ -153,6 +153,6 @@
     ]
   },
   "dependencies": {
-    "@expo/config-plugins": "^6.0.1"
+    "@expo/config-plugins": "^7.2.0"
   }
 }
