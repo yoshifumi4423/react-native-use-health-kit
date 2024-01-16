@@ -8,7 +8,7 @@
     "pods": "pod-install"
   },
   "dependencies": {
-    "moment": "^2.29.4",
+    "moment": "^2.30.0",
     "react": "18.2.0",
     "react-native": "0.71.5"
   },
