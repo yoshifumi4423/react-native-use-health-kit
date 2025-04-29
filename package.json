@@ -1,6 +1,6 @@
 {
   "name": "react-native-use-health-kit",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "This package allows app to read and write health data by HealthKit.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
