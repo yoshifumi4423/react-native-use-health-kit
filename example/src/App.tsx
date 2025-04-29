@@ -1,5 +1,12 @@
-import React, { useCallback } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Text,
+  ScrollView,
+  SafeAreaView,
+} from 'react-native';
 import {
   isHealthDataAvailable,
   initHealthKit,
@@ -15,8 +22,11 @@ import {
   getFlightsClimbed,
   getRestingHeartRate,
   getStepCount,
+  getSleepAnalysis,
   setQuantityData,
   deleteQuantityData,
+  setCategoryData,
+  deleteCategoryData,
   SetOptions,
   DeleteOptions,
 } from 'react-native-use-health-kit';
@@ -34,17 +44,44 @@ const TYPES: HealthType[] = [
   'flightsClimbed',
   'restingHeartRate',
   'stepCount',
+  'sleepAnalysis',
 ];
 
+type HealthData = {
+  type: HealthType;
+  data:
+    | number
+    | undefined
+    | { startDate: Date; endDate: Date; value: number }[];
+};
+
 export default function App() {
+  const [healthData, setHealthData] = useState<HealthData[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [expandedSections, setExpandedSections] = useState<
+    Record<HealthType, boolean>
+  >(
+    TYPES.reduce(
+      (acc, type) => ({ ...acc, [type]: false }),
+      {} as Record<HealthType, boolean>
+    )
+  );
+
   const authorize = useCallback(async () => {
-    if (TYPES.length === 0) return;
+    try {
+      if (TYPES.length === 0) return;
 
-    const isAvailable = await isHealthDataAvailable();
-    if (!isAvailable) throw new Error('HealthKit is not available.');
+      const isAvailable = await isHealthDataAvailable();
+      if (!isAvailable) throw new Error('HealthKit is not available.');
 
-    const isAuthorized = await initHealthKit(TYPES, TYPES);
-    if (!isAuthorized) throw new Error('HealthKit is not authorized.');
+      const isAuthorized = await initHealthKit(TYPES, TYPES);
+      if (!isAuthorized) throw new Error('HealthKit is not authorized.');
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : 'An unknown error occurred'
+      );
+      throw err;
+    }
   }, []);
 
   const getData = useCallback(async () => {
@@ -53,25 +90,40 @@ export default function App() {
     const endDate = moment(today).endOf('days').toDate();
     const options = { startDate, endDate };
 
-    const functions = [];
-    functions.push(getActiveEnergyBurned(options));
-    functions.push(getBasalEnergyBurned(options));
-    functions.push(getBodyFatPercentage(options));
-    functions.push(getBodyMass(options));
-    functions.push(getBodyMassIndex(options));
-    functions.push(getDietaryEnergyConsumed(options));
-    functions.push(getDietaryWater(options));
-    functions.push(getDistanceWalkingRunning(options));
-    functions.push(getFlightsClimbed(options));
-    functions.push(getRestingHeartRate(options));
-    functions.push(getStepCount(options));
+    const functions = [
+      getActiveEnergyBurned(options),
+      getBasalEnergyBurned(options),
+      getBodyFatPercentage(options),
+      getBodyMass(options),
+      getBodyMassIndex(options),
+      getDietaryEnergyConsumed(options),
+      getDietaryWater(options),
+      getDistanceWalkingRunning(options),
+      getFlightsClimbed(options),
+      getRestingHeartRate(options),
+      getStepCount(options),
+      getSleepAnalysis(options),
+    ];
 
-    return Promise.all(functions);
+    const results = await Promise.all(functions);
+
+    return TYPES.map((type, index) => ({
+      type,
+      data: results[index],
+    }));
   }, []);
 
   const handleGetData = useCallback(async () => {
-    await authorize();
-    await getData();
+    try {
+      setError(null);
+      await authorize();
+      const data = await getData();
+      setHealthData(data);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : 'An unknown error occurred'
+      );
+    }
   }, [authorize, getData]);
 
   const setData = useCallback(async () => {
@@ -181,6 +233,21 @@ export default function App() {
           { startDate: today, endDate: today, value: 0.18 },
         ],
       },
+      // Sleep Analysis
+      {
+        type: 'sleepAnalysis',
+        unit: 'count',
+        data: [
+          {
+            startDate: moment(yesterday).set({ hour: 22, minute: 0 }).toDate(),
+            endDate: moment(yesterday)
+              .add(1, 'days')
+              .set({ hour: 6, minute: 0 })
+              .toDate(),
+            value: 1, // 1: Asleep
+          },
+        ],
+      },
     ];
 
     return await Promise.all(
@@ -189,8 +256,15 @@ export default function App() {
   }, []);
 
   const handleSetData = useCallback(async () => {
-    await authorize();
-    await setData();
+    try {
+      setError(null);
+      await authorize();
+      await setData();
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : 'An unknown error occurred'
+      );
+    }
   }, [authorize, setData]);
 
   const deleteData = useCallback(async () => {
@@ -199,28 +273,11 @@ export default function App() {
     const yesterday = moment(date).add(-1, 'days').toDate();
     const today = moment(date).endOf('days').toDate();
 
-    const optionsList: DeleteOptions[] = [
-      // Active Energy
-      { type: 'activeEnergyBurned', startDate: twoDaysAgo, endDate: today },
-      // Basal Energy
-      { type: 'basalEnergyBurned', startDate: twoDaysAgo, endDate: today },
-      // Walking + Running Distance
-      { type: 'distanceWalkingRunning', startDate: twoDaysAgo, endDate: today },
-      // Flights Climbed
-      { type: 'flightsClimbed', startDate: twoDaysAgo, endDate: today },
-      // Steps
-      { type: 'stepCount', startDate: twoDaysAgo, endDate: today },
-      // Water
-      { type: 'dietaryWater', startDate: twoDaysAgo, endDate: today },
-      // Resting Heart Rate
-      { type: 'restingHeartRate', startDate: twoDaysAgo, endDate: today },
-      // Weight
-      { type: 'bodyMass', startDate: twoDaysAgo, endDate: today },
-      // Body Mass Index
-      { type: 'bodyMassIndex', startDate: twoDaysAgo, endDate: today },
-      // Body Fat Percentage
-      { type: 'bodyFatPercentage', startDate: twoDaysAgo, endDate: today },
-    ];
+    const optionsList: DeleteOptions[] = TYPES.map((type) => ({
+      type,
+      startDate: twoDaysAgo,
+      endDate: today,
+    }));
 
     return await Promise.all(
       optionsList.map((options) => deleteQuantityData(options))
@@ -228,37 +285,124 @@ export default function App() {
   }, []);
 
   const handleDeleteData = useCallback(async () => {
-    await authorize();
-    console.log(await deleteData());
+    try {
+      setError(null);
+      await authorize();
+      await deleteData();
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : 'An unknown error occurred'
+      );
+    }
   }, [authorize, deleteData]);
 
+  const toggleSection = useCallback((type: HealthType) => {
+    setExpandedSections((prev) => ({
+      ...prev,
+      [type]: !prev[type],
+    }));
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={handleGetData}>
-        <Text>GetData</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleSetData}>
-        <Text>SetData</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleDeleteData}>
-        <Text>DeleteData</Text>
-      </TouchableOpacity>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>HealthKit Demo</Text>
+        <TouchableOpacity style={styles.button} onPress={handleGetData}>
+          <Text style={styles.buttonText}>Get Data</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleSetData}>
+          <Text style={styles.buttonText}>Set Data</Text>
+        </TouchableOpacity>
+      </View>
+      {error && <Text style={styles.error}>{error}</Text>}
+      <ScrollView style={styles.scrollView}>
+        {healthData.map((item) => (
+          <View key={item.type} style={styles.section}>
+            <TouchableOpacity
+              style={styles.sectionHeader}
+              onPress={() => toggleSection(item.type)}
+            >
+              <Text style={styles.sectionTitle}>{item.type}</Text>
+              <Text style={styles.toggleText}>
+                {expandedSections[item.type] ? '▼' : '▶'}
+              </Text>
+            </TouchableOpacity>
+            {expandedSections[item.type] && (
+              <View style={styles.dataContainer}>
+                <Text style={styles.dataValue}>
+                  {JSON.stringify(item.data, null)}
+                </Text>
+              </View>
+            )}
+          </View>
+        ))}
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#f5f5f5',
+  },
+  scrollView: {
+    flex: 1,
+    padding: 16,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    justifyContent: 'center',
+    padding: 16,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   button: {
-    width: 120,
-    height: 60,
-    justifyContent: 'center',
+    backgroundColor: '#007AFF',
+    padding: 12,
+    borderRadius: 8,
+    minWidth: 100,
     alignItems: 'center',
-    backgroundColor: 'gray',
-    marginVertical: 20,
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  error: {
+    color: '#FF3B30',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  section: {
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 16,
+    backgroundColor: '#f5f5f5',
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  toggleText: {
+    fontSize: 16,
+  },
+  dataContainer: {
+    backgroundColor: 'white',
+    padding: 12,
+  },
+  dataValue: {
+    fontSize: 14,
+    color: '#666',
   },
 });

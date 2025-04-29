@@ -17,9 +17,10 @@ class QuantityType {
 
     /// Initializer
     init() {
-        healthStore = HKHealthStore()
+        self.healthStore = HKHealthStore()
     }
 
+    /// Get quantity sample.
     private func getQuantitySample(identifier: HKQuantityTypeIdentifier,
                                    unit: HKUnit,
                                    value: Double,
@@ -31,32 +32,21 @@ class QuantityType {
                                 end: Date(timeIntervalSince1970: endDate))
     }
 
-    /// Set data of Quantity type.
-    /// - Parameters:
-    ///   - data:Dictionary of data. It should be like this.
-    ///         [
-    ///             "type" : "activeEnergyBurned"
-    ///             "unit" : "kcal"
-    ///             "data" ": [
-    ///                 "value" : 1000;
-    ///                 "startDate" : 1578915422;
-    ///                 "endDate" : 1578915422
-    ///             ]
-    ///         ],
-    ///   - completion: handler when the query completes.
-    func setQuantityData(_ data: [String: Any],
-                         _ completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
-        let identifier = getQuantityTypeIdentifiers()[data["type"] as! String]!
-        let unit = HKUnit(from: data["unit"] as! String)
-        let dataList = data["data"] as! [[String: Double]]
-
-        let objects = dataList.map { getQuantitySample(identifier: identifier,
-                                                       unit: unit,
-                                                       value: $0["value"]!,
-                                                       startDate: $0["startDate"]!,
-                                                       endDate: $0["endDate"]!) }
-
-        healthStore.save(objects) { success, error in completion(success, error) }
+    /// Get quantity type identifiers.
+    private func getQuantityTypeIdentifiers() -> [String: HKQuantityTypeIdentifier] {
+        return [
+            "activeEnergyBurned": .activeEnergyBurned,
+            "basalEnergyBurned": .basalEnergyBurned,
+            "bodyFatPercentage": .bodyFatPercentage,
+            "bodyMass": .bodyMass,
+            "bodyMassIndex": .bodyMassIndex,
+            "dietaryEnergyConsumed": .dietaryEnergyConsumed,
+            "dietaryWater": .dietaryWater,
+            "distanceWalkingRunning": .distanceWalkingRunning,
+            "flightsClimbed": .flightsClimbed,
+            "restingHeartRate": .restingHeartRate,
+            "stepCount": .stepCount,
+        ]
     }
 
     /// Get sample data of DietaryWater.
@@ -267,6 +257,34 @@ class QuantityType {
         }
 
         healthStore.execute(query)
+    }
+
+    /// Set data of Quantity type.
+    /// - Parameters:
+    ///   - data:Dictionary of data. It should be like this.
+    ///         [
+    ///             "type" : "activeEnergyBurned"
+    ///             "unit" : "kcal"
+    ///             "data" ": [
+    ///                 "value" : 1000;
+    ///                 "startDate" : 1578915422;
+    ///                 "endDate" : 1578915422
+    ///             ]
+    ///         ],
+    ///   - completion: handler when the query completes.
+    func setQuantityData(_ data: [String: Any],
+                         _ completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
+        let identifier = getQuantityTypeIdentifiers()[data["type"] as! String]!
+        let unit = HKUnit(from: data["unit"] as! String)
+        let dataList = data["data"] as! [[String: Double]]
+
+        let objects = dataList.map { getQuantitySample(identifier: identifier,
+                                                       unit: unit,
+                                                       value: $0["value"]!,
+                                                       startDate: $0["startDate"]!,
+                                                       endDate: $0["endDate"]!) }
+
+        healthStore.save(objects) { success, error in completion(success, error) }
     }
 
     /// Delete quantity data between start-date to end-date

@@ -15,7 +15,9 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/yoshifumi4423/react-native-use-health-kit.git", :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,mm,swift}"
-
+  s.swift_version = '5.0'
+  s.frameworks = 'HealthKit', 'UIKit'
+  
   s.dependency "React-Core"
 
   # Don't install the dependencies when we run `pod install` in the old architecture.

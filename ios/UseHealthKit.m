@@ -12,11 +12,6 @@ RCT_EXTERN_METHOD(initHealthKit
                   : (RCTPromiseResolveBlock)resolve
                   : (RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(setQuantityData
-                  : (NSDictionary *)data
-                  : (RCTPromiseResolveBlock)resolve
-                  : (RCTPromiseRejectBlock)reject)
-
 RCT_EXTERN_METHOD(getDietaryWater
                   : (double *)startDate
                   : (double *)endDate
@@ -83,7 +78,28 @@ RCT_EXTERN_METHOD(getBodyMassIndex
                   : (RCTPromiseResolveBlock)resolve
                   : (RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(getSleepAnalysis
+                  : (double *)startDate
+                  : (double *)endDate
+                  : (RCTPromiseResolveBlock)resolve
+                  : (RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(setQuantityData
+                  : (NSDictionary *)data
+                  : (RCTPromiseResolveBlock)resolve
+                  : (RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(deleteQuantityData
+                  : (NSDictionary *)data
+                  : (RCTPromiseResolveBlock)resolve
+                  : (RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(setCategoryData
+                  : (NSDictionary *)data
+                  : (RCTPromiseResolveBlock)resolve
+                  : (RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(deleteCategoryData
                   : (NSDictionary *)data
                   : (RCTPromiseResolveBlock)resolve
                   : (RCTPromiseRejectBlock)reject)
