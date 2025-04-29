@@ -232,21 +232,6 @@ export default function App() {
           { startDate: today, endDate: today, value: 0.18 },
         ],
       },
-      // Sleep Analysis
-      {
-        type: 'sleepAnalysis',
-        unit: 'count',
-        data: [
-          {
-            startDate: moment(yesterday).set({ hour: 22, minute: 0 }).toDate(),
-            endDate: moment(yesterday)
-              .add(1, 'days')
-              .set({ hour: 6, minute: 0 })
-              .toDate(),
-            value: 1, // 1: Asleep
-          },
-        ],
-      },
     ];
 
     return await Promise.all(
@@ -282,6 +267,18 @@ export default function App() {
     );
   }, []);
 
+  const handleDeleteData = useCallback(async () => {
+    try {
+      setError(null);
+      await authorize();
+      await deleteData();
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : 'An unknown error occurred'
+      );
+    }
+  }, [authorize, deleteData]);
+
   const toggleSection = useCallback((type: HealthType) => {
     setExpandedSections((prev) => ({
       ...prev,
@@ -298,6 +295,9 @@ export default function App() {
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={handleSetData}>
           <Text style={styles.buttonText}>Set Data</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleDeleteData}>
+          <Text style={styles.buttonText}>Delete Data</Text>
         </TouchableOpacity>
       </View>
       {error && <Text style={styles.error}>{error}</Text>}
