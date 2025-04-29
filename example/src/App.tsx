@@ -25,8 +25,6 @@ import {
   getSleepAnalysis,
   setQuantityData,
   deleteQuantityData,
-  setCategoryData,
-  deleteCategoryData,
   SetOptions,
   DeleteOptions,
 } from 'react-native-use-health-kit';
@@ -270,7 +268,6 @@ export default function App() {
   const deleteData = useCallback(async () => {
     const date = moment().startOf('days');
     const twoDaysAgo = moment(date).add(-2, 'days').toDate();
-    const yesterday = moment(date).add(-1, 'days').toDate();
     const today = moment(date).endOf('days').toDate();
 
     const optionsList: DeleteOptions[] = TYPES.map((type) => ({
@@ -283,18 +280,6 @@ export default function App() {
       optionsList.map((options) => deleteQuantityData(options))
     );
   }, []);
-
-  const handleDeleteData = useCallback(async () => {
-    try {
-      setError(null);
-      await authorize();
-      await deleteData();
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'An unknown error occurred'
-      );
-    }
-  }, [authorize, deleteData]);
 
   const toggleSection = useCallback((type: HealthType) => {
     setExpandedSections((prev) => ({
